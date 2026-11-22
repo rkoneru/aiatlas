@@ -6,9 +6,15 @@
  * `count` is the number of matches expected in the source; extraction fails if it differs,
  * so a changed source can't silently skip a patch.
  */
+import fs from 'node:fs';
 export type Patch = { id: string; why: string; find: string; replace: string; count?: number };
+export type CopyPatch = Patch & { in: 'runtime' | 'content'; page?: string };
+
+/** Wording and export changes (decisions Q3, Q4), shared with the parity test. */
+export const COPY_PATCHES: CopyPatch[] = JSON.parse(fs.readFileSync(new URL('./copy-patches.json', import.meta.url), 'utf8')).patches;
 
 export const PATCHES: Patch[] = [
+  ...COPY_PATCHES.filter((p) => p.in === 'runtime'),
   /* ---- nav lookups: nav links now carry real URLs, the old #id lives in data-href ---- */
   {
     id: 'nav-selector',

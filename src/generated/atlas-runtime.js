@@ -219,7 +219,7 @@ Object.assign(Flow.prototype,{
       let s=cap;while(x.measureText(s).width>W-28&&s.length>8)s=s.slice(0,-2);if(s!==cap)s=s.replace(/.$/,'…');x.fillText(s,14,H+capH/2);}
     return cv;},
   async save(filename,data,stat){
-    if(!DL){const ok=await this.copyFallback(filename,data);this.msg(ok?`Downloads aren't available in this view, so the ${filename.split('.').pop().toUpperCase()} was copied to your clipboard instead.`:'Downloads aren\'t available in this view. Open the Atlas on claude.ai to export files.',!ok);return;}
+    if(!DL){const ok=await this.copyFallback(filename,data);this.msg(ok?`Downloads aren't available in this view, so the ${filename.split('.').pop().toUpperCase()} was copied to your clipboard instead.`:'Downloads aren\'t available in this view.',!ok);return;}
     try{await DL.save({filename,data});this.msg(`Saved ${filename}${stat?' · '+stat:''}.`);}
     catch(e){const c=e&&e.code;this.msg(c==='declined'?'Export cancelled.':c==='rate_limited'?'Another save is still waiting for confirmation. Try again in a moment.':c==='too_large'?'That file is too large here. Try PNG or SVG instead.':'Couldn\'t save the file ('+(c||'error')+').',c!=='declined');}},
   async copyFallback(name,data){if(typeof data!=='string')return false;try{await navigator.clipboard.writeText(data);return true;}catch(e){return false;}},
@@ -246,7 +246,6 @@ Object.assign(Flow.prototype,{
     const title=esc(this.def.title||'Diagram'),sec=this.host.closest('section'),h1=sec&&sec.querySelector('h1')?sec.querySelector('h1').textContent:'';
     const html=`<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>${css}
 body{display:block;padding:24px;max-width:1240px;margin:0 auto}.exp,.expmenu{display:none!important}</style></head>
 <body><span class="kicker">AI Architecture Atlas${h1?' · '+esc(h1):''}</span><h1 style="margin:4px 0 14px">${title}</h1>
@@ -340,7 +339,7 @@ Object.assign(Flow.prototype,{
         if(c==='not_granted'){VO.t=null;VO.flows.forEach(f=>f.voUi());}else if(c==='no_gesture'||c==='rate_limited'||c==='busy'||c==='upstream_error'||c==='unavailable')this.voNote(c==='no_gesture'?'Click Play or a step to start the voice-over.':c==='busy'?'Voice-over is paused while you dictate.':c==='rate_limited'?'Voice-over limit reached for now. Try again in a little while.':'Voice-over isn\'t available right now.');});},
   voNote(t){if(this.voMsg){this.voMsg.textContent=t;clearTimeout(this._voN);this._voN=setTimeout(()=>{if(this.voMsg)this.voMsg.textContent='';},5000);}},
   initVO(){VO.flows.add(this);const fc=this.host.querySelector('.fctl');const g=document.createElement('div');g.className='vo';g.hidden=true;
-    g.innerHTML=`<button class="b vo-on" type="button" aria-pressed="false" title="Narrate each step in a Claude voice">🔊 Voice-over</button><span class="vo-opts"><select class="vo-voice" aria-label="Voice"><option value="buttery">Buttery</option><option value="airy">Airy</option><option value="glassy">Glassy</option><option value="rounded">Rounded</option></select><select class="vo-rate" aria-label="Speed"><option value="0.8">0.8×</option><option value="1">1×</option><option value="1.2">1.2×</option><option value="1.4">1.4×</option></select></span><button class="b vo-stop" type="button" hidden>■ Stop</button><span class="vo-msg muted"></span>`;
+    g.innerHTML=`<button class="b vo-on" type="button" aria-pressed="false" title="Narrate each step aloud">🔊 Voice-over</button><span class="vo-opts"><select class="vo-voice" aria-label="Voice"><option value="buttery">Buttery</option><option value="airy">Airy</option><option value="glassy">Glassy</option><option value="rounded">Rounded</option></select><select class="vo-rate" aria-label="Speed"><option value="0.8">0.8×</option><option value="1">1×</option><option value="1.2">1.2×</option><option value="1.4">1.4×</option></select></span><button class="b vo-stop" type="button" hidden>■ Stop</button><span class="vo-msg muted"></span>`;
     const ex=fc.querySelector('.exp');fc.insertBefore(g,ex||null);this.voG=g;this.voMsg=g.querySelector('.vo-msg');
     const on=g.querySelector('.vo-on'),vs=g.querySelector('.vo-voice'),rs=g.querySelector('.vo-rate');
     on.onclick=()=>{VO.pref.on=!VO.pref.on;VO.savePref();this._voLastI=this.i;VO.flows.forEach(f=>f.voUi());if(VO.pref.on){const st=(this.def.steps||[])[this.i];this.voSay(st?[{text:voStepText(st),id:'s'+this.i}]:[{text:voIntroText(this.def)||'Voice-over on.',id:'intro'}]);}else{this.stop();if(VO.t&&VO.state!=='idle')VO.t.stop().catch(()=>{});}};
@@ -4021,7 +4020,7 @@ const kmoney=v=>money(v*1000);
 const csv=rows=>rows.map(r=>r.map(c=>{const s=String(c??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(',')).join('\n');
 async function saveFile(name,data,msgEl){const say=(t,err)=>{if(msgEl){msgEl.textContent=t;msgEl.style.color=err?'var(--pink)':'var(--muted)';}};
   if(typeof DL!=='undefined'&&DL){try{await DL.save({filename:name,data});say('Saved '+name+'.');}catch(e){say(e&&e.code==='declined'?'Export cancelled.':'Couldn\'t save ('+((e&&e.code)||'error')+').',e&&e.code!=='declined');}return;}
-  try{await navigator.clipboard.writeText(typeof data==='string'?data:'');say('Downloads aren\'t available in this view, so the file contents were copied to your clipboard.');}catch(e){say('Downloads aren\'t available in this view. Open the Atlas on claude.ai to export.',true);}}
+  try{await navigator.clipboard.writeText(typeof data==='string'?data:'');say('Downloads aren\'t available in this view, so the file contents were copied to your clipboard.');}catch(e){say('Downloads aren\'t available in this view.',true);}}
 const msgAfter=(btn)=>{let m=btn.parentElement.querySelector('.caio-msg');if(!m){m=document.createElement('span');m.className='caio-msg muted';btn.parentElement.appendChild(m);}return m;};
 
 /* ===== CAIO 90-day plan ===== */
@@ -4529,7 +4528,7 @@ $('igFromDia').onclick=()=>{const f=window.__pgFlow,m=window.__pgModel?window.__
  S.sections=(d.nodes||[]).filter(n=>n.t&&!n.pt).slice(0,10).map(n=>{const sent=strip(n.d).split(/(?<=[.!?])\s+/).filter(Boolean).slice(0,2);return `## ${ICON[n.icon]||CI[n.c]||'▪️'} ${strip(n.t)}\n`+[strip(n.s),...sent].filter(Boolean).map(x=>'- '+x).join('\n');}).join('\n\n');
  S.dia=true;$('igMsg').textContent='Filled from your diagram. Edit any field.';render();};
 $('igClear').onclick=()=>{S=Object.assign({},D0,{theme:S.theme,fmt:S.fmt});render();};
-async function save(name,data,mel){const M_=mel||$('igXMsg');if(typeof DL!=='undefined'&&DL){try{await DL.save({filename:name,data});M_.textContent='Saved '+name+'.';}catch(e){M_.textContent=e&&e.code==='declined'?'Export cancelled.':'Couldn\'t save ('+((e&&e.code)||'error')+').';}}else M_.textContent='Downloads aren\'t available in this view. Open the Atlas on claude.ai to export.';}
+async function save(name,data,mel){const M_=mel||$('igXMsg');if(typeof DL!=='undefined'&&DL){try{await DL.save({filename:name,data});M_.textContent='Saved '+name+'.';}catch(e){M_.textContent=e&&e.code==='declined'?'Export cancelled.':'Couldn\'t save ('+((e&&e.code)||'error')+').';}}else M_.textContent='Downloads aren\'t available in this view.';}
 const slug=(st)=>((st||S).title||'infographic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50)||'infographic';
 $('igSvg').onclick=()=>save(slug()+'.svg',build(S).svg);
 $('igJson').onclick=()=>save(slug()+'.infographic.json',JSON.stringify(S,null,2));
@@ -5142,7 +5141,7 @@ try{if(window.claude&&window.claude.use)window.claude.use('sample').then(s=>{if(
  $('jgCopy').onclick=async()=>{try{await navigator.clipboard.writeText(prompt());$('jgMsg').textContent='Copied.';}catch(e){$('jgMsg').textContent='Copy failed; select the text instead.';}};
  $('jgSave').onclick=()=>saveFile('judge-prompt.md','# Judge prompt\n\n```\n'+prompt()+'\n```\n',$('jgMsg'));
  function test(){const p=J.mode==='pair',r=J.mode==='ref';$('jgTest').innerHTML=`<h3 style="margin-top:0">Test this judge${SAMPLE?' with Claude':''}</h3><div class="ev-g"><label><b>User input</b><textarea data-t="in" rows="2">${H(J.in)}</textarea></label>${r?`<label><b>Reference answer</b><textarea data-t="ref" rows="2">${H(J.ref)}</textarea></label>`:''}<label><b>${p?'Response A':'Response'}</b><textarea data-t="a" rows="3">${H(J.a)}</textarea></label>${p?`<label><b>Response B</b><textarea data-t="b" rows="3">${H(J.b)}</textarea></label>`:''}</div>
-  ${SAMPLE?`<div class="ctlrow"><button class="b pri" id="jgRun">✦ Run the judge</button>${p?'<label style="font-size:13px"><input type="checkbox" id="jgSwap" checked> Also run with A and B swapped (position-bias check)</label>':''}<span class="muted" id="jgRMsg" style="font-size:13px"></span></div><div id="jgRes"></div>`:'<p class="muted" style="font-size:13px">Open the Atlas on claude.ai to run this judge with Claude. You can still copy the prompt and run it in your own pipeline.</p>'}`;
+  ${SAMPLE?`<div class="ctlrow"><button class="b pri" id="jgRun">✦ Run the judge</button>${p?'<label style="font-size:13px"><input type="checkbox" id="jgSwap" checked> Also run with A and B swapped (position-bias check)</label>':''}<span class="muted" id="jgRMsg" style="font-size:13px"></span></div><div id="jgRes"></div>`:'<p class="muted" style="font-size:13px">AI features are turned off on this site. You can still copy the prompt and run it in your own pipeline.</p>'}`;
   const run=$('jgRun');if(run)run.onclick=runJudge;}
  $('jgTest').addEventListener('input',e=>{const k=e.target.dataset.t;if(k){J[k]=e.target.value;sv(K,J);}});
  const fill=(sw)=>prompt().replace('{{input}}',J.in).replace('{{reference}}',J.ref).replace('{{response}}',J.a).replace('{{response_a}}',sw?J.b:J.a).replace('{{response_b}}',sw?J.a:J.b);
@@ -5229,8 +5228,8 @@ const csv=rows=>rows.map(r=>r.map(c=>{const s=String(c??'');return /[",\n]/.test
 const money=v=>{const a=Math.abs(v),s=v<0?'−':'';if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1e4)return s+'$'+(a/1e3).toFixed(0)+'k';if(a>=100)return s+'$'+a.toFixed(0);return s+'$'+a.toFixed(2);};
 async function saveFile(name,data,msgEl){const say=(t,err)=>{if(msgEl){msgEl.textContent=t;msgEl.style.color=err?'var(--pink)':'var(--muted)';}};
   if(typeof DL!=='undefined'&&DL){try{await DL.save({filename:name,data});say('Saved '+name+'.');}catch(e){say(e&&e.code==='declined'?'Export cancelled.':'Couldn\'t save ('+((e&&e.code)||'error')+').',e&&e.code!=='declined');}return;}
-  if(typeof data!=='string'){say('Downloads aren\'t available in this view. Open the Atlas on claude.ai to export.',true);return;}
-  try{await navigator.clipboard.writeText(data);say('Downloads aren\'t available in this view, so the contents were copied to your clipboard.');}catch(e){say('Downloads aren\'t available in this view. Open the Atlas on claude.ai to export.',true);}}
+  if(typeof data!=='string'){say('Downloads aren\'t available in this view.',true);return;}
+  try{await navigator.clipboard.writeText(data);say('Downloads aren\'t available in this view, so the contents were copied to your clipboard.');}catch(e){say('Downloads aren\'t available in this view.',true);}}
 const navLabel=id=>{const a=document.querySelector(`#nav a[data-href="#${id}"]`);if(a)return (a.dataset.label||a.textContent).replace(/^[^\w(]+/,'').trim();const s=$(id);const h=s&&s.querySelector('h1');return h?h.textContent.trim():ATLAS.title(id);};
 const stat=(l,v,s,c)=>`<div class="card ac-stat" style="--c:${c}"><small>${l}</small><b>${v}</b><span>${s}</span></div>`;
 const ERR=c=>({cancelled:'Stopped.',rate_limited:'Too many requests right now. Try again in a minute.',not_granted:'Claude isn\'t allowed for this page.',sampling_disabled:'Claude isn\'t available on this account.',invalid_json:'Claude\'s reply wasn\'t in the expected format. Try again.',refused:'Claude declined that request. Try rephrasing.',prompt_too_large:'That\'s too much text. Shorten it and try again.',session_expired:'Please sign in to claude.ai again.',images_unavailable:'Images can\'t be sent in this view. Paste text instead.',image_rejected:'That image couldn\'t be used. Try a smaller JPG or PNG.'}[c]||'Something went wrong ('+(c||'error')+'). Try again.');
@@ -5644,7 +5643,7 @@ const strip=s=>String(s??'').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').repla
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function saveFile(name,data,msgEl){const say=(t,err)=>{if(msgEl){msgEl.textContent=t;msgEl.style.color=err?'var(--pink)':'var(--muted)';}};
   if(typeof DL!=='undefined'&&DL){try{await DL.save({filename:name,data});say('Saved '+name+'.');}catch(e){say(e&&e.code==='declined'?'Export cancelled.':'Couldn\'t save ('+((e&&e.code)||'error')+').',e&&e.code!=='declined');}return;}
-  try{await navigator.clipboard.writeText(typeof data==='string'?data:'');say('Downloads aren\'t available in this view, so the contents were copied to your clipboard.');}catch(e){say('Downloads aren\'t available in this view. Open the Atlas on claude.ai to export.',true);}}
+  try{await navigator.clipboard.writeText(typeof data==='string'?data:'');say('Downloads aren\'t available in this view, so the contents were copied to your clipboard.');}catch(e){say('Downloads aren\'t available in this view.',true);}}
 const navLabel=id=>{const a=document.querySelector(`#nav a[data-href="#${id}"]`);if(a)return (a.dataset.label||a.textContent).replace(/^[^\w(]+/,'').trim();const s=$(id);const h=s&&s.querySelector('h1');return h?h.textContent.trim():ATLAS.title(id);};
 const curSec=()=>[...document.querySelectorAll('main>section')].find(s=>!s.hidden);
 const md=t=>{const L=H(t).split(/\n/);let o='',list=null;const close=()=>{if(list){o+=`</${list}>`;list=null;}};
@@ -5684,7 +5683,7 @@ const ASK=(()=>{let sample=null,turns=[],ctl=null,busy=false;const el=document.c
  el.innerHTML=`<div class="ask-h"><b>✦ Ask the Atlas</b><span class="muted ask-pg"></span><button class="b ask-new" title="New conversation">New</button><button class="b ask-x" aria-label="Close">✕</button></div>
   <div class="ask-quick"></div><div class="ask-log" aria-live="polite"></div>
   <div class="ask-in"><textarea rows="2" placeholder="Ask about this page, or anything in AI architecture…"></textarea><button class="b pri ask-send">Send</button><button class="b ask-stop" hidden>Stop</button></div>
-  <div class="ask-foot muted">Answers come from Claude on your own account, grounded in the page you're on. Check anything important.</div>`;
+  <div class="ask-foot muted">Answers come from Claude through this site, grounded in the page you're on. Check anything important.</div>`;
  document.body.appendChild(el);const fab=document.createElement('button');fab.className='ask-fab';fab.innerHTML='✦ Ask';fab.title='Ask the Atlas (Claude)';fab.hidden=true;document.body.appendChild(fab);
  const log=el.querySelector('.ask-log'),ta=el.querySelector('textarea'),send=el.querySelector('.ask-send'),stop=el.querySelector('.ask-stop');
  const Qk=[['Explain this page','Explain this page simply: what it is, why it matters, and the 3 most important ideas.'],['Explain the diagram','Walk me through the diagram on this page step by step: what each box does and why the flow is ordered this way.'],['Quiz me','Quiz me on this page. Ask one multiple-choice question at a time (A–D), wait for my answer, then tell me if I was right and why, and ask the next one.'],['Key takeaways','Give me 5 key takeaways from this page as short bullets.'],['Real-world example','Give a concrete enterprise example of this page\'s ideas in practice.']];
@@ -6019,7 +6018,7 @@ const TEAM=(()=>{let db=null,user=null,me=null,canW=null,unsubNotes=null,notesFo
  async function push(force){if(!db||!me||!joined||canW===false)return;const m=metrics();const j=JSON.stringify(m);if(!force&&j===lastSent)return;clearTimeout(sendT);
   sendT=setTimeout(async()=>{try{await db.doc('team/'+me).set(Object.assign({},m,{updated:Date.now()}));lastSent=j;}catch(e){if(e&&e.code==='invalid_argument')canW=false;status();}},force?0:1500);}
  function status(){const s=$('tmStatus');if(!s)return;
-  if(!db){s.innerHTML='<p class="muted" style="margin:0">Team mode needs the Atlas open on claude.ai while signed in. Your own progress still works on every page.</p>';return;}
+  if(!db){s.innerHTML='<p class="muted" style="margin:0">Team mode isn\'t available on this site. Your own progress still works on every page.</p>';return;}
   if(!me){s.innerHTML='<p class="muted" style="margin:0">Sign in to claude.ai to join your team\'s board.</p>';return;}
   if(canW===false){s.innerHTML='<p class="muted" style="margin:0">You can see the team board, but your access is view-only, so you can\'t post progress or notes. Ask the owner for Contributor access.</p>';return;}
   const m=metrics();s.innerHTML=`<div class="ctlrow" style="margin:0"><label style="font-size:14px"><input type="checkbox" id="tmJoin" ${joined?'checked':''}> <b>Share my progress on the team board</b></label><span class="muted" style="font-size:13px">Shared: pages explored, course lessons, AI Acumen % and practice mastery. Nothing else.</span>${joined?'<button class="b" id="tmSync">↻ Update now</button>':''}</div>`;

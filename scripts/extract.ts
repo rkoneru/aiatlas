@@ -26,7 +26,7 @@ import crypto from 'node:crypto';
 import { parse as parseHTML, HTMLElement } from 'node-html-parser';
 import * as acorn from 'acorn';
 import * as walk from 'acorn-walk';
-import { PATCHES } from './runtime-patches.ts';
+import { PATCHES, COPY_PATCHES } from './runtime-patches.ts';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const SRC = path.join(ROOT, 'source/atlas.html');
@@ -83,7 +83,13 @@ const pages = sections.map((s) => {
   const open = html.slice(s.range[0], html.indexOf('>', s.range[0]) + 1);
   const inner = html.slice(html.indexOf('>', s.range[0]) + 1, s.range[1] - '</section>'.length);
   if (!html.slice(s.range[1] - 10, s.range[1]).startsWith('</section>')) throw new Error('section end not found for ' + s.id);
-  write(`src/content/pages/${s.id}.html`, inner);
+  let content = inner;
+  for (const p of COPY_PATCHES.filter((p) => p.in === 'content' && p.page === s.id)) {
+    const n = content.split(p.find).length - 1;
+    if (n !== (p.count ?? 1)) throw new Error(`content patch "${p.id}" expected ${p.count ?? 1} match(es) on ${s.id}, found ${n}`);
+    content = content.split(p.find).join(p.replace);
+  }
+  write(`src/content/pages/${s.id}.html`, content);
   const h1 = s.querySelector('h1');
   return {
     id: s.id,

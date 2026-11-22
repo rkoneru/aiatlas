@@ -1,0 +1,70 @@
+{
+  "_doc": "Wording and export changes agreed after Phase 0 (Q3, Q4). Applied by scripts/extract.ts to the runtime ('runtime') or to page content ('content'), and by the parity test to the original file, so both sides compare like for like. 'count' is the number of matches expected in source/atlas.html.",
+  "patches": [
+    {
+      "id": "q3-export-fonts",
+      "in": "runtime",
+      "count": 1,
+      "why": "Q3: the downloaded interactive diagram loaded Inter from Google Fonts. Exports now use the stylesheet's system-font fallbacks.",
+      "find": "<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">\n",
+      "replace": ""
+    },
+    {
+      "id": "q4-judge-off",
+      "in": "runtime",
+      "count": 1,
+      "why": "Q4: shown on LLM as a judge when AI is off.",
+      "find": "Open the Atlas on claude.ai to run this judge with Claude. You can still copy the prompt and run it in your own pipeline.",
+      "replace": "AI features are turned off on this site. You can still copy the prompt and run it in your own pipeline."
+    },
+    {
+      "id": "q4-builder-off",
+      "in": "content",
+      "page": "builder",
+      "count": 1,
+      "why": "Q4: shown on the page builder when AI is off.",
+      "find": "Drafting needs Claude, which is available when the Atlas is open on claude.ai.",
+      "replace": "AI drafting is turned off on this site."
+    },
+    {
+      "id": "q4-downloads-files",
+      "in": "runtime",
+      "count": 1,
+      "why": "Q4: download fallback (only shown if a browser can't save files).",
+      "find": " Open the Atlas on claude.ai to export files.",
+      "replace": ""
+    },
+    {
+      "id": "q4-downloads",
+      "in": "runtime",
+      "count": 5,
+      "why": "Q4: download fallbacks (only shown if a browser can't save files).",
+      "find": " Open the Atlas on claude.ai to export.",
+      "replace": ""
+    },
+    {
+      "id": "q4-voice-tooltip",
+      "in": "runtime",
+      "count": 1,
+      "why": "Q4: voice-over now uses the browser's own voices.",
+      "find": "title=\"Narrate each step in a Claude voice\"",
+      "replace": "title=\"Narrate each step aloud\""
+    },
+    {
+      "id": "q4-team-off",
+      "in": "runtime",
+      "count": 1,
+      "why": "Q4: shown on /team/ (unlisted) since Team mode is off.",
+      "find": "Team mode needs the Atlas open on claude.ai while signed in. Your own progress still works on every page.",
+      "replace": "Team mode isn\\'t available on this site. Your own progress still works on every page."
+    },
+    {
+      "id": "q4-ask-footer",
+      "in": "runtime",
+      "count": 1,
+      "why": "Q4: Ask the Atlas footer (visible only when AI is on). Requests go through this site's proxy, not the visitor's own account.",
+      "find": "Answers come from Claude on your own account, grounded in the page you",
+      "replace": "Answers come from Claude through this site, grounded in the page you"
+    }
+  ]
+}
