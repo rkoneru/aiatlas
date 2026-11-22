@@ -1,0 +1,6 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PAGES } from '../lib/site';
+const page = PAGES.find((p) => p.id === 'overview')!;
+---
+<BaseLayout page={page} />

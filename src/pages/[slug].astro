@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PAGES } from '../lib/site';
+export function getStaticPaths() {
+  return PAGES.filter((p) => p.id !== 'overview').map((p) => ({ params: { slug: p.id }, props: { page: p } }));
+}
+const { page } = Astro.props;
+---
+<BaseLayout page={page} />

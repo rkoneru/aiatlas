@@ -1,0 +1,66 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/800.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/600.css';
+import '../styles/site.css';
+import atlasCss from '../styles/atlas.css?raw';
+import nav from '../data/nav.json';
+import bootUrl from '../generated/boot.js?url';
+import runtimeUrl from '../generated/atlas-runtime.js?url';
+import { pageUrl, pageContent, companionHTML, type PageMeta } from '../lib/site';
+
+interface Props { page: PageMeta }
+const { page } = Astro.props;
+const title = page.id === 'overview' ? 'AI Architecture Atlas' : `${page.navLabel || page.title} · AI Architecture Atlas`;
+const content = pageContent(page.id);
+const companions = companionHTML(page.id);
+const cur = (id: string) => (id === page.id ? ' active' : '');
+---
+<!DOCTYPE html>
+<html lang="en" data-page={page.id}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{title}</title>
+<!-- The Atlas stylesheet stays in a <style> element: the diagram, slide and proposal exporters copy it from there. -->
+<style is:inline set:html={atlasCss}></style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <Fragment set:html={nav.shell.brand} />
+  <Fragment set:html={nav.shell.navtools} />
+  <nav id="nav">
+  <div class="navpins">
+    {nav.pins.map((p) => (
+      <a href={pageUrl(p.id)} data-href={`#${p.id}`} class="pin" style={`--c:var(--${p.color})`} title={p.title} data-label={p.dataLabel}><Fragment set:html={p.label} /></a>
+    ))}
+  </div>
+  <ul class="tree">
+    {nav.groups.map((g) => (
+      <li class="grp"><details><summary><span class="gname"><Fragment set:html={g.name} /></span><span class="cnt"></span><span class="chev">›</span></summary><ul>
+        {g.items.filter((it: any) => !it.hidden).map((it) => (
+          <li><a href={pageUrl(it.id)} data-href={`#${it.id}`} style={`--c:var(--${it.color})`} title={it.title}><i></i><Fragment set:html={it.label} /></a></li>
+        ))}
+      </ul></details></li>
+    ))}
+  </ul></nav>
+  <Fragment set:html={nav.shell.navfoot} />
+</aside>
+
+<main>
+<Fragment set:html={nav.shell.coursebar} />
+<section id={page.id} style={`--accent:var(--${page.accent})`}><Fragment set:html={content} /></section>
+</main>
+</div>
+<div id="atlas-companions" hidden inert aria-hidden="true"></div>
+{companions && <template id="atlas-companions-tpl"><Fragment set:html={companions} /></template>}
+<script is:inline src={bootUrl}></script>
+<script is:inline src={runtimeUrl}></script>
+<script is:inline>ATLAS.after();</script>
+</body>
+</html>
