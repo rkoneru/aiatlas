@@ -32,6 +32,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # the build renders every page once in Chromium (scripts/snapshot.mjs)
+      - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npx tsx scripts/check-links.ts dist "$ATLAS_BASE"
       - uses: actions/upload-pages-artifact@v3
