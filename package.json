@@ -1,0 +1,17 @@
+{
+  "name": "ai-architecture-atlas",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "inventory": "node scripts/inventory.mjs",
+    "inventory:isolation": "node scripts/isolation-split-test.mjs",
+    "inventory:coverage": "node scripts/render-coverage.mjs"
+  },
+  "devDependencies": {
+    "acorn": "^8.19.0",
+    "acorn-walk": "^8.3.5",
+    "node-html-parser": "^6.1.13",
+    "playwright": "1.63.0"
+  }
+}

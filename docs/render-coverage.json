@@ -1,0 +1,590 @@
+[
+ {
+  "id": "course",
+  "static": 0,
+  "rendered": 815,
+  "pct": 0
+ },
+ {
+  "id": "overview",
+  "static": 1677,
+  "rendered": 2733,
+  "pct": 61
+ },
+ {
+  "id": "rag",
+  "static": 3338,
+  "rendered": 6010,
+  "pct": 56
+ },
+ {
+  "id": "agents",
+  "static": 4631,
+  "rendered": 7195,
+  "pct": 64
+ },
+ {
+  "id": "mcp",
+  "static": 1957,
+  "rendered": 3238,
+  "pct": 60
+ },
+ {
+  "id": "a2a",
+  "static": 883,
+  "rendered": 1298,
+  "pct": 68
+ },
+ {
+  "id": "patterns",
+  "static": 2280,
+  "rendered": 5711,
+  "pct": 40
+ },
+ {
+  "id": "optimization",
+  "static": 3499,
+  "rendered": 9294,
+  "pct": 38
+ },
+ {
+  "id": "rag-variants",
+  "static": 1683,
+  "rendered": 5924,
+  "pct": 28
+ },
+ {
+  "id": "mcp-protocol",
+  "static": 7060,
+  "rendered": 10475,
+  "pct": 67
+ },
+ {
+  "id": "agent-kit",
+  "static": 2898,
+  "rendered": 4878,
+  "pct": 59
+ },
+ {
+  "id": "tool-call",
+  "static": 2816,
+  "rendered": 4775,
+  "pct": 59
+ },
+ {
+  "id": "workflows",
+  "static": 737,
+  "rendered": 2603,
+  "pct": 28
+ },
+ {
+  "id": "reference-arch",
+  "static": 1349,
+  "rendered": 3502,
+  "pct": 39
+ },
+ {
+  "id": "ontology",
+  "static": 988,
+  "rendered": 1378,
+  "pct": 72
+ },
+ {
+  "id": "jev",
+  "static": 1904,
+  "rendered": 2686,
+  "pct": 71
+ },
+ {
+  "id": "voice",
+  "static": 682,
+  "rendered": 2147,
+  "pct": 32
+ },
+ {
+  "id": "ai-landscape",
+  "static": 1048,
+  "rendered": 1888,
+  "pct": 56
+ },
+ {
+  "id": "llm-types",
+  "static": 447,
+  "rendered": 2537,
+  "pct": 18
+ },
+ {
+  "id": "ai-roles",
+  "static": 1470,
+  "rendered": 3286,
+  "pct": 45
+ },
+ {
+  "id": "sop-workflow",
+  "static": 402,
+  "rendered": 3321,
+  "pct": 12
+ },
+ {
+  "id": "productivity",
+  "static": 1003,
+  "rendered": 1238,
+  "pct": 81
+ },
+ {
+  "id": "how-llms-work",
+  "static": 2236,
+  "rendered": 3362,
+  "pct": 67
+ },
+ {
+  "id": "guardrails",
+  "static": 652,
+  "rendered": 3230,
+  "pct": 20
+ },
+ {
+  "id": "automation-ideas",
+  "static": 2018,
+  "rendered": 6301,
+  "pct": 32
+ },
+ {
+  "id": "roadmaps",
+  "static": 843,
+  "rendered": 5388,
+  "pct": 16
+ },
+ {
+  "id": "build-agent",
+  "static": 2765,
+  "rendered": 6463,
+  "pct": 43
+ },
+ {
+  "id": "agent-governance",
+  "static": 2161,
+  "rendered": 2758,
+  "pct": 78
+ },
+ {
+  "id": "prompt-skills",
+  "static": 1658,
+  "rendered": 2327,
+  "pct": 71
+ },
+ {
+  "id": "agent-catalog",
+  "static": 1549,
+  "rendered": 12234,
+  "pct": 13
+ },
+ {
+  "id": "pm-map",
+  "static": 1179,
+  "rendered": 2841,
+  "pct": 41
+ },
+ {
+  "id": "prompt-eng",
+  "static": 1484,
+  "rendered": 4570,
+  "pct": 32
+ },
+ {
+  "id": "prompt-debug",
+  "static": 1157,
+  "rendered": 3713,
+  "pct": 31
+ },
+ {
+  "id": "studio",
+  "static": 1041,
+  "rendered": 4502,
+  "pct": 23
+ },
+ {
+  "id": "ml-basics",
+  "static": 3600,
+  "rendered": 4719,
+  "pct": 76
+ },
+ {
+  "id": "nn-arch",
+  "static": 6673,
+  "rendered": 8652,
+  "pct": 77
+ },
+ {
+  "id": "post-training",
+  "static": 3345,
+  "rendered": 4213,
+  "pct": 79
+ },
+ {
+  "id": "gen-media",
+  "static": 2433,
+  "rendered": 3453,
+  "pct": 70
+ },
+ {
+  "id": "vector-search",
+  "static": 2740,
+  "rendered": 3526,
+  "pct": 78
+ },
+ {
+  "id": "ai-security",
+  "static": 2632,
+  "rendered": 5696,
+  "pct": 46
+ },
+ {
+  "id": "agent-payments",
+  "static": 2482,
+  "rendered": 3066,
+  "pct": 81
+ },
+ {
+  "id": "applied-ml",
+  "static": 3862,
+  "rendered": 4507,
+  "pct": 86
+ },
+ {
+  "id": "model-selection",
+  "static": 5698,
+  "rendered": 7787,
+  "pct": 73
+ },
+ {
+  "id": "prompt-advanced",
+  "static": 2971,
+  "rendered": 4059,
+  "pct": 73
+ },
+ {
+  "id": "llmops",
+  "static": 3768,
+  "rendered": 5040,
+  "pct": 75
+ },
+ {
+  "id": "agent-runtime",
+  "static": 3222,
+  "rendered": 4065,
+  "pct": 79
+ },
+ {
+  "id": "doc-ai",
+  "static": 2663,
+  "rendered": 3166,
+  "pct": 84
+ },
+ {
+  "id": "ai-compliance",
+  "static": 9344,
+  "rendered": 16223,
+  "pct": 58
+ },
+ {
+  "id": "playground",
+  "static": 2295,
+  "rendered": 3219,
+  "pct": 71
+ },
+ {
+  "id": "caio",
+  "static": 2830,
+  "rendered": 4212,
+  "pct": 67
+ },
+ {
+  "id": "ai-strategy",
+  "static": 2965,
+  "rendered": 5243,
+  "pct": 57
+ },
+ {
+  "id": "usecase-roi",
+  "static": 1716,
+  "rendered": 4948,
+  "pct": 35
+ },
+ {
+  "id": "ai-budget",
+  "static": 1126,
+  "rendered": 2701,
+  "pct": 42
+ },
+ {
+  "id": "ai-value",
+  "static": 778,
+  "rendered": 3933,
+  "pct": 20
+ },
+ {
+  "id": "ai-board",
+  "static": 1103,
+  "rendered": 3795,
+  "pct": 29
+ },
+ {
+  "id": "industry",
+  "static": 365,
+  "rendered": 2876,
+  "pct": 13
+ },
+ {
+  "id": "frameworks",
+  "static": 570,
+  "rendered": 3243,
+  "pct": 18
+ },
+ {
+  "id": "fde",
+  "static": 1067,
+  "rendered": 1760,
+  "pct": 61
+ },
+ {
+  "id": "practice",
+  "static": 1653,
+  "rendered": 6518,
+  "pct": 25
+ },
+ {
+  "id": "decide",
+  "static": 411,
+  "rendered": 1572,
+  "pct": 26
+ },
+ {
+  "id": "team",
+  "static": 386,
+  "rendered": 506,
+  "pct": 76
+ },
+ {
+  "id": "changes",
+  "static": 342,
+  "rendered": 9574,
+  "pct": 4
+ },
+ {
+  "id": "proposal",
+  "static": 390,
+  "rendered": 5086,
+  "pct": 8
+ },
+ {
+  "id": "evalhub",
+  "static": 456,
+  "rendered": 2141,
+  "pct": 21
+ },
+ {
+  "id": "cost",
+  "static": 448,
+  "rendered": 1237,
+  "pct": 36
+ },
+ {
+  "id": "reuse",
+  "static": 319,
+  "rendered": 974,
+  "pct": 33
+ },
+ {
+  "id": "labs",
+  "static": 317,
+  "rendered": 1203,
+  "pct": 26
+ },
+ {
+  "id": "flaws",
+  "static": 233,
+  "rendered": 758,
+  "pct": 31
+ },
+ {
+  "id": "certify",
+  "static": 349,
+  "rendered": 912,
+  "pct": 38
+ },
+ {
+  "id": "maturity",
+  "static": 1149,
+  "rendered": 4701,
+  "pct": 24
+ },
+ {
+  "id": "vendors",
+  "static": 412,
+  "rendered": 801,
+  "pct": 51
+ },
+ {
+  "id": "incidents",
+  "static": 353,
+  "rendered": 623,
+  "pct": 57
+ },
+ {
+  "id": "builder",
+  "static": 457,
+  "rendered": 490,
+  "pct": 93
+ },
+ {
+  "id": "llm-judge",
+  "static": 1644,
+  "rendered": 9755,
+  "pct": 17
+ },
+ {
+  "id": "llm-roles",
+  "static": 1042,
+  "rendered": 4056,
+  "pct": 26
+ },
+ {
+  "id": "agent-decisions",
+  "static": 4818,
+  "rendered": 8192,
+  "pct": 59
+ },
+ {
+  "id": "agent-swarms",
+  "static": 5320,
+  "rendered": 8591,
+  "pct": 62
+ },
+ {
+  "id": "automation-pipelines",
+  "static": 3028,
+  "rendered": 4372,
+  "pct": 69
+ },
+ {
+  "id": "context-retrieval",
+  "static": 2839,
+  "rendered": 3711,
+  "pct": 77
+ },
+ {
+  "id": "agent-spectrum",
+  "static": 2976,
+  "rendered": 4406,
+  "pct": 68
+ },
+ {
+  "id": "ai-projects",
+  "static": 1567,
+  "rendered": 2357,
+  "pct": 66
+ },
+ {
+  "id": "paths",
+  "static": 405,
+  "rendered": 1050,
+  "pct": 39
+ },
+ {
+  "id": "about",
+  "static": 2392,
+  "rendered": 2406,
+  "pct": 99
+ },
+ {
+  "id": "cx-arch",
+  "static": 2684,
+  "rendered": 2858,
+  "pct": 94
+ },
+ {
+  "id": "cx-metrics",
+  "static": 1587,
+  "rendered": 3501,
+  "pct": 45
+ },
+ {
+  "id": "cx-assist",
+  "static": 1350,
+  "rendered": 2196,
+  "pct": 61
+ },
+ {
+  "id": "cx-migration",
+  "static": 1393,
+  "rendered": 1889,
+  "pct": 74
+ },
+ {
+  "id": "cx-qa",
+  "static": 1172,
+  "rendered": 1812,
+  "pct": 65
+ },
+ {
+  "id": "fde-discovery",
+  "static": 445,
+  "rendered": 2969,
+  "pct": 15
+ },
+ {
+  "id": "fde-integration",
+  "static": 2493,
+  "rendered": 2592,
+  "pct": 96
+ },
+ {
+  "id": "fde-privacy",
+  "static": 1378,
+  "rendered": 2128,
+  "pct": 65
+ },
+ {
+  "id": "fde-observability",
+  "static": 1544,
+  "rendered": 2071,
+  "pct": 75
+ },
+ {
+  "id": "fde-testing",
+  "static": 1024,
+  "rendered": 1532,
+  "pct": 67
+ },
+ {
+  "id": "fde-handover",
+  "static": 651,
+  "rendered": 1462,
+  "pct": 45
+ },
+ {
+  "id": "glossary",
+  "static": 250,
+  "rendered": 53502,
+  "pct": 0
+ },
+ {
+  "id": "data-readiness",
+  "static": 1368,
+  "rendered": 3874,
+  "pct": 35
+ },
+ {
+  "id": "ai-operating-model",
+  "static": 3256,
+  "rendered": 5324,
+  "pct": 61
+ },
+ {
+  "id": "acumen",
+  "static": 785,
+  "rendered": 57826,
+  "pct": 1
+ }
+]
