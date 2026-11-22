@@ -9,3 +9,5 @@ test-results/
 playwright-report/
 .lighthouseci/
 src/generated/boot.js
+src/generated/platform.js
+dist-ai/

@@ -9,7 +9,9 @@
     "dev": "tsx scripts/build-boot.ts && astro dev",
     "build": "tsx scripts/build-boot.ts && astro build",
     "preview": "astro preview",
+    "build:ai-test": "PUBLIC_AI_ENABLED=true ATLAS_OUT_DIR=dist-ai npm run build",
     "test:e2e": "playwright test --trace off",
+    "typecheck": "tsc --noEmit -p .",
     "check:links": "tsx scripts/check-links.ts",
     "inventory": "node scripts/inventory.mjs",
     "inventory:isolation": "node scripts/isolation-split-test.mjs",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.5",
     "acorn": "^8.19.0",
     "acorn-walk": "^8.3.5",
     "esbuild": "^0.28.2",

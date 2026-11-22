@@ -12,6 +12,7 @@
  *     are replayed on the next page
  * See docs/runtime-adaptations.md.
  */
+import './platform';
 import pages from '../generated/boot-pages.json';
 import merged from '../data/redirects.json';
 

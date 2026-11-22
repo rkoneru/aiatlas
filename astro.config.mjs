@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL || 'https://example.com',
   output: 'static',
+  outDir: process.env.ATLAS_OUT_DIR || './dist',
   trailingSlash: 'always',
   build: { format: 'directory', inlineStylesheets: 'never' },
   // The runtime is shipped as-is: its exporters serialize their own source (see docs/inventory-findings.md B8).
