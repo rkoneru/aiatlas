@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 96" role="img" aria-label="AI Architecture Atlas">
+<defs><linearGradient id="atlasl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b46f5"/><stop offset="1" stop-color="#2563eb"/></linearGradient><linearGradient id="atlasw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6b46f5"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
+<g transform="translate(8 8) scale(1.25)"><rect width="64" height="64" rx="15" fill="url(#atlasl)"/><circle cx="32" cy="34" r="23" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2"/><path d="M32,13 L16,49 M32,13 L48,49 M21.3 37 H42.7" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="13" r="6" fill="#ff8a3d" stroke="#fff" stroke-width="2.2"/><circle cx="16" cy="49" r="4.5" fill="#fff"/><circle cx="48" cy="49" r="4.5" fill="#fff"/><circle cx="21.3" cy="37" r="3.2" fill="#fff"/><circle cx="42.7" cy="37" r="3.2" fill="#fff"/></g>
+<text x="108" y="45" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="30" font-weight="800" fill="#15162b" letter-spacing="-.4">AI Architecture</text>
+<text x="108" y="80" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="30" font-weight="800" fill="url(#atlasw)" letter-spacing="-.4">Atlas</text>
+</svg>

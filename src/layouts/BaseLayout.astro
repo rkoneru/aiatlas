@@ -12,13 +12,17 @@ import nav from '../data/nav.json';
 import bootUrl from '../generated/boot.js?url';
 import runtimeUrl from '../generated/atlas-runtime.js?url';
 import { BASE, pageUrl, pageContent, companionHTML, type PageMeta } from '../lib/site';
+import brandGlyph from '../generated/brand-glyph.svg?raw';
 
 interface Props { page: PageMeta }
 const { page } = Astro.props;
 const title = page.id === 'overview' ? 'AI Architecture Atlas' : `${page.navLabel || page.title} · AI Architecture Atlas`;
 const content = pageContent(page.id);
 const companions = companionHTML(page.id);
-const cur = (id: string) => (id === page.id ? ' active' : '');
+// Sidebar logo: the brand glyph (scripts/build-brand.mjs) in place of the source's "A".
+const LOGO_SRC = '<div class="logo">A</div>';
+if (!nav.shell.brand.includes(LOGO_SRC)) throw new Error('sidebar logo markup changed in the source');
+const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo">${brandGlyph}</div>`);
 ---
 <!DOCTYPE html>
 <html lang="en" data-page={page.id} data-base={BASE}>
@@ -26,13 +30,18 @@ const cur = (id: string) => (id === page.id ? ' active' : '');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title>
+<link rel="icon" href={`${BASE}favicon.ico`} sizes="48x48">
+<link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml">
+<link rel="apple-touch-icon" href={`${BASE}apple-touch-icon.png`}>
+<link rel="manifest" href={`${BASE}site.webmanifest`}>
+<meta name="theme-color" content="#6b46f5">
 <!-- The Atlas stylesheet stays in a <style> element: the diagram, slide and proposal exporters copy it from there. -->
 <style is:inline set:html={atlasCss}></style>
 </head>
 <body>
 <div class="app">
 <aside>
-  <Fragment set:html={nav.shell.brand} />
+  <Fragment set:html={brand} />
   <Fragment set:html={nav.shell.navtools} />
   <nav id="nav">
   <div class="navpins">
