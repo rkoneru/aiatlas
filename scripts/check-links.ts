@@ -12,6 +12,8 @@ import path from 'node:path';
 import { parse } from 'node-html-parser';
 
 const DIST = path.resolve(process.argv[2] || 'dist');
+// Base path the site was built with (ATLAS_BASE), e.g. /aiatlas/ for GitHub Pages.
+const BASE = ('/' + (process.argv[3] || process.env.ATLAS_BASE || '').replace(/^\/+|\/+$/g, '') + '/').replace(/\/+/g, '/');
 const files: string[] = [];
 (function walk(d: string) { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); if (fs.statSync(p).isDirectory()) walk(p); else if (f.endsWith('.html')) files.push(p); } })(DIST);
 
@@ -41,8 +43,9 @@ for (const [from, doc] of docs) {
     if (a.rawTagName === 'link') continue;
     checked++;
     let [p, frag] = href.split('#');
+    if (p && BASE !== '/') { if (!p.startsWith(BASE)) { problems.push(`${from}: ${href} is outside the base path ${BASE}`); continue; } p = '/' + p.slice(BASE.length); }
     if (!p) { if (frag && !ids.get(from)!.has(decodeURIComponent(frag))) problems.push(`${from}: #${frag} has no target on the page`); continue; }
-    if (redirects.has(p)) { const t = redirects.get(p)!; [p, frag] = t.split('#'); }
+    if (redirects.has(p) && BASE === '/') { const t = redirects.get(p)!; [p, frag] = t.split('#'); }
     if (!p.endsWith('/') && !path.extname(p)) { problems.push(`${from}: ${href} lacks a trailing slash`); continue; }
     if (path.extname(p)) { if (!fs.existsSync(path.join(DIST, p))) problems.push(`${from}: ${href} not found`); continue; }
     if (!ids.has(p)) { problems.push(`${from}: ${href} → no page`); continue; }

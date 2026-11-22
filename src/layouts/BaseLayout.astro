@@ -11,7 +11,7 @@ import atlasCss from '../styles/atlas.css?raw';
 import nav from '../data/nav.json';
 import bootUrl from '../generated/boot.js?url';
 import runtimeUrl from '../generated/atlas-runtime.js?url';
-import { pageUrl, pageContent, companionHTML, type PageMeta } from '../lib/site';
+import { BASE, pageUrl, pageContent, companionHTML, type PageMeta } from '../lib/site';
 
 interface Props { page: PageMeta }
 const { page } = Astro.props;
@@ -21,7 +21,7 @@ const companions = companionHTML(page.id);
 const cur = (id: string) => (id === page.id ? ' active' : '');
 ---
 <!DOCTYPE html>
-<html lang="en" data-page={page.id}>
+<html lang="en" data-page={page.id} data-base={BASE}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">

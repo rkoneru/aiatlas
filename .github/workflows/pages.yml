@@ -1,0 +1,51 @@
+# Build the Astro site and deploy it to GitHub Pages.
+# One-time setup: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# Project site: served at https://<owner>.github.io/<repo>/ (base path /<repo>/).
+# Custom domain: set the repository variable PAGES_BASE to "/" and PAGES_SITE_URL to
+# "https://your.domain", and add the domain in Settings → Pages.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ATLAS_BASE: ${{ vars.PAGES_BASE || format('/{0}/', github.event.repository.name) }}
+      PUBLIC_SITE_URL: ${{ vars.PAGES_SITE_URL || format('https://{0}.github.io', github.repository_owner) }}
+      PUBLIC_AI_ENABLED: 'false' # GitHub Pages can't run the AI proxy (/api/claude)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx tsx scripts/check-links.ts dist "$ATLAS_BASE"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    # Deploy only from the default branch; other branches just build and check.
+    if: github.ref_name == github.event.repository.default_branch
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

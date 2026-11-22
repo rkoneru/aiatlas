@@ -24,7 +24,8 @@ const PAGES = pages as Array<{ id: string; title: string; navLabel: string | nul
 const IDS = new Set(PAGES.map((p) => p.id));
 const PAGE = document.documentElement.dataset.page || 'overview';
 const HANDOFF = 'atlas-handoff';
-const url = (id: string) => (id === 'overview' ? '/' : `/${id}/`);
+const BASE = document.documentElement.dataset.base || '/';
+const url = (id: string) => (id === 'overview' ? BASE : `${BASE}${id}/`);
 const dec = (s: string) => { try { return decodeURIComponent(s); } catch { return s; } };
 const ss = {
   get(k: string) { try { return sessionStorage.getItem(k); } catch { return null; } },
@@ -70,7 +71,7 @@ const ATLAS = {
     pending = [];
     if (!r) {
       const id = dec(raw.replace(/^#/, ''));
-      if (/^my-/.test(id) && PAGE !== 'builder') { location.href = '/builder/#' + id; return; }
+      if (/^my-/.test(id) && PAGE !== 'builder') { location.href = url('builder') + '#' + id; return; }
       location.hash = raw; // an in-page anchor or a saved custom page shown on this page
       return;
     }
@@ -102,7 +103,7 @@ const ATLAS = {
       return index.map((x) => ({ ...x, low: '' })).concat(live.filter((s) => !have.has(s.id)).map(mapLive));
     }
     if (!indexLoading) {
-      indexLoading = fetch('/search-index.json')
+      indexLoading = fetch(BASE + 'search-index.json')
         .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
         .then((j: SearchEntry[]) => { index = j; onReady(); })
         .catch(() => { indexLoading = null; });
@@ -148,7 +149,7 @@ function followHash(replace: boolean) {
   const r = resolve(id);
   if (r && r.page !== PAGE) { const to = url(r.page) + r.frag; replace ? location.replace(to) : (location.href = to); return; }
   if (r && r.page === PAGE && !r.frag) { history.replaceState(history.state, '', location.pathname + location.search); return; }
-  if (!r && /^my-/.test(id) && PAGE !== 'builder') location.replace('/builder/#' + id);
+  if (!r && /^my-/.test(id) && PAGE !== 'builder') location.replace(url('builder') + '#' + id);
 }
 followHash(true);
 window.addEventListener('hashchange', () => followHash(false));
@@ -160,7 +161,7 @@ document.addEventListener('click', (e) => {
   if (!a) return;
   const id = dec(a.getAttribute('href')!.slice(1));
   if (resolve(id)) { e.preventDefault(); ATLAS.go('#' + id); }
-  else if (/^my-/.test(id) && PAGE !== 'builder') { e.preventDefault(); location.href = '/builder/#' + id; }
+  else if (/^my-/.test(id) && PAGE !== 'builder') { e.preventDefault(); location.href = url('builder') + '#' + id; }
 });
 
 /* Stand-in for the playground's loader on other pages: the call is replayed on /playground/. */

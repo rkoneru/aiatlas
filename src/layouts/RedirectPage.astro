@@ -1,0 +1,18 @@
+---
+// A redirect for hosts without server-side redirects (GitHub Pages). On Cloudflare/Netlify,
+// public/_redirects answers these paths first.
+interface Props { to: string; title: string }
+const { to, title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{title} · AI Architecture Atlas</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href={to}>
+<meta http-equiv="refresh" content={`0; url=${to}`}>
+<script is:inline define:vars={{ to }}>location.replace(to);</script>
+</head>
+<body><p>This page moved to <a href={to}>{title}</a>.</p></body>
+</html>

@@ -11,3 +11,4 @@ playwright-report/
 src/generated/boot.js
 src/generated/platform.js
 dist-ai/
+dist-gh/

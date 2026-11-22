@@ -10,6 +10,7 @@
     "build": "tsx scripts/build-boot.ts && astro build",
     "preview": "astro preview",
     "build:ai-test": "PUBLIC_AI_ENABLED=true ATLAS_OUT_DIR=dist-ai npm run build",
+    "build:gh-test": "ATLAS_BASE=/aiatlas/ ATLAS_OUT_DIR=dist-gh npm run build",
     "test:e2e": "playwright test --trace off",
     "typecheck": "tsc --noEmit -p .",
     "check:links": "tsx scripts/check-links.ts",

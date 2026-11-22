@@ -10,7 +10,9 @@ export const PAGES: PageMeta[] = pagesData;
 export const MERGED: Record<string, string> = merged;
 const IDS = new Set(PAGES.map((p) => p.id));
 
-export const pageUrl = (id: string) => (id === 'overview' ? '/' : `/${id}/`);
+/** Site base path with leading and trailing slash: '/' or '/aiatlas/'. */
+export const BASE = ('/' + (import.meta.env.BASE_URL || '/').replace(/^\/+|\/+$/g, '') + '/').replace(/\/+/g, '/');
+export const pageUrl = (id: string) => (id === 'overview' ? BASE : `${BASE}${id}/`);
 
 const CONTENT_DIR = path.resolve('src/content/pages');
 const cache = new Map<string, string>();

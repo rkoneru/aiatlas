@@ -22,4 +22,9 @@
 
 ## Hosting
 
-- GitHub Pages (Jekyll building the raw repo) is switched off. The repo isn't a Jekyll site, and Cloudflare Pages stays the host.
+- The Jekyll "deploy from branch" build is switched off. It built the raw repo, not the site.
+- **GitHub Pages hosts the site, built by `.github/workflows/pages.yml`.**
+  - The site is served under `/<repo>/` (`ATLAS_BASE`), or at `/` with a custom domain.
+  - Retired paths are generated redirect pages.
+  - AI stays off, because GitHub Pages can't run the proxy.
+- The site stays portable to Cloudflare Pages, Vercel and Netlify. `public/_redirects` is still generated for them.

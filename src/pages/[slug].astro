@@ -1,9 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { PAGES } from '../lib/site';
+import RedirectPage from '../layouts/RedirectPage.astro';
+import { PAGES, MERGED, pageUrl } from '../lib/site';
 export function getStaticPaths() {
-  return PAGES.filter((p) => p.id !== 'overview').map((p) => ({ params: { slug: p.id }, props: { page: p } }));
+  const pages = PAGES.filter((p) => p.id !== 'overview').map((p) => ({ params: { slug: p.id }, props: { page: p, redirect: null } }));
+  // Retired ids (MERGED) and /overview/ redirect to where the content lives now.
+  const title = (id: string) => { const p = PAGES.find((x) => x.id === id)!; return p.navLabel || p.title; };
+  const redirects = [
+    { params: { slug: 'overview' }, props: { page: null, redirect: { to: pageUrl('overview'), title: title('overview') } } },
+    ...Object.entries(MERGED).map(([old, id]) => ({ params: { slug: old }, props: { page: null, redirect: { to: `${pageUrl(id)}#${old}`, title: title(id) } } })),
+  ];
+  return [...pages, ...redirects];
 }
-const { page } = Astro.props;
+const { page, redirect } = Astro.props as any;
 ---
-<BaseLayout page={page} />
+{redirect ? <RedirectPage to={redirect.to} title={redirect.title} /> : <BaseLayout page={page} />}

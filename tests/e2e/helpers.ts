@@ -3,7 +3,8 @@ import type { Page } from '@playwright/test';
 
 export const PAGES: Array<{ id: string; title: string; navLabel: string | null; inNav: boolean }> = JSON.parse(fs.readFileSync('src/data/pages.json', 'utf8'));
 export const MERGED: Record<string, string> = JSON.parse(fs.readFileSync('src/data/redirects.json', 'utf8'));
-export const url = (id: string) => (id === 'overview' ? '/' : `/${id}/`);
+// Relative to the project's baseURL, so the same tests run at / and under a base path (GitHub Pages).
+export const url = (id: string) => (id === 'overview' ? './' : `${id}/`);
 
 /** Collect uncaught errors and console errors for a page. */
 export function watchErrors(page: Page) {
