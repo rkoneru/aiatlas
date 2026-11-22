@@ -1,0 +1,62 @@
+
+  <span class="kicker">7 · Claude Code</span>
+  <h1>Agent dev kit &amp; project structure</h1>
+  <p class="lead">CLAUDE.md + Skills + Hooks + Subagents + Plugins. Five layers, each with a different job: <b>CLAUDE.md</b> sets the rules, <b>skills</b> provide expertise, <b>hooks</b> enforce quality, <b>subagents</b> delegate work, and <b>plugins</b> distribute it all to your team. MCP servers and agent teams extend it outward.</p>
+  <div data-flow="adk"></div>
+  <h2>The five layers</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Layer</th><th>Role</th><th>Loaded</th><th>Lives in</th><th>Think of it as</th></tr>
+    <tr><td><b>1 · CLAUDE.md</b></td><td>Memory: architecture rules, naming conventions, test expectations, repo map</td><td>Always loaded, always active</td><td><code>~/.claude/CLAUDE.md</code> (global)<br><code>./CLAUDE.md</code> · <code>.claude/CLAUDE.md</code> (project)</td><td>The agent's constitution</td></tr>
+    <tr><td><b>2 · Skills</b></td><td>Knowledge: reference docs, scripts, templates</td><td>On demand, when the description matches the task</td><td><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td><td>Modular context chunks. A skill can run in an isolated subagent.</td></tr>
+    <tr><td><b>3 · Hooks</b></td><td>Guardrails: deterministic checks on events</td><td>Every matching event</td><td><code>settings.json</code> → <code>hooks</code></td><td>Git hooks for your agent. Deterministic, not AI.</td></tr>
+    <tr><td><b>4 · Subagents</b></td><td>Delegation: code-reviewer, test-runner, explorer…</td><td>When delegated</td><td><code>.claude/agents/&lt;name&gt;.md</code></td><td>Specialists with their own context window, model, tools and permissions. They can't spawn subagents.</td></tr>
+    <tr><td><b>5 · Plugins</b></td><td>Distribution: <code>skills/ agents/ hooks/ commands/</code></td><td>Installed once</td><td>Plugin marketplace / team install</td><td>npm packages for agent capabilities</td></tr>
+  </table></div>
+  <h2>Hook simulator</h2>
+  <p class="muted">Event fires → matcher checks → command runs. Pick a scenario to see which hook catches it.</p>
+  <div class="card">
+    <div class="scen" id="hookbtns"></div>
+    <div class="pipe" id="hookpipe"></div>
+    <p id="hookres" style="margin:0"></p>
+    <details style="margin-top:12px"><summary class="muted" style="cursor:pointer">Show the example <code>settings.json</code></summary>
+<pre class="code">{
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "./scripts/load-context.sh" }] }],
+    "PreToolUse":   [{ "matcher": "Bash",
+                       "hooks": [{ "type": "command", "command": "./scripts/block-dangerous.sh" }] }],
+    "PostToolUse":  [{ "matcher": "Write|Edit",
+                       "hooks": [{ "type": "command", "command": "npx eslint --fix \"$CLAUDE_FILE\"" }] }],
+    "Stop":         [{ "hooks": [{ "type": "command", "command": "./scripts/notify-slack.sh" }] }],
+    "SubagentStop": [{ "hooks": [{ "type": "command", "command": "./scripts/log-subagent.sh" }] }]
+  }
+}</pre>
+    <p class="muted" style="font-size:13px;margin:6px 0 0">A hook command receives the event as JSON on stdin. Exit code 2 blocks the action and sends stderr back to Claude. Script names and the file variable here are illustrative.</p></details>
+  </div>
+  <h2>Which layer do I need?</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>I want to…</th><th>Use</th></tr>
+    <tr><td>Make the agent always follow our conventions</td><td><b>CLAUDE.md</b></td></tr>
+    <tr><td>Teach it how to do X, but only when X comes up</td><td><b>Skill</b></td></tr>
+    <tr><td>Guarantee something always or never happens, whatever the model decides</td><td><b>Hook</b></td></tr>
+    <tr><td>Run a big side task without polluting the main context</td><td><b>Subagent</b></td></tr>
+    <tr><td>Give the agent GitHub, databases or internal APIs</td><td><b>MCP server</b></td></tr>
+    <tr><td>Share all of the above with my team in one install</td><td><b>Plugin</b></td></tr>
+    <tr><td>Run several agents in parallel on one problem</td><td><b>Agent teams</b></td></tr>
+  </table></div>
+<div id="agent-repo" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">The AI agent project folder structure</h2>
+  <p class="lead">Most agent repos are a mess. This layout uses <b>six folders and 30 files</b>: 20 every agent needs, 5 newer patterns, and 5 open standards (AGENTS.md, SKILL.md, MCP, OpenTelemetry). Step through how one request touches the repo, then browse the tree.</p>
+  <div data-flow="repo"></div>
+  <h2>Browse the tree</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0">
+      <div class="scen" id="repof"></div>
+      <button class="b" id="repocopy" style="margin-left:auto">Copy tree as text</button>
+    </div>
+    <div class="grid g2" style="align-items:start">
+      <div id="repotree" class="mono" style="font-size:13px"></div>
+      <div id="repoinfo" class="card" style="position:sticky;top:12px;box-shadow:none"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+
+  <span class="kicker">Build &amp; ship · Operations</span>
+  <h1>ADLC &amp; LLMOps</h1>
+  <p class="lead">An AI feature is never "done". Prompts, models, data and user behavior all drift. <b>LLMOps</b> is the loop that keeps quality measurable: golden datasets and benchmarks offline, CI gates on every change, canaries and A/B tests online, monitoring in production, and human feedback flowing back into the eval set. Walk the loop.</p>
+  <div data-flow="llmopsloop" data-theme="soft"></div>
+  <h2>Offline evaluation</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Golden datasets</span><h3>Your private benchmark</h3><p>A versioned set of realistic inputs with expected outputs or grading rubrics. Start with 50–100 cases from real traffic, stratified by intent, difficulty and risk, and add every production failure as a new case. Keep a held-out slice you never tune against. Re-label when policy changes.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Public benchmarks</span><h3>Useful, but not your use case</h3><p>Knowledge (MMLU-style), expert reasoning (GPQA), coding (HumanEval, SWE-bench), agents and tool use (τ-bench-style), long context and safety suites. Use them to shortlist models. Beware contamination (test data leaking into training), saturation (everyone scores ~90%) and leaderboard gaming. Your golden set decides.</p></div>
+  </div>
+  <h2>Shipping changes safely</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Prompt &amp; model versioning</h3><p>Every prompt, model ID, temperature, tool set and retrieval config is a versioned artifact in a registry or the repo. Every response logs which version produced it.</p></div>
+    <div class="card"><h3>CI eval gates</h3><p>A pull request that changes a prompt runs the golden set. Block the merge if the score drops or any critical case regresses.</p></div>
+    <div class="card"><h3>Canary &amp; rollback</h3><p>Release to a small share of traffic first, compare metrics, and keep one-click rollback to the previous version.</p></div>
+    <div class="card"><h3>A/B tests &amp; online evaluation</h3><p>Randomize users between variants and compare business metrics (resolution, conversion, edits) plus sampled LLM-judge scores. Fix the sample size in advance; see the calculator below.</p></div>
+    <div class="card"><h3>MLOps vs LLMOps</h3><p>MLOps centers on training pipelines, feature stores and model retraining. LLMOps adds prompt management, retrieval pipelines, judge-based evals, token cost and safety monitoring. Most teams need both.</p></div>
+    <div class="card"><h3>Data quality &amp; lineage</h3><p>Track where every document, label and example came from, who can change it, and which model versions used it. Bad or stale data is the most common silent cause of quality loss.</p></div>
+  </div>
+  <h2>Production monitoring</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Signal</th><th>What to watch</th><th>Alert on</th></tr>
+    <tr><td>Quality</td><td>Sampled LLM-judge scores, groundedness, user thumbs, edit rate</td><td>Score drop vs baseline</td></tr>
+    <tr><td>Input drift</td><td>Topic mix, language, length, new intents (embedding clusters)</td><td>PSI &gt; 0.2 on key features</td></tr>
+    <tr><td>Safety</td><td>Guardrail triggers, jailbreak attempts, PII leaks</td><td>Any critical event</td></tr>
+    <tr><td>Cost</td><td>Tokens per request, cache hit rate, model mix</td><td>Spend above budget</td></tr>
+    <tr><td>Latency &amp; errors</td><td>TTFT, total time, tool errors, timeouts</td><td>p95 above SLO</td></tr>
+  </table></div>
+  <h2>Human feedback loops</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Capture</h3><p>Thumbs, corrections, escalations and reviewer edits, linked to the exact trace and version.</p></div>
+    <div class="card"><h3>Triage</h3><p>Cluster failures, label root causes (retrieval, prompt, model, tool, policy) and prioritize by volume × severity.</p></div>
+    <div class="card"><h3>Close the loop</h3><p>Every fixed failure becomes a golden-set case, so it can never silently come back.</p></div>
+  </div>
+<div id="adlc" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">SDLC ends at deployment. ADLC never stops.</h2>
+  <p class="lead">From line to loop. Traditional software ships through sequential, human-driven handoffs. Agents are built, evaluated and improved continuously, and deployment is where the learning starts.</p>
+  <h2>SDLC: Software Development Lifecycle</h2>
+  <div data-flow="sdlc"></div>
+  <h2>ADLC: Agent Development Lifecycle</h2>
+  <p class="muted">Every phase is one natural-language prompt to your coding agent. The example is Google's ADK stack; the shape is the same on any platform.</p>
+  <div data-flow="adlc"></div>
+  <h2>How it actually works</h2>
+  <div data-flow="adlchow"></div>
+  <h2>Key differences</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>SDLC</th><th>ADLC</th></tr>
+    <tr><td>Sequential handoffs</td><td>Continuous loop</td></tr>
+    <tr><td>Deploy = finish line</td><td>Deploy = starting point</td></tr>
+    <tr><td>QA is a dedicated phase</td><td>Evals run continuously (offline evalsets + online evals)</td></tr>
+    <tr><td>Static after ship</td><td>Self-optimizing in production</td></tr>
+    <tr><td>Behavior is fixed by code</td><td>Behavior shifts with prompts, models, tools and data, so you measure it constantly</td></tr>
+  </table></div>
+</div>

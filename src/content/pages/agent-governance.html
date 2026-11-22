@@ -1,0 +1,27 @@
+
+  <span class="kicker">5e · Governance</span>
+  <h1>AI agents watching agents</h1>
+  <p class="lead">Human review at the end of the chain doesn't scale; it becomes a bottleneck with a compliance label on it. The model that scales: <b>agents check agents</b>, every action is logged, and humans govern the system and handle the high-stakes exceptions instead of inspecting every transaction.</p>
+  <div data-flow="gov"></div>
+  <h2>Review-load calculator</h2>
+  <p class="muted">Compare human review of everything with reviewer agents plus human review of high-stakes and sampled items.</p>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0">
+      <label>Agent actions / day <input type="range" id="gva" min="1" max="5" step="0.1" value="4"><span class="out" id="gvav"></span></label>
+      <label>High-stakes share <input type="range" id="gvh" min="0" max="20" step="0.5" value="2"><span class="out" id="gvhv"></span></label>
+      <label>Random sample <input type="range" id="gvs" min="0" max="10" step="0.5" value="1"><span class="out" id="gvsv"></span></label>
+      <label>Reviews per person / day <input type="number" id="gvc" value="60" min="5" max="500"></label>
+    </div>
+    <div id="gvout"></div>
+    <p class="muted" style="margin:6px 0 0;font-size:13px">"Reviews per person per day" is your own assumption; 60 is a placeholder. Flagged items from reviewer agents add to the human queue. This page assumes 3% of actions get flagged.</p>
+  </div>
+  <h2>The five-part framework</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>#</th><th>Claim</th><th>Reality</th></tr>
+    <tr><td>1</td><td><b>The single-agent assumption is already obsolete.</b> Most enterprise implementations now use multi-agent architectures, and every handoff is a new failure point and a new chance for errors to compound.</td><td>Your risk doesn't scale linearly with agents. It compounds.</td></tr>
+    <tr><td>2</td><td><b>Human-in-the-loop alone won't scale.</b> Human review works at 10 agent actions a day. It breaks at 10,000.</td><td>Reserve human judgment for high-stakes decisions. Use AI to govern the routine.</td></tr>
+    <tr><td>3</td><td><b>Reviewer agents operate on a different mandate.</b> Worker agents optimize for task completion; reviewer agents optimize for accuracy, compliance and risk. It's the same principle as separation of duties in finance.</td><td>Independent verification catches what execution misses.</td></tr>
+    <tr><td>4</td><td><b>Audit trails make multi-agent systems defensible.</b> Every agent action is logged: outcomes, reasoning chains and handoff states.</td><td>You can't explain what you can't trace.</td></tr>
+    <tr><td>5</td><td><b>Governance is now a competitive advantage.</b> How organizations use agents is expected to shape competitive position, yet few have restructured work around them.</td><td>Treat governance as an accelerator, not a brake pedal.</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">The source infographic cites PwC, McKinsey and Landbase surveys from 2025 (e.g. 79% of companies report agents in use; 75% of tech leaders call governance their main deployment challenge). Those figures come from the infographic; check the original reports before quoting them. See also <a href="#guardrails">guardrails</a> and <a href="#jev">bounded evaluators</a>.</p>

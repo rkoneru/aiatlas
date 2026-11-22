@@ -1,0 +1,50 @@
+
+  <span class="kicker">Build &amp; ship · Automation platforms</span>
+  <h1>Automation pipelines</h1>
+  <p class="lead">Automation pipelines are end-to-end workflows that move work across systems, data and teams without manual steps: a trigger starts them, tasks ingest and transform data, results are stored and delivered, and everything is monitored. AI makes pipelines smarter (classify, extract, decide), but the orchestration around AI should stay deterministic, observable and safe to re-run.</p>
+  <div data-flow="pipeloop" data-theme="soft"></div>
+  <h2>Example: a modern data pipeline</h2>
+  <div data-flow="datapipe" data-theme="soft"></div>
+  <h2>Pipeline simulator</h2>
+  <p class="muted">A daily pipeline as a DAG. Tasks run as soon as their dependencies finish. Make a task fail and watch retries with exponential backoff, then what happens downstream when retries run out.</p>
+  <div class="card" id="psim"></div>
+  <h2>Common pipeline patterns</h2>
+  <div class="grid g3">
+    <div class="card"><h3>ETL / ELT</h3><p class="muted" style="margin:0">Extract, transform, load, or load first and transform in the warehouse.</p></div>
+    <div class="card"><h3>Event-driven</h3><p class="muted" style="margin:0">React to events and webhooks in real time.</p></div>
+    <div class="card"><h3>Scheduled</h3><p class="muted" style="margin:0">Run on a time schedule (cron).</p></div>
+    <div class="card"><h3>Data quality</h3><p class="muted" style="margin:0">Validate, clean and monitor data before anyone uses it.</p></div>
+    <div class="card"><h3>ML / AI</h3><p class="muted" style="margin:0">Train, evaluate and deploy models; run LLM steps on records.</p></div>
+    <div class="card"><h3>CI/CD</h3><p class="muted" style="margin:0">Build, test and deploy software.</p></div>
+  </div>
+  <h2>Orchestration concepts</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Concept</th><th>What it means</th></tr>
+    <tr><td><b>DAG</b></td><td>The pipeline is a directed acyclic graph: tasks and the dependencies between them, with no loops.</td></tr>
+    <tr><td><b>Dependencies</b></td><td>A task runs only when everything it needs has succeeded.</td></tr>
+    <tr><td><b>Retries with backoff</b></td><td>Transient failures are retried after growing delays (with jitter) so a struggling system isn't hammered.</td></tr>
+    <tr><td><b>Parallelism</b></td><td>Independent tasks run at the same time; the critical path sets the total runtime.</td></tr>
+    <tr><td><b>Idempotency</b></td><td>Running a task twice has the same effect as once, so retries and re-runs are safe.</td></tr>
+    <tr><td><b>Backfills</b></td><td>Re-run the pipeline for past dates, for example after fixing a bug.</td></tr>
+    <tr><td><b>Dead-letter queue</b></td><td>Records that keep failing are set aside for a person instead of blocking the rest.</td></tr></table></div>
+  <h2>Platforms</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Platform</th><th>Best known for</th></tr>
+    <tr><td><b>Apache Airflow</b></td><td>Open-source DAG orchestration for data pipelines, defined in Python</td></tr>
+    <tr><td><b>Dagster</b></td><td>Data-aware orchestration built around data assets</td></tr>
+    <tr><td><b>Prefect</b></td><td>Python-native workflow orchestration</td></tr>
+    <tr><td><b>Temporal</b></td><td>Durable execution for long-running workflows and agents</td></tr>
+    <tr><td><b>AWS Step Functions</b></td><td>Serverless state machines across AWS services</td></tr>
+    <tr><td><b>n8n, Zapier, Make</b></td><td>Low-code workflow automation across SaaS apps, increasingly with AI steps</td></tr></table></div>
+  <h2>Where AI fits in a pipeline</h2>
+  <div class="grid g3">
+    <div class="card"><h3>LLM as a step</h3><p class="muted" style="margin:0">Classify, extract, summarize or enrich each record, with a schema for the output and a confidence score.</p></div>
+    <div class="card"><h3>Agent as a step</h3><p class="muted" style="margin:0">Hand an open-ended item to an agent with a budget and a time limit; the pipeline still owns retries and state.</p></div>
+    <div class="card"><h3>Human as a step</h3><p class="muted" style="margin:0">Low-confidence or high-impact items wait in an approval queue before anything irreversible.</p></div>
+  </div>
+  <h2>Best practices</h2>
+  <div class="grid g2">
+    <div class="card"><ul class="ind-l"><li>Design for failure: retries, alerts and fallbacks</li><li>Make every task idempotent</li><li>Monitor everything: logs, metrics, data quality, cost</li><li>Version-control pipeline code and schemas</li></ul></div>
+    <div class="card"><ul class="ind-l"><li>Start small, automate, then scale</li><li>Test with real and edge-case data</li><li>Alert the right people with context, not just "failed"</li><li>Keep secrets, PII and compliance in the design from day one</li></ul></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#automation-ideas">15 AI automation ideas</a> · <a href="#sop-workflow">SOP → AI workflow</a> · <a href="#agent-runtime">Agents in production</a> · <a href="#workflows">Workflows &amp; patterns</a></p>

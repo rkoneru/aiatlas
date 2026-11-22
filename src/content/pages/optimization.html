@@ -1,0 +1,43 @@
+
+  <span class="kicker">6 · Performance</span>
+  <h1>LLM optimization &amp; serving</h1>
+  <p class="lead">The goal: make LLMs smaller, faster, cheaper and more efficient without sacrificing quality. Techniques act at different stages: training, compression, inference and serving. Filter by stage and click a card for trade-offs.</p>
+  <div data-flow="optflow"></div>
+  <div class="tabs" id="optf" style="margin-top:18px"></div>
+  <div class="grid g2" id="optgrid"></div>
+  <h2>Bonus: more optimization areas</h2>
+  <div class="grid g3" id="bonus"></div>
+  <h2>Back-of-envelope calculators</h2>
+  <div class="tabs" id="calctabs"></div>
+  <div class="card" id="calc"></div>
+  <p class="muted" style="font-size:13px">Estimates for weights or cache only. Real deployments add activations, framework overhead and fragmentation, often 10–30% more.</p>
+<div id="llm-serving" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">LLM serving &amp; hardware</h2>
+  <p class="lead">Serving an LLM is a memory problem as much as a compute problem. <b>Prefill</b> (reading the prompt) is compute-bound; <b>decode</b> (generating tokens) is bound by memory bandwidth. Serving engines squeeze GPUs with <b>continuous batching</b>, <b>paged KV caches</b>, <b>fused attention kernels</b> and <b>prompt caching</b>. Walk a request through an engine.</p>
+  <div data-flow="serving" data-theme="soft"></div>
+  <h2>The techniques</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Prompt caching</span><h3>Don't re-read the same prefix</h3><p>When many requests share a long prefix (system prompt, tool definitions, a document), the engine stores its processed KV state and reuses it. Providers usually bill cache hits at a fraction of the normal input price and cut time to first token. Keep the stable part first and byte-identical; put anything that varies after it.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Continuous batching</span><h3>Fill every GPU slot</h3><p>Static batching waits for the slowest request in the batch. Continuous (in-flight) batching adds new requests and removes finished ones at every decode step, raising throughput several-fold with little latency cost. Standard in vLLM, TGI, TensorRT-LLM and SGLang.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">FlashAttention</span><h3>Attention without the memory traffic</h3><p>Computes attention in tiles that stay in fast on-chip SRAM instead of writing the full n×n matrix to GPU memory. Same result, much faster and far less memory, which is what made long contexts practical.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">PagedAttention</span><h3>Virtual memory for the KV cache</h3><p>Stores each sequence's KV cache in fixed-size blocks, like OS pages, instead of one contiguous reservation. Almost no wasted memory, more concurrent requests, and shared blocks for common prefixes.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Prefill/decode split</span><h3>Different jobs, different hardware</h3><p>Large deployments run prefill and decode on separate GPU pools (disaggregated serving) and use chunked prefill so long prompts don't stall everyone's token stream.</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">Speculative &amp; quantized</span><h3>Fewer bytes, more tokens</h3><p>Quantized weights (8-bit, 4-bit) mean fewer bytes per token; speculative decoding produces several tokens per big-model pass. See <a href="#optimization">LLM optimization</a>.</p></div>
+  </div>
+  <h2>Accelerators</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Hardware</th><th>Strength</th><th>Typical role</th></tr>
+    <tr><td><b>Data-center GPUs</b> (NVIDIA H/B-class, AMD MI-class)</td><td>High-bandwidth memory (HBM), fast interconnect, mature software (CUDA, ROCm)</td><td>Training and most inference</td></tr>
+    <tr><td><b>TPUs</b> (Google)</td><td>Matrix units and pod-scale interconnect</td><td>Training and serving on Google Cloud</td></tr>
+    <tr><td><b>Inference ASICs</b> (Trainium/Inferentia, Groq, Cerebras and others)</td><td>Cost or latency optimized for serving</td><td>High-volume or ultra-low-latency inference</td></tr>
+    <tr><td><b>NPUs</b> in phones and laptops</td><td>Low power, always available</td><td>On-device assistants, transcription, vision</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">Rule of thumb: model weights + KV cache must fit in accelerator memory, and decode speed is roughly memory bandwidth ÷ bytes read per token. Use the calculators below.</p>
+  <h2>Edge &amp; on-device AI</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Why on-device</h3><p>Privacy (data never leaves the device), offline use, no per-token cost, and instant response for small tasks.</p></div>
+    <div class="card"><h3>How</h3><p>Small models (1–8B parameters) quantized to 4 bits, run through runtimes such as llama.cpp, Core ML, ONNX Runtime or vendor NPU SDKs.</p></div>
+    <div class="card"><h3>Hybrid pattern</h3><p>Handle simple requests on the device and escalate hard ones to the cloud, with the user's consent and clear disclosure.</p></div>
+  </div>
+</div>

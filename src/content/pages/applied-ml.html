@@ -1,0 +1,42 @@
+
+  <span class="kicker">Applied · Classic ML</span>
+  <h1>Classic ML applications: recommenders, forecasting &amp; vision</h1>
+  <p class="lead">Much of the AI that runs businesses isn't generative at all. <b>Recommenders</b> decide what you see, <b>forecasts</b> decide what gets stocked and staffed, and <b>computer vision</b> inspects, counts and reads. LLMs increasingly sit beside these systems rather than replacing them. Step through a two-stage recommender.</p>
+  <div data-flow="recsys" data-theme="soft"></div>
+  <h2>Recommendation systems</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Collaborative filtering</h3><p>"People who liked X also liked Y." Matrix factorization learns a vector per user and per item; their dot product predicts affinity.</p></div>
+    <div class="card"><h3>Content-based</h3><p>Recommend items similar to what the user engaged with, using item features or embeddings. Handles new items (cold start) better.</p></div>
+    <div class="card"><h3>Two-stage retrieval + ranking</h3><p>Two-tower models retrieve a few hundred candidates from millions, then a heavier ranker scores them with rich features. Business rules re-rank for diversity and freshness.</p></div>
+  </div>
+  <h2>Forecasting &amp; time series</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Statistical baselines</h3><p>Seasonal naive, exponential smoothing (ETS) and ARIMA. Always benchmark against them; they're hard to beat on short, clean series.</p></div>
+    <div class="card"><h3>ML &amp; deep models</h3><p>Gradient boosting with lag and calendar features excels with many related series. Deep models (N-BEATS, temporal fusion transformers) and pre-trained time-series foundation models (TimesFM, Chronos) forecast zero-shot.</p></div>
+    <div class="card"><h3>Backtesting</h3><p>Evaluate with rolling-origin splits: train up to week t, forecast t+1…t+h, slide forward. Report MAPE or WAPE and prediction intervals, not just a point forecast.</p></div>
+  </div>
+  <h2>Computer vision tasks</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Task</th><th>Output</th><th>Typical models</th><th>Example</th></tr>
+    <tr><td>Classification</td><td>One label per image</td><td>CNNs (ResNet), ViT</td><td>Defect / no defect</td></tr>
+    <tr><td>Object detection</td><td>Boxes + labels</td><td>YOLO, DETR</td><td>Count vehicles, spot PPE</td></tr>
+    <tr><td>Segmentation</td><td>Per-pixel masks</td><td>U-Net, SAM</td><td>Tumor outline, road area</td></tr>
+    <tr><td>OCR &amp; document understanding</td><td>Text + layout</td><td>OCR engines, vision-language models</td><td>Invoices, IDs, forms</td></tr>
+    <tr><td>Open-vocabulary &amp; VQA</td><td>Answers to free-text questions</td><td>CLIP-based detectors, VLMs</td><td>"Is the shelf fully stocked?"</td></tr>
+  </table></div>
+  <div class="callout">Where LLMs fit: explaining a recommendation, turning a forecast into a narrative and action plan, or letting users query a vision system in plain language. The core prediction usually stays with the specialized model, which is cheaper, faster and easier to evaluate.</div>
+  <h2>Robotics &amp; embodied AI</h2>
+  <p class="muted">Robots are where perception, language and action meet the physical world, and where mistakes can't be undone with a retry.</p>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Vision-language-action models</span><h3>From instruction to motor command</h3><p>VLA models take camera images and a natural-language instruction ("put the red cup in the sink") and output robot actions directly, building on vision-language model backbones. Generalist robot policies are trained on large pooled datasets from many robot types.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Sim-to-real &amp; world models</span><h3>Practice in simulation</h3><p>Physical data is slow and expensive, so robots train in physics simulators with randomized lighting, textures and dynamics, then transfer to the real world. World models learn to predict how a scene will change, which lets a robot plan by imagining outcomes.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Hierarchy</span><h3>Slow thinking, fast control</h3><p>A common design: an LLM or VLM plans high-level steps at a few hertz, while low-level controllers run hundreds of times per second for balance and grasping. The same split appears in self-driving stacks.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Safety</span><h3>Bounded autonomy</h3><p>Hard safety limits in classical control (force, speed, geofences) sit below any learned policy, with emergency stops and human supervision. Functional-safety standards and, in the EU, product and AI rules apply. See <a href="#ai-compliance">AI compliance</a>.</p></div>
+  </div>
+  <div class="card tablewrap" style="margin-top:14px"><table>
+    <tr><th>Application</th><th>Maturity</th><th>AI role</th></tr>
+    <tr><td>Warehouse picking &amp; sorting</td><td>Deployed at scale</td><td>Vision for grasping unknown items, fleet coordination</td></tr>
+    <tr><td>Autonomous vehicles</td><td>Commercial robotaxis in some cities</td><td>Perception, prediction, planning</td></tr>
+    <tr><td>Manufacturing inspection &amp; cobots</td><td>Deployed</td><td>Defect detection, learning from demonstration</td></tr>
+    <tr><td>Humanoids &amp; home robots</td><td>Early pilots</td><td>Generalist VLA policies, language instructions</td></tr>
+  </table></div>

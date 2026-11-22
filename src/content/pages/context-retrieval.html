@@ -1,0 +1,27 @@
+
+  <span class="kicker">RAG &amp; knowledge · Context engineering</span>
+  <h1>Context retrieval across apps &amp; databases</h1>
+  <p class="lead">One request, many stores. Agents rarely find what they need in a single vector index: the answer may sit in a SQL table, a graph, a ticketing app and a wiki at once. A retrieval layer translates the question, routes it to the right stores, writes the right query for each, retrieves, refines and reranks the results, and lets the model ask for more if needed. Platforms such as Airweave sync many apps and databases into one searchable layer for agents.</p>
+  <div data-flow="ctxret" data-theme="soft"></div>
+  <h2>Query translation lab</h2>
+  <p class="muted">The same question, transformed five ways before retrieval. Pick a technique to see what it sends to the stores.</p>
+  <div class="card" id="qtLab"></div>
+  <h2>The techniques, stage by stage</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Stage</th><th>Technique</th><th>What it does</th><th>Use when</th></tr>
+    <tr><td rowspan="5"><b>Retrieval type</b><br><span class="muted">(query translation)</span></td><td>Multi-query</td><td>Rewrites the question several ways and retrieves for each</td><td class="muted">Users phrase things differently from the documents</td></tr>
+    <tr><td>RAG fusion</td><td>Multi-query, then merges the ranked lists with reciprocal rank fusion</td><td class="muted">You want the robustness of multi-query with one ranked list</td></tr>
+    <tr><td>HyDE</td><td>Writes a hypothetical answer and searches with its embedding</td><td class="muted">Short questions against long, technical documents</td></tr>
+    <tr><td>Decomposition</td><td>Splits a complex question into sub-questions answered in sequence or parallel</td><td class="muted">Multi-hop and comparison questions</td></tr>
+    <tr><td>Step-back</td><td>Asks a broader question first to retrieve principles and background</td><td class="muted">Questions that need context or first principles</td></tr>
+    <tr><td rowspan="2"><b>Routing</b></td><td>Logical routing</td><td>The model picks the data source (graph DB, relational DB, vector store) from a structured choice</td><td class="muted">Several stores with different data</td></tr>
+    <tr><td>Semantic routing</td><td>Embeds the question and picks the closest prompt or pipeline</td><td class="muted">Different prompts for different kinds of question</td></tr>
+    <tr><td><b>Query construction</b></td><td>Text-to-SQL, text-to-Cypher, self-query</td><td>Turns natural language into SQL, graph queries, or vector search plus metadata filters</td><td class="muted">Structured data, dates, IDs and filters</td></tr>
+    <tr><td rowspan="4"><b>Indexing</b></td><td>Semantic chunking</td><td>Splits on meaning, not length</td><td class="muted">Documents with uneven sections</td></tr>
+    <tr><td>Multi-representation</td><td>Indexes a summary, returns the full document</td><td class="muted">Long documents where summaries match queries better</td></tr>
+    <tr><td>Special embeddings (ColBERT)</td><td>Token-level late interaction instead of one vector per chunk</td><td class="muted">Precision on detailed queries</td></tr>
+    <tr><td>Hierarchical (RAPTOR)</td><td>Clusters chunks, summarizes the clusters, and recurses into a tree</td><td class="muted">Questions that need the big picture across many documents</td></tr>
+    <tr><td rowspan="2"><b>Context processing</b></td><td>Refinement</td><td>Compresses retrieved docs to the parts that matter (for example CRAG-style filtering)</td><td class="muted">Long or noisy retrieved context</td></tr>
+    <tr><td>Reranking</td><td>A cross-encoder or model reorders results by relevance</td><td class="muted">Almost always: cheap and high impact</td></tr>
+    <tr><td><b>Generation</b></td><td>Active retrieval (Self-RAG and similar)</td><td>The model judges its retrieval and answer, and retrieves again or rewrites the question if needed</td><td class="muted">High-stakes answers; agentic RAG</td></tr></table></div>
+  <p class="muted" style="font-size:13px">Related: <a href="#rag">RAG</a> · <a href="#rag-variants">RAG architectures</a> · <a href="#vector-search">Vector search &amp; long context</a> · <a href="#orchestrator">Orchestrators &amp; specialized agents</a></p>

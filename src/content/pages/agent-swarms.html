@@ -1,0 +1,87 @@
+
+  <span class="kicker">Agents · Agent frameworks</span>
+  <h1>Multi-agent systems: swarms &amp; orchestrators</h1>
+  <p class="lead">A swarm is many agents that share information, divide work and adapt together. Done well, it solves tasks too broad or parallel for one agent. Done badly, it multiplies cost, latency and failure points. Start with one agent and add more only where the work genuinely splits.</p>
+  <div data-flow="swarm" data-theme="soft"></div>
+  <h2>Topology explorer</h2>
+  <p class="muted">How agents are connected decides how much they talk, how fast information spreads and what breaks if one fails.</p>
+  <div class="card"><div class="ctlrow" style="margin-top:0;flex-wrap:wrap"><div class="chips" id="tpTabs" style="margin-left:0"></div><label style="font-size:13px">Agents <input type="range" id="tpN" min="3" max="12" value="6"> <b id="tpNv"></b></label></div>
+    <div class="grid g2" style="align-items:center"><svg id="tpSvg" viewBox="0 0 420 320" style="width:100%;height:auto"></svg><div id="tpInfo"></div></div></div>
+  <h2>Types of swarms</h2>
+  <div class="grid g5">
+    <div class="card"><h3>Homogeneous</h3><p class="muted" style="margin:0">Identical agents splitting a big job (search, data collection).</p></div>
+    <div class="card"><h3>Heterogeneous</h3><p class="muted" style="margin:0">Specialists: researcher, analyst, writer, critic.</p></div>
+    <div class="card"><h3>Hierarchical</h3><p class="muted" style="margin:0">Manager and workers; the most common in production.</p></div>
+    <div class="card"><h3>Decentralized</h3><p class="muted" style="margin:0">Peers with no leader; resilient, harder to control.</p></div>
+    <div class="card"><h3>Adaptive</h3><p class="muted" style="margin:0">Structure changes with the task, adding or retiring agents.</p></div>
+  </div>
+  <h2>Collaboration patterns</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Pattern</th><th>How it works</th><th>Watch out for</th></tr>
+    <tr><td><b>Task decomposition</b></td><td>Split the job; agents solve parts in parallel</td><td class="muted">Parts that aren't really independent</td></tr>
+    <tr><td><b>Pipeline</b></td><td>Each agent passes its output to the next</td><td class="muted">Errors compounding down the line</td></tr>
+    <tr><td><b>Peer review</b></td><td>Agents check and improve each other's work</td><td class="muted">Reviewers that share the author's blind spots</td></tr>
+    <tr><td><b>Debate &amp; consensus</b></td><td>Agents argue, then vote or a judge decides</td><td class="muted">Cost; agreement is not correctness</td></tr>
+    <tr><td><b>Handoffs</b></td><td>Control passes to the agent best suited for the next step</td><td class="muted">Lost context between agents</td></tr></table></div>
+  <h2>Memory in swarms</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Shared memory</h3><p class="muted" style="margin:0">A common store (blackboard) every agent reads and writes.</p></div>
+    <div class="card"><h3>Distributed memory</h3><p class="muted" style="margin:0">Knowledge spread across agents and synced on demand.</p></div>
+    <div class="card"><h3>Local memory</h3><p class="muted" style="margin:0">Each agent's private working context, kept small.</p></div>
+    <div class="card"><h3>Evolving knowledge</h3><p class="muted" style="margin:0">Lessons from finished tasks written back for next time.</p></div>
+  </div>
+  <h2>Frameworks</h2>
+  <div class="card tablewrap"><table id="swFw"></table><p class="muted" style="font-size:12.5px;margin:8px 0 0">Status as of November 2026. Agent frameworks change quickly; check each project's docs before choosing.</p></div>
+  <h2>When to use a swarm</h2>
+  <div class="grid g2">
+    <div class="card"><h3 style="color:var(--green)">Good fit</h3><ul class="ind-l"><li>Broad research where sub-questions can run in parallel</li><li>Work that needs different expertise or tools</li><li>Large jobs that split into independent parts</li><li>Exploration where several approaches should be tried</li></ul></div>
+    <div class="card"><h3 style="color:var(--pink)">Poor fit</h3><ul class="ind-l"><li>Tightly coupled tasks where every step depends on the last (such as most coding edits)</li><li>Low-margin, high-volume work: many agents means many more tokens</li><li>Tasks one well-equipped agent already handles</li><li>Anything without a way to check the combined result</li></ul></div>
+  </div>
+  <h2>Measuring a swarm</h2>
+  <div class="grid g5">
+    <div class="card"><h3>Task success</h3><p class="muted" style="margin:0">Did the swarm achieve the goal?</p></div>
+    <div class="card"><h3>Output quality</h3><p class="muted" style="margin:0">Accuracy, relevance, usefulness.</p></div>
+    <div class="card"><h3>Efficiency</h3><p class="muted" style="margin:0">Tokens, time and money per task vs one agent.</p></div>
+    <div class="card"><h3>Robustness</h3><p class="muted" style="margin:0">Does it degrade gracefully when an agent fails?</p></div>
+    <div class="card"><h3>Scalability</h3><p class="muted" style="margin:0">Does quality hold as agents are added?</p></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#patterns">Harness vs loop vs graph</a> · <a href="#a2a">A2A</a> · <a href="#llm-roles">LLM as everything</a> · <a href="#agent-governance">Agents watching agents</a></p>
+<div id="orchestrator" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Orchestrators &amp; specialized agents</h2>
+  <p class="lead">As agents grow, one prompt with every tool stops working. The fix is <b>context engineering</b>: a router or orchestrator understands the request and sends each part to a specialized agent that sees only the context it needs. Specialists rewrite the query, pick data sources, retrieve, call tools and synthesize the answer, while memory keeps working context small and long-term knowledge searchable.</p>
+  <h2>The router / orchestrator</h2>
+  <div data-flow="orch" data-theme="soft"></div>
+  <h2>Routing playground</h2>
+  <p class="muted">See how an orchestrator classifies a request, plans it and dispatches it to tools, sub-agents and external systems. The built-in router uses simple rules; with Claude available you can also route with a model and compare.</p>
+  <div class="card" id="rtPlay"></div>
+  <h2>Specialized agents in a context engineering system</h2>
+  <div data-flow="ctxagents" data-theme="soft"></div>
+  <div class="card tablewrap" style="margin-top:14px"><table>
+    <tr><th>Agent</th><th>Job</th><th>Sees (its context)</th><th>Hands on</th></tr>
+    <tr><td><b>Planner</b> <span class="badge">supervisor</span></td><td>Understand the task and break it down</td><td>User request, conversation summary</td><td>A plan of sub-tasks</td></tr>
+    <tr><td><b>Router</b> <span class="badge">supervisor</span></td><td>Pick the right agents and tools</td><td>The plan, a catalog of agents and tools</td><td>Assignments</td></tr>
+    <tr><td><b>Query rewriter</b></td><td>Clarify and expand the query</td><td>The sub-task, user context</td><td>Search-ready queries</td></tr>
+    <tr><td><b>Data collection selector</b></td><td>Choose the best sources</td><td>Queries, a catalog of collections</td><td>Which indexes, APIs or web to use</td></tr>
+    <tr><td><b>Retriever</b></td><td>Fetch relevant information</td><td>Queries, selected sources</td><td>Top-k passages with citations</td></tr>
+    <tr><td><b>Tool router</b></td><td>Call the right tools and APIs</td><td>Sub-task, tool schemas (only the relevant ones)</td><td>Tool results</td></tr>
+    <tr><td><b>Compressor</b></td><td>Summarize and trim context</td><td>Retrieved facts, tool results</td><td>Compact working memory</td></tr>
+    <tr><td><b>Answer synthesizer</b></td><td>Combine results into the final answer</td><td>Compressed working memory</td><td>The cited answer to the user</td></tr></table></div>
+  <h2>Routing strategies</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Strategy</th><th>How</th><th>Pros</th><th>Cons</th></tr>
+    <tr><td><b>Rules</b></td><td>Keywords, regex, form fields</td><td>Instant, free, predictable</td><td>Brittle with natural language</td></tr>
+    <tr><td><b>Embedding similarity</b></td><td>Nearest example intents</td><td>Cheap, handles paraphrase</td><td>Needs labeled examples per route</td></tr>
+    <tr><td><b>Small classifier</b></td><td>Fine-tuned small model</td><td>Fast and accurate on known intents</td><td>Retraining when routes change</td></tr>
+    <tr><td><b>LLM router</b></td><td>A model reads the request and the route catalog</td><td>Handles new and multi-part requests; can plan</td><td>Slower, costs tokens, needs evals</td></tr>
+    <tr><td><b>Hybrid</b></td><td>Rules first, then classifier, then LLM for the rest</td><td>Cheap for the common case, smart for the hard ones</td><td>More parts to maintain</td></tr></table></div>
+  <h2>Design principles</h2>
+  <div class="grid g5">
+    <div class="card"><h3>Intelligent routing</h3><p class="muted" style="margin:0">Each request goes to the best tool or agent, with a fallback for "unknown".</p></div>
+    <div class="card"><h3>Adaptive execution</h3><p class="muted" style="margin:0">Plans change on results and real-time feedback.</p></div>
+    <div class="card"><h3>Secure by design</h3><p class="muted" style="margin:0">Each specialist gets least-privilege tools; isolation between agents.</p></div>
+    <div class="card"><h3>Observability</h3><p class="muted" style="margin:0">A historical log of actions, tool calls and decisions for audit and evals.</p></div>
+    <div class="card"><h3>Reliable outcomes</h3><p class="muted" style="margin:0">All paths merge into one answer that's checked before delivery.</p></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#agent-anatomy">Anatomy of an AI agent</a> · <a href="#agent-swarms">Agent swarms</a> · <a href="#rag-variants">RAG architectures</a> · <a href="#llm-workflows">LLM workflow patterns</a> · <a href="#frameworks">NEXUS routing</a></p>
+</div>

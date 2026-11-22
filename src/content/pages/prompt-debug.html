@@ -1,0 +1,18 @@
+
+  <span class="kicker">Working with AI</span>
+  <h1>Prompt debugger: fix weak AI answers</h1>
+  <p class="lead">Different failures need different fixes. <b>Diagnose the failure, change one major variable, test the result.</b> Then check the revision on several cases, and remember: a good prompt doesn't make the answer automatically true.</p>
+  <div data-flow="pdebug"></div>
+  <h2>What went wrong?</h2>
+  <p class="muted">Pick the symptom you see. You get the likely cause, the smallest fix, and how to check it worked.</p>
+  <div class="card"><div class="scen" id="pdsym"></div><div id="pdout" style="margin-top:12px"></div></div>
+  <h2>7 common mistakes</h2>
+  <div class="grid g2" id="pdmist"></div>
+  <h2>Evaluate the revision</h2>
+  <p class="muted">One good answer is not proof. Run the original and revised prompt on the same 3–5 representative inputs, including at least one difficult case, and score each criterion from 1 (poor) to 5 (strong).</p>
+  <div class="card"><div class="tablewrap"><table id="pdeval"></table></div><div id="pdverdict" style="margin-top:10px"></div></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card" style="border-top:4px solid var(--pink)"><h3>Prompting is not fact-checking</h3><p class="muted" style="margin:0 0 8px">AI can sound confident and still be wrong. Asking it to be accurate doesn't guarantee accuracy.</p><ol style="margin:0;padding-left:20px"><li>Check important facts, names, dates, numbers and links.</li><li>Trace claims to reliable source material.</li><li>Confirm that quotations and citations actually support the statements.</li><li>Use human judgment for consequential or specialized decisions.</li></ol></div>
+    <div class="card"><h3>Before you send the prompt</h3><div id="pdcheck"></div></div>
+  </div>
+  <div class="callout">Don't just ask AI what to do. Tell it what good looks like. Prompt → review → refine → verify. Use AI as an assistant, not an unquestioned authority.</div>

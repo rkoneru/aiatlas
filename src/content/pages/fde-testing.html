@@ -1,0 +1,13 @@
+
+  <span class="kicker">FDE kit · Quality</span>
+  <h1>Regression testing for conversations</h1>
+  <p class="lead">A conversational agent changes whenever its prompt, model, knowledge or tools change. Regression testing catches what broke: a <b>golden set</b> of real conversations with expected outcomes, <b>simulated users</b> that probe edge cases, and coverage across <b>languages and channels</b>. Run it on every change, and block release when it fails.</p>
+  <h2>Plan your test suite</h2>
+  <div class="card" id="tsPlan"></div>
+  <h2>What to assert</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Outcome</h3><p class="muted">Did the conversation reach the right end state: resolved, correct handoff, correct tool call with correct arguments?</p></div>
+    <div class="card"><h3>Content</h3><p class="muted">Is the answer grounded in the right source, complete and free of prohibited statements? Use code checks first, an LLM judge second.</p></div>
+    <div class="card"><h3>Experience</h3><p class="muted">Turns to resolution, tone, length per channel, latency per turn, and whether the customer had to repeat themselves.</p></div>
+  </div>
+  <div class="callout">Simulated users are another LLM playing a customer persona with a goal and a hidden fact. Vary patience, clarity, language and mood. Review a sample by hand: simulated customers are often more cooperative than real ones.</div>

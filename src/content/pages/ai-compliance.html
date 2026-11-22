@@ -1,0 +1,92 @@
+
+  <span class="kicker">Design &amp; performance · Compliance</span>
+  <h1>Responsible AI, regulation &amp; compliance</h1>
+  <p class="lead">AI compliance is now a patchwork: <b>comprehensive AI laws</b> (EU, South Korea), <b>targeted rules</b> (China's labeling rules, US state laws on hiring, frontier models and chatbots), <b>privacy law</b> applied to AI (GDPR, CCPA), <b>sector regulators</b> (finance, health, employment) and <b>voluntary standards</b> (NIST AI RMF, ISO/IEC 42001). Walk the compliance program, find the obligations that apply to you, and check your evidence. This page is a map, not legal advice.</p>
+  <div data-flow="compprog" data-theme="soft"></div>
+  <h2>Obligation finder</h2>
+  <p class="muted">Pick where you operate, what you are building, and your role. The list shows the main obligations and dates that likely apply.</p>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0;flex-direction:column;align-items:stretch;gap:10px">
+      <div><span class="muted" style="font-size:13px">Where users or decisions are:</span><div class="chips" id="cfReg" style="margin-top:6px"></div></div>
+      <div><span class="muted" style="font-size:13px">What the AI does:</span><div class="chips" id="cfUse" style="margin-top:6px"></div></div>
+      <div><span class="muted" style="font-size:13px">Your role:</span><div class="chips" id="cfRole" style="margin-top:6px"></div></div>
+    </div>
+    <div id="cfOut" style="margin-top:12px"></div>
+  </div>
+  <h2>Global tracker</h2>
+  <div class="chips" id="trkReg" style="margin-bottom:10px"></div>
+  <div class="card tablewrap"><table id="trkTable"></table></div>
+  <p class="muted" style="font-size:13px">Status as of November 2026. Several of these laws were delayed, amended or challenged in court during 2026, so check the current text before relying on any date.</p>
+  <h2>United States: federal vs state</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Federal</span><h3>Executive Order 14365 and preemption</h3><p>Signed 11 December 2025, the order seeks a "minimally burdensome" national framework. It created a DOJ AI Litigation Task Force (operating from 10 January 2026) to challenge state AI laws, asked Commerce to list "onerous" state laws, and was followed by a March 2026 national policy framework that is a legislative roadmap rather than regulation. Child safety, data-center infrastructure and state procurement are carved out.</p><p class="muted"><b>What it means:</b> state laws stay enforceable until a court rules or Congress preempts them. Keep complying.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Existing federal law still applies</span><h3>No AI exemption</h3><p><b>FTC Act §5</b> covers deceptive AI claims and unfair practices. <b>Title VII / ADA</b> cover discriminatory hiring tools. <b>ECOA and FCRA</b> require specific adverse-action reasons even when a model decides. <b>HIPAA</b> covers health data sent to models. <b>FDA</b> regulates AI-enabled medical devices. Bank model risk guidance (SR 11-7) applies to AI models in finance.</p></div>
+  </div>
+  <h2>Data privacy &amp; AI</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Lawful basis</h3><p>Under GDPR, every use of personal data, including training and fine-tuning, needs a legal basis (consent, contract, legitimate interests…). Document it per purpose.</p></div>
+    <div class="card"><h3>Impact assessments</h3><p>A DPIA (GDPR) or risk assessment (CCPA regulations) is expected for high-risk processing such as profiling, sensitive data or large-scale monitoring.</p></div>
+    <div class="card"><h3>Automated decisions</h3><p>GDPR Art. 22 gives people rights around solely automated decisions with legal or similar effects: human review, explanation, contest. California's ADMT rules add notice, opt-out and access rights.</p></div>
+    <div class="card"><h3>Minimization &amp; retention</h3><p>Send models only what the task needs. Set retention for prompts, outputs and logs. Redact PII before indexing. Delete on schedule.</p></div>
+    <div class="card"><h3>Vendors &amp; transfers</h3><p>Data processing agreements, zero-retention or no-training terms, regional hosting, and a lawful mechanism for cross-border transfers.</p></div>
+    <div class="card"><h3>Rights vs model weights</h3><p>Deleting a person from a database is easy; removing them from trained weights is not. Keep personal data in retrieval stores (deletable) rather than in fine-tuned weights where possible.</p></div>
+  </div>
+  <h2>Control crosswalk</h2>
+  <p class="muted">One control set can satisfy several regimes. Build the controls once and map the evidence.</p>
+  <div class="card tablewrap"><table>
+    <tr><th>Control</th><th>EU AI Act</th><th>NIST AI RMF</th><th>ISO/IEC 42001</th><th>GDPR / CCPA</th><th>US state laws</th></tr>
+    <tr><td><b>AI inventory &amp; risk classification</b></td><td>Risk tiers, Art. 6</td><td>Map</td><td>AI system inventory, scope</td><td>Records of processing</td><td>Identify "consequential decision" systems</td></tr>
+    <tr><td><b>Risk &amp; impact assessment</b></td><td>Risk management (Art. 9), FRIA for some deployers</td><td>Map · Measure</td><td>AI risk &amp; impact assessment</td><td>DPIA · CCPA risk assessment</td><td>Impact assessments, bias audits (NYC LL 144)</td></tr>
+    <tr><td><b>Data governance</b></td><td>Art. 10 data quality</td><td>Measure</td><td>Data for AI systems</td><td>Minimization, lawful basis</td><td>Training-data transparency (CA)</td></tr>
+    <tr><td><b>Testing, bias &amp; robustness</b></td><td>Accuracy, robustness (Art. 15)</td><td>Measure</td><td>Verification &amp; validation</td><td>Fairness of automated decisions</td><td>Anti-discrimination (IL, CO, NYC)</td></tr>
+    <tr><td><b>Transparency &amp; notice</b></td><td>Art. 50 disclosure, labeling</td><td>Govern · Manage</td><td>Information for interested parties</td><td>Privacy notices, ADMT notices</td><td>Chatbot and AI-use disclosure</td></tr>
+    <tr><td><b>Human oversight</b></td><td>Art. 14</td><td>Manage</td><td>Human oversight controls</td><td>Art. 22 human review</td><td>Appeal and human review rights</td></tr>
+    <tr><td><b>Logging &amp; monitoring</b></td><td>Record-keeping (Art. 12), post-market monitoring</td><td>Manage</td><td>Monitoring, measurement</td><td>Accountability</td><td>Incident reporting (CA SB 53, NY RAISE)</td></tr>
+    <tr><td><b>Documentation</b></td><td>Technical documentation (Annex IV)</td><td>Govern</td><td>Documented information</td><td>Accountability records</td><td>Frontier AI frameworks, disclosures</td></tr>
+  </table></div>
+  <h2>Sector rules</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Sector</th><th>What regulators expect of AI</th></tr>
+    <tr><td>Financial services</td><td>Model risk management (validation, monitoring, inventory), explainable adverse-action reasons, fair lending testing, operational resilience (EU DORA) for AI vendors</td></tr>
+    <tr><td>Healthcare</td><td>HIPAA safeguards and BAAs for model vendors, FDA oversight of AI-enabled devices, clinical validation, human clinician review</td></tr>
+    <tr><td>Employment</td><td>Bias audits (NYC), notice to candidates (IL, NYC), anti-discrimination liability for vendors and employers, accommodation for people with disabilities</td></tr>
+    <tr><td>Insurance</td><td>Unfair-discrimination testing of rating and claims models, governance programs (NAIC model bulletin adopted by many states)</td></tr>
+    <tr><td>Public sector</td><td>Procurement standards, impact assessments, public inventories of AI use, EU AI Act deadline of 2 Aug 2030 for public-authority systems</td></tr>
+    <tr><td>Children &amp; consumer apps</td><td>Companion-chatbot safeguards (CA SB 243), age-appropriate design, deepfake and intimate-image laws</td></tr>
+  </table></div>
+  <h2>Evidence readiness</h2>
+  <p class="muted">Tick what you could hand to an auditor today. Saved in this browser.</p>
+  <div class="card"><div class="sec-ctl" id="cmpEv"></div><div id="cmpEvOut" style="margin-top:12px"></div></div>
+  <p class="muted" style="font-size:13px;margin-top:14px">Sources include: <a href="https://www.skadden.com/insights/publications/2026/06/colorado-repeals-and-replaces-its-ai-act">Skadden</a> and <a href="https://www.joneswalker.com/en/insights/blogs/ai-law-blog/the-colorado-ai-law-you-prepared-for-is-gone-and-the-rulemaking-comment-window-c.html">Jones Walker</a> (Colorado); <a href="https://www.wiley.law/alert-New-York-Finalizes-RAISE-Act-for-Frontier-AI-Models-Law-Takes-Effect-January-1-2027">Wiley</a> (NY RAISE); <a href="https://www.pwc.com/us/en/services/consulting/risk-regulatory/library/tech-regulatory-policy-developments/ca-policies.html">PwC</a> and <a href="https://www.loeb.com/en/insights/publications/2025/12/californias-admt-regulations-shaping-the-future-of-responsible-ai">Loeb</a> (California); <a href="https://www.ropesgray.com/en/insights/alerts/2026/03/examining-the-landscape-and-limitations-of-the-federal-push-to-override-state-ai-regulation">Ropes &amp; Gray</a> (EO 14365); <a href="https://www.trade.gov/market-intelligence/south-korea-ai-basic-act">trade.gov</a> (Korea); <a href="https://intelligence.dlapiper.com/artificial-intelligence?c=CN">DLA Piper</a> (China); <a href="https://www.whitecase.com/insight-alert/eu-ai-omnibus-enters-force-amending-ai-act">White &amp; Case</a> (EU). See also <a href="#responsible-ai">Responsible AI &amp; regulation</a> and the <a href="#gov-maturity">governance maturity model</a>.</p>
+<div id="responsible-ai" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Responsible AI &amp; regulation</h2>
+  <p class="lead">Responsible AI turns values into checks you can run: is it <b>fair</b>, can we <b>explain</b> it, is it <b>honest</b> rather than flattering, is it <b>documented</b>, is its output <b>labeled</b>, are we within <b>the law</b>, and are we managing <b>frontier risks</b>? Step through the lifecycle, classify a use case under the EU AI Act, and compute fairness metrics below.</p>
+  <div data-flow="rai" data-theme="soft"></div>
+  <h2>The principles in practice</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Bias &amp; fairness</span><h3>Equal treatment across groups</h3><p>Measure outcomes per group: selection rates (demographic parity), error rates (equalized odds), true-positive rates (equal opportunity). The US "four-fifths rule" flags a selection ratio below 0.8. Fairness definitions can conflict, so pick the one that matches the harm you're preventing and document why.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Explainability</span><h3>Why did it decide that?</h3><p>For classic ML: feature importance, SHAP and LIME attributions, counterfactuals ("approved if income were $5k higher"). For LLMs: citations, reasoning summaries and tool traces. <b>Mechanistic interpretability</b> goes further, looking for the internal features and circuits that drive behavior.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Sycophancy</span><h3>Agreeing instead of being right</h3><p>Preference training can teach models to flatter users, cave to pushback or mirror their opinions. Test for it: ask the same question with and without a stated user opinion, and push back on correct answers. Mitigate with targeted training data, system-prompt instructions and evals.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Model &amp; system cards</span><h3>Documentation as a control</h3><p>A model card covers intended use, training data summary, evaluations, limitations and safety testing. A system card covers the deployed product: tools, guardrails, human oversight. Both are increasingly expected by regulators and enterprise buyers.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Copyright, IP &amp; licensing</span><h3>Inputs, outputs and weights</h3><p>Three questions: was training data used lawfully; who owns generated output (often not copyrightable without human authorship, depending on the country); and what does the model license allow? Many vendors offer IP indemnity for enterprise customers. Get legal review before shipping.</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">Watermarking &amp; provenance</span><h3>Label what's synthetic</h3><p><b>C2PA content credentials</b> attach signed provenance metadata to media. <b>Invisible watermarks</b> such as Google's SynthID embed a detectable signal in images, audio, video or text. Both can be stripped or degraded, so treat them as signals, not proof.</p></div>
+    <div class="card"><span class="tag" style="color:var(--amber)">Frontier AI safety</span><h3>Managing catastrophic risk</h3><p>Frontier labs publish safety frameworks (for example, responsible scaling policies) that tie stronger safeguards to dangerous-capability evaluations in areas like cyber, bio and autonomy. Regulators increasingly require systemic-risk assessments for the largest general-purpose models.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Standards</span><h3>NIST AI RMF &amp; ISO/IEC 42001</h3><p>NIST's AI Risk Management Framework (Govern, Map, Measure, Manage) is the common US reference. ISO/IEC 42001 is a certifiable AI management system standard. See the <a href="#gov-maturity">governance maturity model</a>.</p></div>
+  </div>
+  <h2>EU AI Act risk tiers</h2>
+  <p class="muted">Pick a use case to see its likely tier and obligations. This is a simplification, not legal advice.</p>
+  <div class="card"><div class="scen" id="euUse"></div><div id="euOut" style="margin-top:14px"></div></div>
+  <h2>EU AI Act timeline</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Date</th><th>What applies</th></tr>
+    <tr><td>1 Aug 2024</td><td>AI Act enters into force</td></tr>
+    <tr><td>2 Feb 2025</td><td>Prohibited practices banned; AI literacy duty</td></tr>
+    <tr><td>2 Aug 2025</td><td>General-purpose AI (GPAI) model obligations; governance bodies</td></tr>
+    <tr><td>27 Jul 2026</td><td>The <b>Digital Omnibus on AI</b> (Regulation 2026/1744) enters into force: delays high-risk obligations, adds a new prohibited practice, eases rules for small mid-caps</td></tr>
+    <tr><td>2 Dec 2027</td><td>High-risk obligations for stand-alone Annex III systems (for example, hiring, education, credit) — originally 2 Aug 2026</td></tr>
+    <tr><td>2 Aug 2028</td><td>High-risk obligations for AI embedded in regulated products (Annex I)</td></tr>
+    <tr><td>2 Aug 2030</td><td>Deadline for AI systems used by public authorities</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">GPAI obligations and most transparency duties were not delayed. Sources: <a href="https://www.whitecase.com/insight-alert/eu-ai-omnibus-enters-force-amending-ai-act">White &amp; Case</a>, <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/">Gibson Dunn</a>, <a href="https://www.orrick.com/en/Insights/2026/07/EU-AI-Act-Update-Digital-Omnibus-Finalizes-8-Compliance-Changes">Orrick</a>, <a href="https://natlawreview.com/article/eu-digital-omnibus-ai-enters-force">National Law Review</a>.</p>
+</div>

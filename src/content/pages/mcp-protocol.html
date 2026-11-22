@@ -1,0 +1,96 @@
+
+  <span class="kicker">3b · MCP architecture</span>
+  <h1>MCP protocol &amp; clients</h1>
+  <p class="lead">The standardized bridge between AI models and external systems. MCP decouples AI from systems: change servers, not your agent. Below is the message flow between the AI application, the MCP client, the MCP server and the external system.</p>
+  <div data-flow="mcpseq"></div>
+  <h2>Layers</h2>
+  <div class="grid g5">
+    <div class="card" style="border-top:4px solid var(--green)"><h3>Application</h3><p class="muted" style="margin:0">AI apps, agents and tools that use MCP. They request context, invoke tools and consume results.</p></div>
+    <div class="card" style="border-top:4px solid var(--blue)"><h3>Client</h3><p class="muted" style="margin:0">Lives in the host and handles discovery, requests and responses, one per server connection.</p></div>
+    <div class="card" style="border-top:4px solid var(--pink)"><h3>Protocol / transport</h3><p class="muted" style="margin:0">Standard message format (JSON-RPC 2.0), security, reliability.</p></div>
+    <div class="card" style="border-top:4px solid var(--teal)"><h3>Server</h3><p class="muted" style="margin:0">Exposes capabilities (tools, resources, prompts) in a standardized way.</p></div>
+    <div class="card" style="border-top:4px solid var(--amber)"><h3>Resource</h3><p class="muted" style="margin:0">Databases, APIs, files, cloud, SaaS apps, IoT devices: the real systems behind the server.</p></div>
+  </div>
+  <h2>Example: file system server</h2>
+  <p class="muted">Click a capability to see the JSON-RPC exchange and the governance it needs.</p>
+  <div class="card">
+    <div class="scen" id="fsbtns"></div>
+    <div id="fsout"></div>
+  </div>
+  <h2>Protocol highlights</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Transport</h3><p class="muted" style="margin:0">JSON-RPC 2.0 over <code>stdio</code> for local servers and <b>Streamable HTTP</b> for remote ones (stateless since 2026-07-28, so any instance behind a load balancer can answer). HTTP+SSE is deprecated; WebSocket would be a custom transport.</p></div>
+    <div class="card"><h3>Message format</h3><p class="muted" style="margin:0">Structured JSON requests, responses and notifications. Tool inputs are described with JSON Schema, and outputs can be structured.</p></div>
+    <div class="card"><h3>Security</h3><p class="muted" style="margin:0">OAuth 2.1 authorization for HTTP servers, with Client ID Metadata Documents replacing dynamic client registration. Enterprise gateways add API keys, mTLS and per-tool scopes.</p></div>
+    <div class="card"><h3>Reliability</h3><p class="muted" style="margin:0">Request IDs, error codes, timeouts, cancellation and progress notifications. Make write tools idempotent.</p></div>
+    <div class="card"><h3>Extensibility</h3><p class="muted" style="margin:0">Capabilities travel in every request's <code>_meta</code> and in <code>server/discover</code>. Optional <b>extensions</b> (tasks, MCP Apps, enterprise-managed auth) add features without changing the core.</p></div>
+    <div class="card"><h3>Design principles</h3><p class="muted" style="margin:0">Open spec · human-centric (you stay in control) · secure by default · reliable · composable · future-proof.</p></div>
+  </div>
+  <h2>What changed in the 2026-07-28 spec</h2>
+  <div class="card tablewrap"><table><tr><th>Change</th><th>What it means</th></tr>
+  <tr><td><b>Stateless core</b></td><td>No <code>initialize</code> handshake and no session ID. Each request carries its protocol version, client info and capabilities in <code>_meta</code>, so servers scale behind ordinary load balancers. State that must persist is passed as explicit handles in tool arguments.</td></tr>
+  <tr><td><b><code>server/discover</code></b></td><td>A new method servers must implement, so clients can learn versions and capabilities up front.</td></tr>
+  <tr><td><b>Multi round-trip requests</b></td><td>Instead of calling the client back, a server returns <code>input_required</code> with what it needs (for example an elicitation form); the client retries the request with the answers.</td></tr>
+  <tr><td><b>Subscriptions</b></td><td><code>subscriptions/listen</code> replaces the HTTP GET stream and resource subscribe/unsubscribe for change notifications.</td></tr>
+  <tr><td><b>Caching</b></td><td>List and read results carry <code>ttlMs</code> and <code>cacheScope</code>, and tools come back in a stable order.</td></tr>
+  <tr><td><b>Gateway-friendly HTTP</b></td><td><code>Mcp-Method</code> and <code>Mcp-Name</code> headers on every Streamable HTTP request.</td></tr>
+  <tr><td><b>Extensions</b></td><td>Tasks moved out of the core into an official extension; a formal extensions framework also hosts MCP Apps and enterprise-managed authorization.</td></tr>
+  <tr><td><b>Deprecated</b></td><td>Roots, sampling and logging (use tool parameters, direct model APIs and OpenTelemetry instead), the HTTP+SSE transport, and OAuth dynamic client registration. Deprecated features keep working for at least twelve months.</td></tr></table>
+  <p class="muted" style="font-size:12.5px;margin:8px 0 0">Source: <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">MCP specification changelog, 2026-07-28</a>. See <a href="#mcp-clients">MCP clients</a> for what this means on the wire.</p></div>
+  <h2>Security &amp; governance</h2>
+  <div class="grid g5">
+    <div class="card"><h3>Authentication</h3><p class="muted" style="margin:0">Verify clients and servers.</p></div>
+    <div class="card"><h3>Authorization</h3><p class="muted" style="margin:0">Allow access only to specific capabilities.</p></div>
+    <div class="card"><h3>Encryption</h3><p class="muted" style="margin:0">Protect data in transit and at rest.</p></div>
+    <div class="card"><h3>Auditing</h3><p class="muted" style="margin:0">Log every request, response and action.</p></div>
+    <div class="card"><h3>Policy enforcement</h3><p class="muted" style="margin:0">Rate limits, quotas, allow/deny rules.</p></div>
+  </div>
+  <h2>Common transport &amp; deployment options</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Option</th><th>Where it runs</th><th>Use it for</th></tr>
+    <tr><td><b>stdio</b></td><td>Local subprocess of the host</td><td>Developer tools, file system, local CLIs. No network exposure.</td></tr>
+    <tr><td><b>Streamable HTTP</b></td><td>Remote service</td><td>Shared team or SaaS servers, with OAuth and streaming responses.</td></tr>
+    <tr><td><b>Cloud gateway</b></td><td>In front of many servers</td><td>Central auth, rate limits, routing and audit (see the Gateway Connector role).</td></tr>
+    <tr><td><b>Message queue</b></td><td>Behind a server</td><td>Long-running or async jobs, where the tool returns a job ID and the result arrives later.</td></tr>
+  </table></div>
+<div id="mcp-clients" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">MCP clients</h2>
+  <p class="lead">An MCP client is the part of an AI application (the <b>host</b>) that talks to one MCP server. The host runs one client per server connection. Clients don't implement tools: they discover what servers offer, help the model choose, make the requests, handle results and errors, and keep the user in control. This page follows the current specification, <b>2026-07-28</b>, which made the protocol stateless.</p>
+  <div data-flow="mcpclient" data-theme="soft"></div>
+  <div class="callout"><b>Reading other MCP infographics?</b> Three common inaccuracies: (1) clients don't search the internet for servers: the host is configured with servers (or picks them from a registry or allowlist), then calls <code>server/discover</code> and the list methods; (2) the standard transports are <b>stdio</b> and <b>Streamable HTTP</b>; WebSocket or message queues are custom or sit behind a server; (3) since 2026-07-28 there is no <code>initialize</code> handshake or session: every request carries its protocol version and client capabilities in <code>_meta</code>.</div>
+  <h2>How a client works</h2>
+  <div class="grid g5" id="mcStepsCards"></div>
+  <h2>On the wire</h2>
+  <p class="muted">Pick a message to see what the client sends and gets back (simplified; the spec has every field).</p>
+  <div class="tabs" id="mcWire"></div>
+  <div class="grid g2"><div class="card"><b>Client sends</b><pre class="jg-pre" id="mcReq"></pre></div><div class="card"><b>Server returns</b><pre class="jg-pre" id="mcRes"></pre></div></div>
+  <p class="muted" id="mcNote" style="font-size:13.5px"></p>
+  <h2>Types of MCP clients</h2>
+  <div class="grid g5">
+    <div class="card"><h3>💬 Chat apps</h3><p class="muted" style="margin:0">Assistants that let users connect tools and data, with consent prompts per action.</p></div>
+    <div class="card"><h3>🤖 Agents</h3><p class="muted" style="margin:0">Autonomous agents that plan and call tools through MCP, under budgets and policies.</p></div>
+    <div class="card"><h3>💻 IDEs &amp; dev tools</h3><p class="muted" style="margin:0">Coding assistants connecting repos, terminals, issue trackers and docs.</p></div>
+    <div class="card"><h3>🔄 Workflow engines</h3><p class="muted" style="margin:0">Automation platforms that invoke MCP tools as steps in a pipeline.</p></div>
+    <div class="card"><h3>📱 Custom apps</h3><p class="muted" style="margin:0">Any product that wants standard access to external capabilities, built on an MCP SDK.</p></div>
+  </div>
+  <h2>Client readiness checklist</h2>
+  <p class="muted">Tick what your client does today to see what's missing before production.</p>
+  <div class="card"><div class="ctlrow" style="margin-top:0"><b id="mcScore"></b><span style="flex:1"></span><button class="b" id="mcMd">⤓ Export checklist</button><span class="muted" id="mcMsg" style="font-size:13px"></span></div><div class="fde-ck" id="mcCk"></div></div>
+  <h2>Transports</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Transport</th><th>Status</th><th>Use it for</th><th>Notes</th></tr>
+    <tr><td><b>stdio</b></td><td><span class="lr-k a1">Standard</span></td><td>Local servers launched by the host</td><td class="muted">Simple and fast, no network exposure. Log to stderr.</td></tr>
+    <tr><td><b>Streamable HTTP</b></td><td><span class="lr-k a1">Standard</span></td><td>Remote and shared servers</td><td class="muted">OAuth 2.1; requests carry <code>Mcp-Method</code> and <code>Mcp-Name</code> headers so gateways can route and rate-limit; stateless, so any instance behind a load balancer can answer.</td></tr>
+    <tr><td><b>HTTP + SSE</b></td><td><span class="lr-k a2">Deprecated</span></td><td>Older servers only</td><td class="muted">Migrate to Streamable HTTP.</td></tr>
+    <tr><td><b>WebSocket, queues</b></td><td><span class="lr-k a3">Custom</span></td><td>Special cases</td><td class="muted">Not standard MCP transports. Put async work behind a server (for example the tasks extension), not in the transport.</td></tr>
+  </table></div>
+  <h2>Client vs server</h2>
+  <div class="card tablewrap"><table><tr><th></th><th>MCP client</th><th>MCP server</th></tr>
+    <tr><td><b>Role</b></td><td>Consumes capabilities on behalf of a host and its model</td><td>Exposes tools, resources and prompts</td></tr>
+    <tr><td><b>Starts</b></td><td>Every request</td><td>Nothing on its own; answers requests (and may ask for input via multi round-trip requests)</td></tr>
+    <tr><td><b>Owns</b></td><td>User consent, model context, which servers are trusted</td><td>The data, the credentials to the real system, the tool logic</td></tr>
+    <tr><td><b>Offers</b></td><td>Elicitation (asking the user); sampling and roots are deprecated</td><td>Tools, resources, prompts, completions, subscriptions</td></tr>
+    <tr><td><b>Must guard against</b></td><td>Malicious servers: tool-description injection, data exfiltration, over-broad scopes</td><td>Malicious clients: tampered <code>requestState</code>, abuse, excessive calls</td></tr></table></div>
+  <p class="muted" style="font-size:13px">Related: <a href="#mcp">Model Context Protocol</a> · <a href="#mcp-protocol">MCP protocol deep dive</a> · <a href="#mcp-roles">MCP server roles</a> · <a href="#ai-security">AI security</a>. Source: the <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">MCP 2026-07-28 changelog</a>.</p>
+</div>

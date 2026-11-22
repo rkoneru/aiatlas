@@ -1,0 +1,25 @@
+
+  <span class="kicker">CAIO · Finance</span>
+  <h1>AI budget &amp; total cost of ownership</h1>
+  <p class="lead">Model tokens are usually the smallest line in an AI budget. People, data work, platform, change management and governance dominate. Plan three years across the full cost stack, size inference from real volumes, and see the split.</p>
+  <div data-flow="budgetstack" data-theme="soft"></div>
+  <h2>Inference estimator</h2>
+  <div class="card"><div class="ar-grid" id="bdInf"></div><div id="bdInfOut" style="margin-top:10px;font-size:14px"></div></div>
+  <h2>Three-year plan</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><button class="b" id="bdSample">Load sample</button><span class="muted" style="font-size:12.5px">Annual amounts in $ thousands. Year 1 for one-off items.</span><button class="b pri" id="bdCsv" style="margin-left:auto">⤓ Export CSV</button></div>
+    <div class="tablewrap"><table class="uc-t" id="bdT"></table></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3 style="margin-top:0">Spend by year</h3><svg id="bdBar" viewBox="0 0 520 280" style="width:100%;height:auto"></svg></div>
+    <div class="card"><h3 style="margin-top:0">3-year split</h3><div id="bdSplit"></div></div>
+  </div>
+  <h2>Budgeting rules of thumb</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Fund platforms once</h3><p>Shared gateway, RAG, evals and observability, charged back or centrally funded, so use cases don't each rebuild them.</p></div>
+    <div class="card"><h3>Stage-gate use cases</h3><p>Release money in tranches: discovery, pilot, scale. Each gate needs measured results.</p></div>
+    <div class="card"><h3>Budget for change</h3><p>Training, champions and process redesign often decide whether the technology pays back.</p></div>
+    <div class="card"><h3>Expect token prices to fall</h3><p>Model prices per token have fallen quickly while usage grows. Plan on volume growth, not a fixed bill.</p></div>
+    <div class="card"><h3>Keep contingency</h3><p>10–15% for model changes, new compliance duties and surprise volume.</p></div>
+    <div class="card"><h3>Show unit cost</h3><p>Cost per resolved ticket, per document or per user is what finance can compare with today's process.</p></div>
+  </div>

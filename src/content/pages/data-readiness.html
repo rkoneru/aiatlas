@@ -1,0 +1,17 @@
+
+  <span class="kicker">Architecture · Before you build</span>
+  <h1>Data readiness assessment</h1>
+  <p class="lead">Most AI projects that slip, slip on data, not models. Before choosing an architecture, check every data source the use case needs on six questions: can we <b>reach</b> it, is it <b>accurate</b>, is it <b>complete and current</b>, who <b>owns</b> it and who may see it, may we <b>legally</b> use it this way, and do we have <b>real examples</b> to test against. Score each source below; the result tells you what is ready, what can be fixed in weeks, and what blocks the project.</p>
+  <div class="card"><div class="ctlrow"><label>Use case <input id="drUse" placeholder="e.g. Claims status virtual agent" style="width:280px"></label><button class="b" id="drAdd">+ Add data source</button><span class="muted" id="drSum"></span></div><div id="drRows"></div></div>
+  <div id="drOut"></div>
+  <div class="ctlrow" style="margin-top:12px"><button class="b pri" id="drMd">⤓ Readiness report (Markdown)</button><span class="muted" id="drMsg"></span></div>
+  <h2>What each kind of AI needs from your data</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Approach</th><th>Data it needs</th><th>Most common gap</th></tr>
+    <tr><td><b>Prompt + model</b></td><td class="muted">Good examples of inputs and desired outputs</td><td class="muted">No agreed "good answer" to test against</td></tr>
+    <tr><td><b>RAG / knowledge assistant</b></td><td class="muted">Documents with structure, owners, dates and access lists</td><td class="muted">Outdated or duplicate documents; no permissions metadata</td></tr>
+    <tr><td><b>Agents with tools</b></td><td class="muted">APIs to the systems of record, test accounts, clear business rules</td><td class="muted">No API, or only an all-powerful service account</td></tr>
+    <tr><td><b>Customer service AI</b></td><td class="muted">Transcripts and tickets with outcomes, intent labels, knowledge base</td><td class="muted">Recordings without consent for reuse; no outcome labels</td></tr>
+    <tr><td><b>Prediction &amp; forecasting</b></td><td class="muted">Clean history with the outcome you want to predict</td><td class="muted">Too little history, or the process changed recently</td></tr>
+    <tr><td><b>Fine-tuning</b></td><td class="muted">Hundreds to thousands of high-quality labeled examples</td><td class="muted">Examples that encode today's mistakes</td></tr>
+  </table></div>

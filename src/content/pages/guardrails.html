@@ -1,0 +1,11 @@
+
+  <span class="kicker">5d · Safety</span>
+  <h1>AI guardrail categories</h1>
+  <p class="lead">Seven layers of control around an AI system: <b>input, prompt, retrieval, tool, output, runtime and memory</b>. No single guardrail catches everything; defense in depth does. Step through the layers, then throw attacks at the system and see which layer stops them.</p>
+  <div data-flow="guard"></div>
+  <h2>Threat simulator</h2>
+  <p class="muted">Pick an attack or failure. The diagram above jumps to the layer that should catch it.</p>
+  <div class="card"><div class="scen" id="gthreats"></div><div id="gthreatout" style="margin-top:12px"></div></div>
+  <h2>All seven categories</h2>
+  <div class="grid g2" id="gcards"></div>
+  <div class="callout">Guardrails are deterministic code wherever possible: schemas, allowlists, limits, approvals. Use model-based checks (moderation, hallucination detection) as an extra layer, never the only one. See <a href="#agent-kit">hooks</a> and the <a href="#reference-arch">reference architecture</a>.</div>

@@ -1,0 +1,60 @@
+
+  <span class="kicker">2 · AI Agents</span>
+  <h1>AI agents: the loop &amp; its anatomy</h1>
+  <p class="lead">An agent wraps an LLM in a loop: <b>plan → act → observe → reflect</b>, with memory and tools, until the goal is met or a stop condition fires. The result is closed-loop execution in real systems.</p>
+  <div data-flow="agents"></div>
+  <h2>Human control ↔ autonomous action</h2>
+  <p class="muted">Autonomy is a dial, not a switch. Move the slider to see which actions in the flight-booking example run on their own and which wait for a human.</p>
+  <div class="card">
+    <div class="ctlrow"><label>Autonomy level <input type="range" id="al" min="0" max="4" value="2" style="width:240px"><span class="out" id="alv"></span></label></div>
+    <p id="ald" class="muted" style="margin-top:0"></p>
+    <div class="lvl" id="alt"></div>
+    <div class="callout" style="margin-bottom:0">Whatever the level, put a <b>fail-closed risk gate</b> in front of irreversible actions (payments, deletes, external messages) and log every tool call for audit and evals.</div>
+  </div>
+  <h2>Agent building blocks</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Planner</h3><p class="muted">Breaks the goal into steps (ReAct, plan-and-execute, tree search). Re-plans when observations contradict the plan.</p></div>
+    <div class="card"><h3>Memory</h3><p class="muted">Short-term memory is the conversation and scratchpad. Long-term memory holds user preferences and past outcomes, read and written by the agent.</p></div>
+    <div class="card"><h3>Tools</h3><p class="muted">Typed functions with clear schemas: ticketing, email, data tools. Read tools are cheap; write tools need guardrails.</p></div>
+    <div class="card"><h3>Stop conditions</h3><p class="muted">Goal satisfied, step or token budget exhausted, repeated failure, or human interrupt. Without them, agents loop.</p></div>
+  </div>
+<div id="agent-anatomy" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">The anatomy of an AI agent</h2>
+  <p class="lead">Every agent is the same four parts. A <b>brain</b> (the LLM) runs a loop: perceive, reason, act, observe. <b>Memory</b> supplies context, short-term in the window and long-term in a store. <b>Tools</b> turn the model's function calls into real actions. <b>Guardrails</b> check every action before it runs. The loop ends with a final answer, or when it hits its iteration or budget limit.</p>
+  <div data-flow="anatomy" data-theme="soft"></div>
+  <h2>Run the agent loop</h2>
+  <p class="muted">Step through a real-looking task. Watch the context window fill and get compacted, tool calls pass through the policy gate, one action get rejected, and the loop stop. Change the limits, or switch the guardrails off, to see what changes.</p>
+  <div class="card" id="anSim"></div>
+  <h2>The four parts</h2>
+  <div class="grid g2">
+    <div class="card fw-c" style="--c:var(--amber)"><h3>🧠 Memory</h3><ul class="ind-l"><li><b>Short-term:</b> the context window holds the instructions, the conversation and recent tool results. It fills up fast.</li><li><b>Compaction:</b> when it's nearly full, older turns are summarized so the agent keeps the gist and frees room.</li><li><b>Long-term:</b> a vector store, knowledge base or files. The agent retrieves the top-k relevant items and writes back what it learns.</li></ul></div>
+    <div class="card fw-c" style="--c:var(--blue)"><h3>🔧 Tools</h3><ul class="ind-l"><li>The model emits a <b>function call</b>: a name and JSON arguments.</li><li>The runtime <b>dispatches</b> it to the right tool (search, code, files, APIs, MCP servers) and <b>executes</b> it.</li><li>The <b>result</b> comes back as an observation in the next turn's context.</li></ul></div>
+    <div class="card fw-c" style="--c:var(--orange)"><h3>🔁 The loop</h3><ul class="ind-l"><li><b>Perceive</b> the task and context, <b>reason and plan</b>, <b>act</b> by calling a tool, <b>observe</b> the result, <b>reflect</b>, repeat.</li><li><b>Stop</b> when there's a final answer (a turn with no tool call), at max iterations, or when the token, time or cost budget runs out.</li></ul></div>
+    <div class="card fw-c" style="--c:var(--purple)"><h3>🛡 Guardrails</h3><ul class="ind-l"><li><b>Validate:</b> is the call well-formed and its arguments safe?</li><li><b>Scope:</b> is this tool and this target allowed for this user and task?</li><li><b>Budget:</b> are there iterations, tokens, money and rate left?</li><li>Any failure <b>rejects</b> the action; the agent sees why and adapts. The gate fails closed.</li></ul></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#agents">AI agents</a> · <a href="#tool-call">Tool call anatomy</a> · <a href="#guardrails">AI guardrails</a> · <a href="#orchestrator">Orchestrators &amp; specialized agents</a> · <a href="#frameworks">Risk Kernel</a></p>
+</div>
+<div id="spar" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">The SPAR framework</h2>
+  <p class="lead"><b>S</b>ense → <b>P</b>lan → <b>A</b>ct → <b>R</b>eflect: how an AI agent goes from perceiving its environment to taking an action and improving over time. Follow a research agent through all four stages.</p>
+  <div data-flow="spar"></div>
+  <h2>The four stages</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Stage</th><th>What it is</th><th>Typical mechanisms</th><th>Research agent example</th></tr>
+    <tr><td><b style="color:var(--blue)">S · Sense</b></td><td>How the agent perceives and understands its environment</td><td>Documents, user interface, web search, vector DB, knowledge graph</td><td>Go through the company DB and the internet to gather facts</td></tr>
+    <tr><td><b style="color:var(--purple)">P · Plan</b></td><td>The reasoning stage: decide how best to achieve the goal</td><td>CoT, ToT, GoT, ReAct, Reflexion, Plan-and-Execute</td><td>Use CoT to break the workflow into simple research tasks</td></tr>
+    <tr><td><b style="color:var(--amber)">A · Act</b></td><td>Execute the strategy with digital tools or platforms</td><td>Computer use, generate docs, call APIs, generate visuals, update DB, schedule tasks</td><td>Build an entire PPT from the research output</td></tr>
+    <tr><td><b style="color:var(--pink)">R · Reflect</b></td><td>Evaluate outcomes and improve logic or strategy over time</td><td>LLM feedback, user feedback, revise plan, update tool calls, update logs</td><td>Update the draft based on user feedback</td></tr>
+  </table></div>
+  <h2>Planning strategies at a glance</h2>
+  <div class="grid g3">
+    <div class="card"><h3>CoT · Chain of Thought</h3><p class="muted" style="margin:0">Reason step by step in one linear chain. Cheap and good for decomposition.</p></div>
+    <div class="card"><h3>ToT · Tree of Thought</h3><p class="muted" style="margin:0">Branch into alternatives, evaluate them, prune. Good for search-like problems.</p></div>
+    <div class="card"><h3>GoT · Graph of Thought</h3><p class="muted" style="margin:0">Thoughts as a graph that can merge and reuse partial results.</p></div>
+    <div class="card"><h3>ReAct</h3><p class="muted" style="margin:0">Interleave reasoning with tool actions and observations. The default for tool-using agents.</p></div>
+    <div class="card"><h3>Reflexion</h3><p class="muted" style="margin:0">Self-critique after attempts, with the lessons stored in memory for the next try.</p></div>
+    <div class="card"><h3>P&amp;E · Plan-and-Execute</h3><p class="muted" style="margin:0">Write the full plan first, then execute the steps, often with a cheaper executor model.</p></div>
+  </div>
+</div>

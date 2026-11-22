@@ -1,0 +1,18 @@
+
+  <span class="kicker">2c · AI agents</span>
+  <h1>Workflows and patterns</h1>
+  <p class="lead">From rule-based automation to agentic workflows, plus the components of an agent and four core patterns: agentic RAG, tool use, reflection and planning. Pick one to walk through it.</p>
+  <div class="tabs" id="wftabs"></div>
+  <div data-flow="wf"></div>
+  <div class="grid g3" style="margin-top:14px" id="wfdetail"></div>
+<div id="llm-workflows" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">LLM workflow patterns</h2>
+  <p class="lead">Design smarter pipelines, get better results. Five composable patterns: <b>chain</b>, <b>parallelization</b>, <b>routing</b>, <b>orchestrator–workers</b> and <b>evaluator–optimizer</b>. In these, your code (or the orchestrator) controls the flow. Reach for a fully autonomous agent only when none of them fit.</p>
+  <div class="tabs" id="lwtabs"></div>
+  <div data-flow="lw"></div>
+  <div class="grid g3" style="margin-top:14px" id="lwdetail"></div>
+  <h2>Which pattern fits?</h2>
+  <div class="card" id="lwq"></div>
+  <p class="muted" style="font-size:13px;margin-top:10px">These are the workflow patterns described in Anthropic's <a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a> guide. They compose: a router can send a request into a chain, and a chain's step can be an evaluator–optimizer loop.</p>
+</div>

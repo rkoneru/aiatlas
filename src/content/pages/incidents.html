@@ -1,0 +1,8 @@
+
+  <span class="kicker">CAIO · Risk</span>
+  <h1>AI incident register</h1>
+  <p class="lead">Log AI incidents and near-misses, map each to the controls that should have caught it, and watch the risk heatmap and trend. A summary is added to your board pack.</p>
+  <div class="card"><div class="ctlrow" style="margin-top:0"><button class="b pri" id="inNew">＋ Log incident</button><button class="b" id="inSample">Load sample</button><button class="b" id="inCsv">⤓ CSV</button><span class="muted" id="inMsg" style="font-size:13px"></span></div><div id="inForm" class="rl-form" hidden></div></div>
+  <div class="ac-stats" id="inStats"></div>
+  <div class="grid g2" style="margin-top:14px"><div class="card"><h3>Risk heatmap</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Likelihood from incidents in the last 90 days; impact from the worst severity seen.</p><div id="inHeat"></div></div><div class="card"><h3>Trend (last 6 months)</h3><svg id="inTrend" viewBox="0 0 460 220" style="width:100%;height:auto"></svg></div></div>
+  <h2>Register</h2><div class="card tablewrap"><table id="inT"></table></div>

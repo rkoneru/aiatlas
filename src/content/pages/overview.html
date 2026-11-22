@@ -1,0 +1,24 @@
+
+  <span class="kicker">From prompts to powerful systems</span>
+  <h1>How the pieces of an AI system fit together</h1>
+  <div class="ov-doors"><div class="ov-dh"><b>Choose your path</b><span class="muted">Short, ordered routes for each role. <a href="#paths">All paths</a> · <a href="#about">About</a></span></div><div class="grid g2 pa-doors" id="ovDoors"></div></div>
+  <div class="callout" style="margin:0 0 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;--accent:var(--green)"><span style="font-size:20px">🎓</span><span style="flex:1">New to some of this, or want a structured path? Take the 5-minute placement test and get a course compiled for your level.</span><a class="b pri" href="#course" style="text-decoration:none;background:var(--green);border-color:var(--green)">Start the course →</a></div>
+  <p class="lead">An LLM generates text. RAG gives it knowledge. An agent lets it act. MCP standardizes how it reaches tools. A2A lets agents work with other agents. Walk the end-to-end request below, then open each layer.</p>
+  <div data-flow="overview" data-theme="soft"></div>
+  <h2>The ladder</h2>
+  <div class="ladder">
+    <a class="card rung" href="#overview" style="--c:var(--gray)"><span class="n">0 · LLM</span><h3>Understands &amp; generates</h3><p>Trained on massive text, predicts the next token. Knows only what it was trained on.</p></a>
+    <a class="card rung" href="#rag" style="--c:var(--purple)"><span class="n">1 · RAG</span><h3>More context</h3><p>Retrieves domain or fresh data before answering. Fewer hallucinations, with citations.</p></a>
+    <a class="card rung" href="#agents" style="--c:var(--green)"><span class="n">2 · Agent</span><h3>More autonomy</h3><p>Plans, calls tools, observes, adjusts. Closed-loop execution in real systems.</p></a>
+    <a class="card rung" href="#mcp" style="--c:var(--blue)"><span class="n">3 · MCP</span><h3>More connections</h3><p>One standard protocol for tools, resources and prompts, usable from any host.</p></a>
+    <a class="card rung" href="#a2a" style="--c:var(--orange)"><span class="n">4 · A2A</span><h3>More collaboration</h3><p>Agents discover, delegate to and coordinate with other agents across teams and vendors.</p></a>
+  </div>
+  <h2>At a glance</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Layer</th><th>What it adds</th><th>Analogy</th><th>Connects</th><th>Typical failure</th></tr>
+    <tr><td><b>LLM</b></td><td>Language understanding &amp; generation</td><td>A well-read brain</td><td>Prompt → text</td><td>Confident but outdated or invented facts</td></tr>
+    <tr><td><b>RAG</b></td><td>Runtime knowledge injection</td><td>Open-book exam</td><td>LLM ↔ knowledge base</td><td>Wrong chunks retrieved → wrong answer</td></tr>
+    <tr><td><b>Agent</b></td><td>Plan → act → observe → reflect</td><td>An employee who can use software</td><td>LLM ↔ tools ↔ environment</td><td>Loops, unsafe actions, drifting from the goal</td></tr>
+    <tr><td><b>MCP</b></td><td>Standard tool &amp; data access</td><td>USB-C port for AI apps</td><td>Agent/host ↔ tools &amp; data</td><td>Over-broad permissions, tool sprawl</td></tr>
+    <tr><td><b>A2A</b></td><td>Agent-to-agent delegation</td><td>Colleagues handing off work</td><td>Agent ↔ agent</td><td>Unclear ownership, missing identity and audit</td></tr>
+  </table></div>

@@ -1,0 +1,31 @@
+
+  <span class="kicker">10 · Judgment</span>
+  <h1>JEV vs LLM: when to use which</h1>
+  <p class="lead">Same context, different interface, different outcomes. A <b>JEV</b> (as described in this infographic) <b>evaluates predefined decisions</b>: you define the questions and get typed answers with probabilities, in parallel, with no parsing. An <b>LLM generates text</b> that you then parse into a decision.</p>
+  <div data-flow="jevflow"></div>
+  <h2>Code controls the threshold</h2>
+  <p class="muted">A yes/no evaluation: <b>"Is this command dangerous?"</b> The evaluator returns a probability; your code decides where the line is. Move the threshold.</p>
+  <div class="card">
+    <div class="ctlrow"><label>Block if P(dangerous) ≥ <input type="range" id="jt" min="5" max="99" value="80" style="width:220px"><span class="out" id="jtv">0.80</span></label></div>
+    <div class="lvl" id="jrows"></div>
+  </div>
+  <h2>Three decision primitives</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Choice</h3><p class="muted">Pick one known option. <i>"Which team should handle this?"</i></p><div id="jchoice"></div><p class="muted" style="font-size:12.5px;margin:8px 0 0">Routing · model selection · tool selection</p></div>
+    <div class="card"><h3>Score</h3><p class="muted">Place on an ordered scale. <i>"What's the risk level?"</i></p><div class="memrow" style="grid-template-columns:60px 1fr 50px"><span>Low</span><div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--amber),var(--pink))"></div><b class="mono">0.88</b></div><p class="muted" style="font-size:12.5px;margin:8px 0 0">Risk · quality · severity</p></div>
+    <div class="card"><h3>Yes / No</h3><p class="muted">Evaluate a condition. <i>"Is this command dangerous?"</i></p><div class="memrow" style="grid-template-columns:40px 1fr 50px"><span>Yes</span><div class="membar" style="width:96%;background:var(--pink)"></div><b class="mono">0.96</b></div><div class="memrow" style="grid-template-columns:40px 1fr 50px"><span>No</span><div class="membar" style="width:4%;background:var(--gray)"></div><b class="mono">0.04</b></div><p class="muted" style="font-size:12.5px;margin:8px 0 0">Gating · verification · escalation</p></div>
+  </div>
+  <h2>Real agent use cases</h2>
+  <p class="muted">Thousands of small judgments, every minute.</p>
+  <div class="card tablewrap"><table>
+    <tr><td><b>Route</b></td><td>Which team should handle this?</td></tr>
+    <tr><td><b>Gate</b></td><td>Is this safe or risky?</td></tr>
+    <tr><td><b>Rerank</b></td><td>Which result is most relevant?</td></tr>
+    <tr><td><b>Verify</b></td><td>Does this output meet the criteria?</td></tr>
+    <tr><td><b>Judge</b></td><td>Is this response correct?</td></tr>
+  </table></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card" style="border-top:4px solid var(--teal)"><h3>Use JEV when</h3><ul style="margin:0;padding-left:18px"><li>The answer space is known</li><li>The decision needs judgment that code can't calculate</li><li>You need a typed result</li><li>Confidence matters</li><li>Many independent decisions happen repeatedly</li><li>Code should control the threshold or action</li></ul></div>
+    <div class="card" style="border-top:4px solid var(--blue)"><h3>Use an LLM when</h3><ul style="margin:0;padding-left:18px"><li>You need natural-language output</li><li>You need code generation</li><li>You need summarization or explanation</li><li>The answer space is open-ended</li><li>Several reasoning steps depend on each other</li><li>The model needs to create something, not select or evaluate</li></ul></div>
+  </div>
+  <p class="muted" style="font-size:13px;margin-top:12px">The cost model in the source infographic (JEV: about $0.042 per 1M input tokens with free output; LLM: input plus generated output) is the publisher's claim. Verify it before you rely on it. You can approximate the same bounded-evaluation pattern with an LLM by scoring constrained options with log-probabilities, or with a fine-tuned classifier head.</p>

@@ -1,0 +1,15 @@
+
+  <span class="kicker">Agents · Roles</span>
+  <h1>LLM as everything: roles across every domain</h1>
+  <p class="lead">The same model can act as an architect, coder, reviewer, tester, judge, analyst, writer or support agent. What changes is the role prompt, the context and tools it gets, and how much a human checks its work. Pick a role and a domain to see what the role does there, its inputs and outputs, guardrails, the right level of autonomy, and a starter role prompt.</p>
+  <h2>The AI software team</h2>
+  <p class="muted">Roles become most powerful when chained, with each one checking the last. A typical agentic software-delivery loop:</p>
+  <div data-flow="sdlcteam" data-theme="soft"></div>
+  <h2>Role explorer</h2>
+  <div class="card"><div id="lrRoles"></div><div class="lr-dom"><b>Domain</b><div class="chips" id="lrDoms" style="margin-left:0"></div></div></div>
+  <div id="lrCard"></div>
+  <h2>Autonomy matrix</h2>
+  <p class="muted">How much independence each role should have in each domain, from the role's own risk and the domain's stakes. Click a cell to open it above.</p>
+  <div class="ctlrow" style="margin-top:0"><span class="lr-k a1">Autonomous with audit</span><span class="lr-k a2">Drafts for human review</span><span class="lr-k a3">Assists; human decides</span></div>
+  <div class="card tablewrap"><table id="lrMx" class="lr-mx"></table></div>
+  <p class="muted" style="font-size:13px">A starting heuristic, not a rule: actions that are irreversible, regulated or affect people's rights need human sign-off whatever the role. Related: <a href="#llm-judge">LLM as a judge</a> · <a href="#agent-governance">Agents watching agents</a> · <a href="#patterns">Multi-agent patterns</a> · <a href="#industry">Industry reference solutions</a></p>

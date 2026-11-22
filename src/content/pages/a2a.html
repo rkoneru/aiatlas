@@ -1,0 +1,18 @@
+
+  <span class="kicker">4 · A2A</span>
+  <h1>Agent-to-Agent coordination</h1>
+  <p class="lead">MCP connects an agent to <i>tools</i>. A2A connects an agent to <i>other agents</i>, which may be owned by other teams, partners or vendors. Agents publish <b>Agent Cards</b>, get discovered through a registry, and exchange <b>tasks, status events and artifacts</b> through a governed gateway.</p>
+  <div data-flow="a2a"></div>
+  <h2>Task lifecycle</h2>
+  <p class="muted">Lights up as you step through the flow above.</p>
+  <div class="states" id="a2astates"></div>
+  <h2>MCP vs A2A</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>MCP</th><th>A2A</th></tr>
+    <tr><td><b>Connects</b></td><td>Agent ↔ tools, data, prompts</td><td>Agent ↔ agent</td></tr>
+    <tr><td><b>Other side is</b></td><td>Deterministic capability (function, resource)</td><td>Opaque, autonomous peer with its own tools and reasoning</td></tr>
+    <tr><td><b>Unit of work</b></td><td>Tool call → result</td><td>Task with lifecycle → messages, status, artifacts</td></tr>
+    <tr><td><b>Discovery</b></td><td><code>tools/list</code>, <code>resources/list</code></td><td>Agent Card (skills, endpoint, auth) via registry</td></tr>
+    <tr><td><b>Duration</b></td><td>Usually short, synchronous</td><td>Can run long, stream updates, pause for input</td></tr>
+    <tr><td><b>Use together</b></td><td colspan="2">An agent uses MCP for its own tools and A2A to delegate to agents it doesn't own.</td></tr>
+  </table></div>

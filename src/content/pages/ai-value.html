@@ -1,0 +1,19 @@
+
+  <span class="kicker">CAIO · Value</span>
+  <h1>AI value tracking &amp; KPIs</h1>
+  <p class="lead">"We launched it" is not value. Track a short chain of metrics for each initiative: <b>adoption</b> (are people using it?), <b>operational</b> (is the work faster or better?), <b>financial</b> (did cost or revenue move?), plus <b>quality and risk</b> (is it safe and accurate?). Measure the baseline before launch, and report the gap.</p>
+  <div data-flow="valueloop" data-theme="soft"></div>
+  <h2>Scorecard</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><label style="font-size:13px">Add KPI from library <select id="kvLib"></select></label><button class="b" id="kvAdd">＋ Add</button><button class="b" id="kvSample">Load sample</button><button class="b pri" id="kvCsv" style="margin-left:auto">⤓ Export CSV</button></div>
+    <div class="tablewrap"><table class="uc-t" id="kvT"></table></div>
+  </div>
+  <div class="ac-stats" id="kvStats"></div>
+  <h2>KPI library</h2>
+  <div class="card tablewrap"><table id="kvLibT"></table></div>
+  <h2>Attribution: did AI cause the change?</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Baseline first</h3><p>Measure the metric for weeks before launch. Without a baseline, every number is a guess.</p></div>
+    <div class="card"><h3>Control groups</h3><p>Roll out to some teams or regions first and compare with those not yet using AI (difference-in-differences).</p></div>
+    <div class="card"><h3>Count the full cost</h3><p>Include review time, rework and escalations, not just the minutes the AI saved.</p></div>
+  </div>

@@ -1,0 +1,30 @@
+
+  <span class="kicker">Working with AI · Advanced prompting</span>
+  <h1>Advanced prompting &amp; context engineering</h1>
+  <p class="lead">Prompt engineering is about wording. <b>Context engineering</b> is about everything the model sees: instructions, examples, tools, memory, retrieved documents and history, assembled fresh for every call within a token budget. Walk the context assembly, then build a budget.</p>
+  <div data-flow="ctxeng" data-theme="soft"></div>
+  <h2>Context budget builder</h2>
+  <p class="muted">Allocate tokens to each part of the context and see how much of the window, and the bill, each takes.</p>
+  <div class="card">
+    <div id="cbSl" class="cb-sl"></div>
+    <div class="cb-bar" id="cbBar"></div>
+    <div id="cbOut" class="muted" style="margin-top:8px;font-size:13.5px"></div>
+  </div>
+  <h2>Techniques</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Zero-shot &amp; few-shot</span><h3>Show, don't just tell</h3><p><b>Zero-shot</b>: instructions only, which is enough for most tasks with strong models. <b>Few-shot</b>: add 2–5 worked examples when format or judgment is subtle. Pick examples that are diverse and cover edge cases, put them in a consistent structure, and watch for the model copying surface features of the examples.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Self-consistency</span><h3>Ask several times, take the majority</h3><p>Sample n independent reasoning paths at non-zero temperature and vote on the final answer. It improves accuracy on math and logic when individual answers are better than chance and errors are independent, at n× the cost. Use it selectively, for example only when the first answer has low confidence.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Prompt templates &amp; variables</span><h3>Prompts as code</h3><p>Keep prompts in versioned template files with named slots ({{user_question}}, {{retrieved_docs}}). Escape or delimit user content, keep a stable prefix (system prompt, tool definitions) at the top for caching, and put variable content last. Test templates against an eval set on every change.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Context engineering</span><h3>Curate the window, every call</h3><p><b>Write</b> (save notes and state outside the window), <b>select</b> (retrieve only what this step needs, just in time), <b>compress</b> (summarize or compact long history), <b>isolate</b> (give subagents their own clean context). Order matters: instructions first, stable before variable, the most relevant material near the question.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Meta-prompting</span><h3>Models writing prompts</h3><p>Ask a strong model to draft, critique or improve a prompt for a given task and failure cases. Useful for first drafts and for generating test cases, but always verify on real evals.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Prompt optimization</span><h3>Search, scored by evals</h3><p>Frameworks such as DSPy treat prompts as parameters: define the task, the metric and examples, and an optimizer searches instructions and few-shot demos that maximize the score. Works best with a solid golden set and a reliable metric.</p></div>
+  </div>
+  <h2>Context failure modes</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Failure</th><th>Symptom</th><th>Fix</th></tr>
+    <tr><td>Context poisoning</td><td>An early hallucination keeps getting repeated</td><td>Validate before writing to memory; start fresh threads</td></tr>
+    <tr><td>Context distraction</td><td>The model fixates on long history instead of the task</td><td>Summarize or compact; trim old turns</td></tr>
+    <tr><td>Context confusion</td><td>Irrelevant tools or documents lead to wrong choices</td><td>Load only the tools and documents this step needs</td></tr>
+    <tr><td>Context clash</td><td>Contradictory instructions or facts in the window</td><td>One source of truth; dedupe; date-stamp facts</td></tr>
+    <tr><td>Lost in the middle</td><td>Facts buried mid-context get ignored</td><td>Put key facts near the start or right before the question</td></tr>
+  </table></div>

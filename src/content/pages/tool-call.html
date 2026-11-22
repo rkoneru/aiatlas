@@ -1,0 +1,54 @@
+
+  <span class="kicker">2b · Under the hood</span>
+  <h1>Agent tools &amp; tool calls</h1>
+  <p class="lead">The model never runs the tool. It emits a structured <b>tool call</b> (name + arguments), the runtime executes it, and the result goes back into the conversation state as a <b>ToolMessage</b>. The model then reasons over that result and answers.</p>
+  <div data-flow="toolcall"></div>
+  <h2>Conversation state</h2>
+  <p class="muted">The message list the model sees grows as you step through the flow above.</p>
+  <div class="card"><div id="tcstate"></div></div>
+  <h2>Things that go wrong, and where to catch them</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Bad arguments</h3><p class="muted" style="margin:0">The model can hallucinate IDs or send the wrong types. Validate against the JSON Schema before executing, and return a clear error as the ToolMessage so the model can retry.</p></div>
+    <div class="card"><h3>Wrong tool</h3><p class="muted" style="margin:0">Overlapping tool descriptions cause misrouting. Keep names and descriptions crisp and distinct, and expose only the tools the task needs.</p></div>
+    <div class="card"><h3>Huge results</h3><p class="muted" style="margin:0">A 5 MB result floods the context. Truncate, paginate or summarize in the tool, not in the model.</p></div>
+    <div class="card"><h3>Side effects</h3><p class="muted" style="margin:0">Write tools need idempotency keys, approval gates and audit logs. The runtime is the enforcement point, not the prompt.</p></div>
+    <div class="card"><h3>Parallel calls</h3><p class="muted" style="margin:0">One AIMessage can contain several tool calls. Each result must carry its matching <code>tool_call_id</code>.</p></div>
+    <div class="card"><h3>Loops</h3><p class="muted" style="margin:0">The model can keep calling tools. Cap the steps and detect repeated identical calls.</p></div>
+  </div>
+<div id="agent-tools" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">AI agents need tools</h2>
+  <p class="lead">A model on its own can only use what it learned in training. Tools let it decide what information is missing and go and get it: search for public facts, query internal data, do exact math, call systems and read web pages. The agent reads the question, picks a tool, inspects the output, repeats if needed, and returns an answer grounded in what the tools returned.</p>
+  <div data-flow="agenttools" data-theme="soft"></div>
+  <h2>Walk through one request</h2>
+  <div class="card" id="atWalk"></div>
+  <h2>Five essential tools</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Tool</th><th>Use it for</th><th>Example call</th><th>Watch out for</th></tr>
+    <tr><td><b>🔍 Search</b></td><td>Public, current information</td><td><code>search('latest refund policy')</code></td><td class="muted">Stale or low-quality sources; cite what you use</td></tr>
+    <tr><td><b>🗄 Database</b></td><td>Internal structured data</td><td><code>SELECT plan FROM users WHERE id = 1842</code></td><td class="muted">Read-only credentials; parameterized queries; row-level access</td></tr>
+    <tr><td><b>🧮 Calculator / code</b></td><td>Exact math and data processing</td><td><code>12.5 * 60</code></td><td class="muted">Models do arithmetic unreliably; always compute</td></tr>
+    <tr><td><b>☁️ API</b></td><td>Actions and data in other systems</td><td><code>GET /v1/orders/1842</code></td><td class="muted">Auth scopes; write actions need approval and limits</td></tr>
+    <tr><td><b>🌐 Browser</b></td><td>Pages and apps without an API</td><td><code>open(page) → extract table</code></td><td class="muted">Prompt injection in page content; slow and brittle</td></tr></table></div>
+  <p class="muted" style="font-size:13px">Related: <a href="#tool-call">Tool call anatomy</a> · <a href="#tool-strategies">Tool-using strategies</a> · <a href="#mcp">MCP</a> · <a href="#agent-anatomy">Anatomy of an AI agent</a></p>
+</div>
+<div id="tool-strategies" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Tool-using strategies in AI agents</h2>
+  <p class="lead">Four ways to organize tool calls, each trading cost, latency and control: <b>caching</b>, <b>parallelization</b>, <b>chaining</b> and <b>grouping</b>.</p>
+  <div class="tabs" id="tstabs"></div>
+  <div data-flow="ts"></div>
+  <div class="grid g3" style="margin-top:14px" id="tsdetail"></div>
+  <h2>Latency simulator</h2>
+  <p class="muted">An agent needs three tool results. Compare running them in sequence, in parallel, or with a warm trajectory cache.</p>
+  <div class="card">
+    <div class="ctlrow">
+      <label>Search API <input type="range" id="tl1" min="100" max="2000" step="50" value="800"><span class="out" id="tl1v"></span></label>
+      <label>Enterprise DB <input type="range" id="tl2" min="100" max="2000" step="50" value="500"><span class="out" id="tl2v"></span></label>
+      <label>Docs API <input type="range" id="tl3" min="100" max="2000" step="50" value="400"><span class="out" id="tl3v"></span></label>
+      <label>Cache hit rate <input type="range" id="tlh" min="0" max="100" step="5" value="60"><span class="out" id="tlhv"></span></label>
+    </div>
+    <div id="tlout"></div>
+    <p class="muted" style="margin:8px 0 0;font-size:13px">Chaining is required when a step needs the previous step's output (search location → get flights → update doc). Parallelize only independent calls.</p>
+  </div>
+</div>

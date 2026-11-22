@@ -1,0 +1,27 @@
+
+  <span class="kicker">Models · Multimodal</span>
+  <h1>Generative media: diffusion, GANs &amp; CLIP</h1>
+  <p class="lead">Image, video and audio generators mostly work by <b>learning to remove noise</b>. Start from pure static, and a network guided by your prompt cleans it up step by step until a picture appears. Walk a text-to-image pipeline, then scrub through the noise schedule.</p>
+  <div data-flow="diffusion" data-theme="soft"></div>
+  <h2>Noise schedule</h2>
+  <p class="muted">Training adds noise to real images (left to right) and teaches the model to undo it. Generation runs the other way: from pure noise at step T back to a clean image at step 0.</p>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><label>Step t <input type="range" id="dfT" min="0" max="1000" step="10" value="300"><span class="out" id="dfTV">300</span></label><button class="b" id="dfPlay">▶ Denoise from T</button><span class="muted" id="dfAB" style="margin-left:auto;font-size:13px"></span></div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center"><canvas id="dfCv" width="192" height="192" style="width:192px;height:192px;border-radius:10px;border:1px solid var(--line);image-rendering:pixelated"></canvas><p class="muted" style="flex:1;min-width:220px;margin:0" id="dfTxt"></p></div>
+  </div>
+  <h2>The approaches</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag" style="color:var(--orange)">Diffusion</span><h3>Learn to denoise</h3><p>The forward process gradually adds Gaussian noise over T steps. A network (U-Net or diffusion transformer) learns to predict that noise. Sampling starts from static and subtracts predicted noise step by step. <b>Latent diffusion</b> does this in a compressed VAE space, which makes it fast enough for consumer GPUs and video.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">GANs</span><h3>Generator vs discriminator</h3><p>A generator makes fakes; a discriminator tries to spot them; both improve until fakes are convincing. GANs produce sharp images in one pass but are unstable to train and prone to mode collapse. Diffusion has largely replaced them, though GAN ideas survive in fast distilled samplers and super-resolution.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">CLIP · multimodal embeddings</span><h3>One space for text and images</h3><p>Train an image encoder and a text encoder so matching pairs land close together (contrastive learning on hundreds of millions of captioned images). Enables zero-shot image classification, text-to-image search, and conditioning signals for generators.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Text-to-image &amp; video</span><h3>Prompt to pixels</h3><p>A text encoder turns the prompt into conditioning; the denoiser attends to it at every step. <b>Classifier-free guidance</b> sharpens prompt adherence. Video models add a time dimension (spatio-temporal patches). Control adds-ons (ControlNet, image prompts, inpainting masks) steer layout and style.</p></div>
+  </div>
+  <h2>Choosing a generator</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>GAN</th><th>Diffusion</th><th>Autoregressive (token-based)</th></tr>
+    <tr><td>Speed</td><td>One pass, fast</td><td>Many steps (distillation cuts to 1–4)</td><td>One token at a time</td></tr>
+    <tr><td>Quality &amp; diversity</td><td>Sharp, less diverse</td><td>High on both</td><td>High, strong text rendering</td></tr>
+    <tr><td>Training stability</td><td>Fragile</td><td>Stable</td><td>Stable</td></tr>
+    <tr><td>Control</td><td>Latent editing</td><td>Guidance, ControlNet, inpainting</td><td>Natural fit with LLM chat and editing</td></tr>
+  </table></div>
+  <div class="callout">Generated media raises provenance and rights questions: who owns the output, what was it trained on, and how will viewers know it's synthetic? See <a href="#responsible-ai">Responsible AI &amp; regulation</a> for watermarking (C2PA, SynthID) and copyright.</div>

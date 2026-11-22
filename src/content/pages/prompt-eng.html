@@ -1,0 +1,32 @@
+
+  <span class="kicker">Working with AI</span>
+  <h1>Prompt engineering: the complete guide</h1>
+  <p class="lead">A good prompt is a work brief, not a magic phrase. It tells the AI what to produce, who it's for, what to use, which rules to follow, how to structure it and what success looks like. <b>Better prompts aren't longer prompts. They're clearer transfers of intent.</b></p>
+  <div data-flow="pformula"></div>
+  <h2>Prompt builder</h2>
+  <p class="muted">Fill in the elements that help; not every prompt needs all seven. It starts as the weak prompt "Give me some content ideas." Click <b>Load the strong example</b> to see the difference.</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="card" id="pbform"></div>
+    <div><div class="card"><div class="ctlrow" style="margin-top:0"><h3 style="margin:0">Your prompt</h3><b id="pbscore" style="margin-left:auto"></b></div><pre class="code" id="pbout" style="white-space:pre-wrap"></pre><div class="ctlrow"><button class="b pri" id="pbcopy">Copy</button><button class="b" id="pbstrong">Load the strong example</button><button class="b" id="pbweak">Reset to weak</button></div></div>
+    <div class="card" style="margin-top:14px"><h3>What changes</h3><div id="pbwhy"></div></div></div>
+  </div>
+  <h2>Prompt checker</h2>
+  <p class="muted">Paste any prompt. A quick heuristic check looks for the elements the AI usually needs. It looks at wording only and can't judge whether your content is right.</p>
+  <div class="card"><textarea id="pcin" rows="4" style="width:100%;font:14px/1.5 'JetBrains Mono',monospace;padding:10px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)">Tell me about freelancing.</textarea><div id="pcout" style="margin-top:10px"></div></div>
+  <h2>10 techniques and what each one buys you</h2>
+  <div class="card tablewrap"><table id="ptech"></table></div>
+  <h2>20 rules in 7 groups</h2>
+  <div class="grid g3" id="prules"></div>
+  <h2>Prompting is iterative</h2>
+  <div class="states"><span class="st done">Write</span><span class="arrow">→</span><span class="st done">Test</span><span class="arrow">→</span><span class="st done">Review</span><span class="arrow">→</span><span class="st done">Refine</span><span class="arrow">→</span><span class="st on">Repeat</span></div>
+  <p class="muted">Your first prompt doesn't need to be perfect. Ask: was the answer relevant? What information was missing? What should I change next time? When it fails, use the <a href="#prompt-debug">prompt debugger</a>. For reusable templates, see the <a href="#prompt-frameworks">8 prompt frameworks</a>; for recurring work, <a href="#prompt-skills">turn it into a skill</a>.</p>
+<div id="prompt-frameworks" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">8 prompt frameworks</h2>
+  <p class="lead">Eight acronym templates for writing better prompts. Pick a framework, fill in the fields (each starts with the infographic's example), and copy the finished prompt. They all cover the same few things: context, goal, role, constraints, output format and how to judge success.</p>
+  <div class="tabs" id="pftabs"></div>
+  <div class="grid g2" style="align-items:start">
+    <div class="card" id="pfform"></div>
+    <div class="card"><div class="ctlrow" style="margin-top:0"><h3 style="margin:0">Your prompt</h3><button class="b pri" id="pfcopy" style="margin-left:auto">Copy</button><button class="b" id="pfclear">Clear fields</button></div><pre class="code" id="pfout"></pre><p class="muted" id="pfwhen" style="margin:8px 0 0;font-size:13.5px"></p></div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+
+  <span class="kicker">CAIO · Portfolio</span>
+  <h1>Use-case ROI &amp; portfolio prioritization</h1>
+  <p class="lead">Every AI idea competes for the same people, data and budget. Score each one on <b>value</b>, <b>cost</b>, <b>feasibility</b>, <b>data readiness</b>, <b>risk</b> and <b>strategic fit</b>, then fund a balanced portfolio: quick wins to build momentum, a few big bets, and nothing that costs more than it returns. Edit the table, or load the sample portfolio.</p>
+  <div data-flow="ucflow" data-theme="soft"></div>
+  <h2>Portfolio</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><button class="b" id="ucAdd">＋ Add use case</button><button class="b" id="ucSample">Load sample portfolio</button><button class="b" id="ucClear">Clear</button><button class="b pri" id="ucCsv" style="margin-left:auto">⤓ Export CSV</button></div>
+    <div class="uc-w"><span class="muted" style="font-size:12.5px">Priority weights:</span><span id="ucW"></span></div>
+    <div class="tablewrap"><table class="uc-t" id="ucT"></table></div>
+    <div class="muted" id="ucMsg" style="font-size:12.5px;margin-top:6px"></div>
+  </div>
+  <div class="ac-stats" id="ucStats"></div>
+  <h2>Value vs feasibility</h2>
+  <div class="card"><svg id="ucChart" viewBox="0 0 760 420" style="width:100%;height:auto"></svg><p class="muted" style="font-size:12.5px;margin:6px 0 0">Bubble size = 3-year net value. Color = quadrant. Hover or tap a bubble for details.</p></div>
+  <h2>How to read the quadrants</h2>
+  <div class="grid g2">
+    <div class="card" style="border-top:3px solid var(--green)"><h3>Quick wins</h3><p>High value, high feasibility. Fund now, ship in weeks, use them to build credibility and the platform.</p></div>
+    <div class="card" style="border-top:3px solid var(--blue)"><h3>Big bets</h3><p>High value, harder to deliver. Fund in stages with clear go/no-go gates and a senior sponsor.</p></div>
+    <div class="card" style="border-top:3px solid var(--amber)"><h3>Fill-ins</h3><p>Easy but modest value. Good for teams learning the platform, or bundle into a bigger initiative.</p></div>
+    <div class="card" style="border-top:3px solid var(--pink)"><h3>Money pits</h3><p>Hard and low value. Park them, or redesign the use case until it moves into another quadrant.</p></div>
+  </div>
+<div id="agent-roi" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Agent ROI calculator</h2>
+  <p class="lead">An agent's business case is labor saved, revenue gained and errors avoided, minus what it costs to build, run, supervise and maintain, with adoption that ramps up over months rather than on day one. Pick a preset or enter your own numbers to get payback, 3-year NPV, IRR, the cash-flow curve and the assumptions that move the answer most.</p>
+  <div data-flow="roitree" data-theme="soft"></div>
+  <h2>Calculator</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><span class="muted" style="font-size:13px">Preset:</span><div class="chips" id="arPre"></div><button class="b pri" id="arCsv" style="margin-left:auto">⤓ Export CSV</button><button class="b" id="arJson">⤓ Scenario JSON</button></div>
+    <div class="ar-grid" id="arIn"></div>
+  </div>
+  <div class="ac-stats" id="arStats"></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3 style="margin-top:0">Cumulative cash flow</h3><svg id="arCF" viewBox="0 0 520 280" style="width:100%;height:auto"></svg></div>
+    <div class="card"><h3 style="margin-top:0">What moves NPV most (±20%)</h3><svg id="arTor" viewBox="0 0 520 280" style="width:100%;height:auto"></svg></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3 style="margin-top:0">Unit economics at full adoption</h3><div id="arUnit"></div></div>
+  <div class="callout">Make the case credible: measure the human baseline before launch, count the human review time the agent still needs, include the platform and maintenance costs, and use a ramp rather than assuming full adoption on day one.</div>
+</div>

@@ -1,0 +1,33 @@
+
+  <span class="kicker">Foundations · Agents in production</span>
+  <h1>Agents in production: runtimes, identity &amp; events</h1>
+  <p class="lead">Demo agents run in a chat window. Production agents are triggered by <b>events</b>, run for minutes or hours in the <b>background</b>, act under a verifiable <b>identity</b>, survive crashes, and sometimes operate software through its <b>screen</b>. Walk an event-driven background agent.</p>
+  <div data-flow="agentrt" data-theme="soft"></div>
+  <h2>Building blocks</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">APIs, webhooks &amp; events</span><h3>How agents get started</h3><p>Triggers: a webhook (new ticket, failed payment), a queue message, a schedule, a file landing in storage, or a chat message. Make handlers <b>idempotent</b> (the same event delivered twice does the work once), acknowledge fast and work asynchronously, and send results back by callback or webhook.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Long-running &amp; background agents</span><h3>Work that outlives a request</h3><p>Use durable execution (workflow engines such as Temporal or cloud step functions, or framework checkpointers): save state after every step so a crash resumes instead of restarting. Keep progress in files or a database, not only in the context window. Add heartbeats, timeouts, budgets and a human-readable progress log.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Agent identity &amp; delegation</span><h3>Who is this agent acting as?</h3><p>Give each agent its own identity, not a shared service account. For actions on a user's behalf, use OAuth token exchange or on-behalf-of flows to get <b>short-lived, scoped</b> tokens that carry both the user and the agent. Log both identities on every action. Delegation down a chain of agents should only ever narrow scope.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Computer-use &amp; browser agents</span><h3>Operating the screen</h3><p>When there is no API, the agent loops: screenshot (or accessibility tree / DOM) → decide → click or type → observe. Slower and more fragile than APIs, and exposed to prompt injection from any web page. Run in an isolated browser or VM, allowlist domains, and require confirmation for purchases, sends and deletions.</p></div>
+  </div>
+  <h2>Agent frameworks</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Framework</th><th>Model</th><th>Strength</th></tr>
+    <tr><td><b>LangGraph</b></td><td>Explicit graph / state machine with checkpoints</td><td>Control, durability, human-in-the-loop interrupts</td></tr>
+    <tr><td><b>CrewAI</b></td><td>Role-based "crews" of agents with tasks</td><td>Fast multi-agent prototypes</td></tr>
+    <tr><td><b>Google ADK</b></td><td>Agents, tools and workflow agents; A2A-native</td><td>Google Cloud integration, multi-agent</td></tr>
+    <tr><td><b>OpenAI Agents SDK</b></td><td>Agents with handoffs, guardrails and tracing</td><td>Lightweight, opinionated</td></tr>
+    <tr><td><b>Claude Agent SDK</b></td><td>The Claude Code harness as a library: tools, subagents, skills, hooks, MCP</td><td>Coding and long-running agents</td></tr>
+    <tr><td><b>Microsoft Agent Framework / AutoGen</b></td><td>Conversational multi-agent and workflow orchestration</td><td>Azure and enterprise integration</td></tr>
+    <tr><td><b>LlamaIndex</b></td><td>Data-centric agents and workflows</td><td>RAG-heavy agents</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">Frameworks change quickly. Pick on durability, observability, MCP/A2A support and how much control you need, and keep business logic in your own code so you can switch.</p>
+  <h2>Agentic process automation vs RPA</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>RPA bots</th><th>AI agents</th></tr>
+    <tr><td>Works from</td><td>Recorded clicks and fixed rules</td><td>Goals, instructions and tools</td></tr>
+    <tr><td>Handles</td><td>Structured, stable, high-volume steps</td><td>Unstructured input, exceptions, judgment</td></tr>
+    <tr><td>Breaks when</td><td>A screen or field changes</td><td>Instructions are ambiguous or tools are unsafe</td></tr>
+    <tr><td>Cost profile</td><td>License per bot, near-zero per run</td><td>Tokens per run, cheaper to build and change</td></tr>
+    <tr><td>Best together</td><td colspan="2">The agent reads the email, decides and extracts; RPA or APIs execute the deterministic steps; humans handle exceptions. See <a href="#sop-workflow">SOP → AI workflow</a>.</td></tr>
+  </table></div>

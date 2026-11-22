@@ -1,0 +1,669 @@
+{
+ "pins": [
+  {
+   "id": "course",
+   "label": "<span>🎓</span>Course",
+   "title": "AI mastery course",
+   "dataLabel": "🎓 AI mastery course",
+   "color": "green"
+  },
+  {
+   "id": "studio",
+   "label": "<span>🛠</span>Flow Studio",
+   "title": "Agent Flow Studio",
+   "dataLabel": "🛠 Agent Flow Studio",
+   "color": "purple"
+  },
+  {
+   "id": "playground",
+   "label": "<span>🎨</span>Playground",
+   "title": "Diagram Playground",
+   "dataLabel": "🎨 Diagram Playground",
+   "color": "blue"
+  },
+  {
+   "id": "acumen",
+   "label": "<span>🧭</span>AI Acumen",
+   "title": "AI Acumen",
+   "dataLabel": "🧭 AI Acumen",
+   "color": "teal"
+  }
+ ],
+ "groups": [
+  {
+   "name": "Start here",
+   "items": [
+    {
+     "id": "paths",
+     "label": "Choose your path",
+     "title": "Choose your path",
+     "color": "blue"
+    },
+    {
+     "id": "overview",
+     "label": "Big picture",
+     "title": "Big picture",
+     "color": "ink"
+    },
+    {
+     "id": "about",
+     "label": "About this Atlas",
+     "title": "About this Atlas",
+     "color": "purple"
+    },
+    {
+     "id": "glossary",
+     "label": "Glossary",
+     "title": "Glossary",
+     "color": "blue"
+    },
+    {
+     "id": "ai-landscape",
+     "label": "AI · ML · DL · GenAI landscape",
+     "title": "AI · ML · DL · GenAI landscape",
+     "color": "blue"
+    },
+    {
+     "id": "roadmaps",
+     "label": "AI roadmaps &amp; career paths",
+     "title": "AI roadmaps & career paths",
+     "color": "blue"
+    },
+    {
+     "id": "changes",
+     "label": "What&#39;s changed",
+     "title": "What's changed",
+     "color": "teal"
+    }
+   ]
+  },
+  {
+   "name": "Models &amp; ML",
+   "items": [
+    {
+     "id": "ml-basics",
+     "label": "ML fundamentals",
+     "title": "ML fundamentals",
+     "color": "blue"
+    },
+    {
+     "id": "nn-arch",
+     "label": "Neural networks: architectures &amp; learning",
+     "title": "Neural networks: architectures & learning",
+     "color": "purple"
+    },
+    {
+     "id": "how-llms-work",
+     "label": "How LLMs work (deep dive)",
+     "title": "How LLMs work (deep dive)",
+     "color": "purple"
+    },
+    {
+     "id": "llm-types",
+     "label": "8 types of LLMs",
+     "title": "8 types of LLMs",
+     "color": "purple"
+    },
+    {
+     "id": "model-selection",
+     "label": "Model selection &amp; strategy",
+     "title": "Model selection & strategy",
+     "color": "purple"
+    },
+    {
+     "id": "post-training",
+     "label": "How models are trained",
+     "title": "How models are trained",
+     "color": "pink"
+    },
+    {
+     "id": "gen-media",
+     "label": "Generative media",
+     "title": "Generative media",
+     "color": "orange"
+    }
+   ]
+  },
+  {
+   "name": "RAG &amp; knowledge",
+   "items": [
+    {
+     "id": "rag",
+     "label": "Retrieval-Augmented Generation &amp; its math",
+     "title": "Retrieval-Augmented Generation & its math",
+     "color": "purple"
+    },
+    {
+     "id": "rag-variants",
+     "label": "RAG architectures",
+     "title": "RAG architectures",
+     "color": "purple"
+    },
+    {
+     "id": "context-retrieval",
+     "label": "Context retrieval across stores",
+     "title": "Context retrieval across stores",
+     "color": "purple"
+    },
+    {
+     "id": "vector-search",
+     "label": "Vector search &amp; long context",
+     "title": "Vector search & long context",
+     "color": "purple"
+    },
+    {
+     "id": "ontology",
+     "label": "Self-evolving ontology",
+     "title": "Self-evolving ontology",
+     "color": "orange"
+    },
+    {
+     "id": "jev",
+     "label": "JEV vs LLM",
+     "title": "JEV vs LLM",
+     "color": "teal"
+    }
+   ]
+  },
+  {
+   "name": "Agents",
+   "items": [
+    {
+     "id": "agents",
+     "label": "AI agents: the loop &amp; its anatomy",
+     "title": "AI agents: the loop & its anatomy",
+     "color": "green"
+    },
+    {
+     "id": "llm-roles",
+     "label": "LLM as everything (roles)",
+     "title": "LLM as everything (roles)",
+     "color": "purple"
+    },
+    {
+     "id": "agent-decisions",
+     "label": "Agent goals &amp; decision making",
+     "title": "Agent goals & decision making",
+     "color": "purple"
+    },
+    {
+     "id": "agent-swarms",
+     "label": "Multi-agent systems: swarms &amp; orchestrators",
+     "title": "Multi-agent systems: swarms & orchestrators",
+     "color": "amber"
+    },
+    {
+     "id": "agent-spectrum",
+     "label": "Automation vs digital workers vs agents",
+     "title": "Automation vs digital workers vs agents",
+     "color": "teal"
+    },
+    {
+     "id": "tool-call",
+     "label": "Agent tools &amp; tool calls",
+     "title": "Agent tools & tool calls",
+     "color": "green"
+    },
+    {
+     "id": "workflows",
+     "label": "Workflows &amp; patterns",
+     "title": "Workflows & patterns",
+     "color": "green"
+    },
+    {
+     "id": "build-agent",
+     "label": "How to build an AI agent",
+     "title": "How to build an AI agent",
+     "color": "green"
+    },
+    {
+     "id": "agent-runtime",
+     "label": "Agents in production",
+     "title": "Agents in production",
+     "color": "green"
+    },
+    {
+     "id": "patterns",
+     "label": "Harness, loop &amp; graph engineering",
+     "title": "Harness, loop & graph engineering",
+     "color": "pink"
+    },
+    {
+     "id": "agent-catalog",
+     "label": "Agent catalog (30 + 100)",
+     "title": "Agent catalog (30 + 100)",
+     "color": "orange"
+    }
+   ]
+  },
+  {
+   "name": "Protocols",
+   "items": [
+    {
+     "id": "mcp",
+     "label": "Model Context Protocol &amp; server roles",
+     "title": "Model Context Protocol & server roles",
+     "color": "blue"
+    },
+    {
+     "id": "mcp-protocol",
+     "label": "MCP protocol &amp; clients",
+     "title": "MCP protocol & clients",
+     "color": "blue"
+    },
+    {
+     "id": "a2a",
+     "label": "A2A",
+     "title": "A2A",
+     "color": "orange"
+    },
+    {
+     "id": "agent-payments",
+     "label": "Agent payments &amp; commerce",
+     "title": "Agent payments & commerce",
+     "color": "orange"
+    }
+   ]
+  },
+  {
+   "name": "Prompting &amp; AI at work",
+   "items": [
+    {
+     "id": "prompt-eng",
+     "label": "Prompt engineering guide",
+     "title": "Prompt engineering guide",
+     "color": "blue"
+    },
+    {
+     "id": "prompt-advanced",
+     "label": "Advanced prompting &amp; context",
+     "title": "Advanced prompting & context",
+     "color": "orange"
+    },
+    {
+     "id": "prompt-debug",
+     "label": "Prompt debugger",
+     "title": "Prompt debugger",
+     "color": "orange"
+    },
+    {
+     "id": "prompt-skills",
+     "label": "Prompt vs Project vs Skill",
+     "title": "Prompt vs Project vs Skill",
+     "color": "orange"
+    },
+    {
+     "id": "ai-roles",
+     "label": "AI roles &amp; systems design",
+     "title": "AI roles & systems design",
+     "color": "green"
+    },
+    {
+     "id": "sop-workflow",
+     "label": "SOP → AI workflow",
+     "title": "SOP → AI workflow",
+     "color": "blue"
+    },
+    {
+     "id": "automation-ideas",
+     "label": "15 AI automation ideas",
+     "title": "15 AI automation ideas",
+     "color": "orange"
+    },
+    {
+     "id": "productivity",
+     "label": "AI productivity system",
+     "title": "AI productivity system",
+     "color": "orange"
+    }
+   ]
+  },
+  {
+   "name": "Architecture",
+   "items": [
+    {
+     "id": "reference-arch",
+     "label": "Reference architecture &amp; the AI OS",
+     "title": "Reference architecture & the AI OS",
+     "color": "purple"
+    },
+    {
+     "id": "optimization",
+     "label": "LLM optimization &amp; serving",
+     "title": "LLM optimization & serving",
+     "color": "amber"
+    },
+    {
+     "id": "data-readiness",
+     "label": "Data readiness assessment",
+     "title": "Data readiness assessment",
+     "color": "purple"
+    },
+    {
+     "id": "decide",
+     "label": "Architecture decision wizard",
+     "title": "Architecture decision wizard",
+     "color": "purple"
+    },
+    {
+     "id": "frameworks",
+     "label": "My frameworks",
+     "title": "My frameworks",
+     "color": "purple"
+    }
+   ]
+  },
+  {
+   "name": "Trust &amp; compliance",
+   "items": [
+    {
+     "id": "guardrails",
+     "label": "AI guardrails",
+     "title": "AI guardrails",
+     "color": "pink"
+    },
+    {
+     "id": "ai-security",
+     "label": "AI security (OWASP)",
+     "title": "AI security (OWASP)",
+     "color": "pink"
+    },
+    {
+     "id": "agent-governance",
+     "label": "Agents watching agents",
+     "title": "Agents watching agents",
+     "color": "purple"
+    },
+    {
+     "id": "ai-compliance",
+     "label": "Responsible AI, regulation &amp; compliance",
+     "title": "Responsible AI, regulation & compliance",
+     "color": "blue"
+    }
+   ]
+  },
+  {
+   "name": "Build &amp; ship",
+   "items": [
+    {
+     "id": "agent-kit",
+     "label": "Agent dev kit &amp; project structure",
+     "title": "Agent dev kit & project structure",
+     "color": "green"
+    },
+    {
+     "id": "llmops",
+     "label": "ADLC &amp; LLMOps",
+     "title": "ADLC & LLMOps",
+     "color": "teal"
+    },
+    {
+     "id": "fde",
+     "label": "FDE playbook",
+     "title": "FDE playbook",
+     "color": "green"
+    },
+    {
+     "id": "proposal",
+     "label": "Proposal builder",
+     "title": "Proposal builder",
+     "color": "blue"
+    },
+    {
+     "id": "evalhub",
+     "label": "Eval Hub",
+     "title": "Eval Hub",
+     "color": "teal"
+    },
+    {
+     "id": "llm-judge",
+     "label": "LLM as a judge",
+     "title": "LLM as a judge",
+     "color": "teal"
+    },
+    {
+     "id": "automation-pipelines",
+     "label": "Automation pipelines",
+     "title": "Automation pipelines",
+     "color": "teal"
+    },
+    {
+     "id": "cost",
+     "label": "LLM cost estimator",
+     "title": "LLM cost estimator",
+     "color": "amber"
+    },
+    {
+     "id": "reuse",
+     "label": "Reuse library",
+     "title": "Reuse library",
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "name": "Applied AI",
+   "items": [
+    {
+     "id": "industry",
+     "label": "Industry reference solutions",
+     "title": "Industry reference solutions",
+     "color": "blue"
+    },
+    {
+     "id": "voice",
+     "label": "Voice agent layers",
+     "title": "Voice agent layers",
+     "color": "teal"
+    },
+    {
+     "id": "applied-ml",
+     "label": "Recommenders, forecasting, vision &amp; robotics",
+     "title": "Recommenders, forecasting, vision & robotics",
+     "color": "teal"
+    },
+    {
+     "id": "doc-ai",
+     "label": "Document AI &amp; NLP",
+     "title": "Document AI & NLP",
+     "color": "teal"
+    },
+    {
+     "id": "pm-map",
+     "label": "AI PM learning map",
+     "title": "AI PM learning map",
+     "color": "amber"
+    }
+   ]
+  },
+  {
+   "name": "Customer service AI",
+   "items": [
+    {
+     "id": "cx-arch",
+     "label": "Contact-center AI architecture",
+     "title": "Contact-center AI architecture",
+     "color": "teal"
+    },
+    {
+     "id": "cx-metrics",
+     "label": "CX metrics &amp; value calculator",
+     "title": "CX metrics & value calculator",
+     "color": "teal"
+    },
+    {
+     "id": "cx-assist",
+     "label": "Agent assist &amp; handoff",
+     "title": "Agent assist & handoff",
+     "color": "teal"
+    },
+    {
+     "id": "cx-migration",
+     "label": "IVR &amp; legacy bot migration",
+     "title": "IVR & legacy bot migration",
+     "color": "teal"
+    },
+    {
+     "id": "cx-qa",
+     "label": "QA at scale &amp; omnichannel",
+     "title": "QA at scale & omnichannel",
+     "color": "teal"
+    }
+   ]
+  },
+  {
+   "name": "FDE kit",
+   "items": [
+    {
+     "id": "fde-discovery",
+     "label": "Discovery kit",
+     "title": "Discovery kit",
+     "color": "orange"
+    },
+    {
+     "id": "fde-integration",
+     "label": "Enterprise integration patterns",
+     "title": "Enterprise integration patterns",
+     "color": "orange"
+    },
+    {
+     "id": "fde-privacy",
+     "label": "Privacy engineering",
+     "title": "Privacy engineering",
+     "color": "orange"
+    },
+    {
+     "id": "fde-observability",
+     "label": "Observability &amp; on-call",
+     "title": "Observability & on-call",
+     "color": "orange"
+    },
+    {
+     "id": "fde-testing",
+     "label": "Conversation regression testing",
+     "title": "Conversation regression testing",
+     "color": "orange"
+    },
+    {
+     "id": "fde-handover",
+     "label": "Handover &amp; enablement",
+     "title": "Handover & enablement",
+     "color": "orange"
+    }
+   ]
+  },
+  {
+   "name": "Learn &amp; practice",
+   "items": [
+    {
+     "id": "practice",
+     "label": "Quizzes, flashcards &amp; study techniques",
+     "title": "Quizzes, flashcards & study techniques",
+     "color": "teal"
+    },
+    {
+     "id": "labs",
+     "label": "Scenario labs",
+     "title": "Scenario labs",
+     "color": "pink"
+    },
+    {
+     "id": "flaws",
+     "label": "Spot the flaw",
+     "title": "Spot the flaw",
+     "color": "orange"
+    },
+    {
+     "id": "certify",
+     "label": "Certification",
+     "title": "Certification",
+     "color": "green"
+    },
+    {
+     "id": "ai-projects",
+     "label": "AI project-building workflow",
+     "title": "AI project-building workflow",
+     "color": "blue"
+    },
+    {
+     "id": "team",
+     "label": "Team mode",
+     "title": "Team mode",
+     "color": "blue",
+     "hidden": true
+    }
+   ]
+  },
+  {
+   "name": "CAIO · Chief AI Officer",
+   "items": [
+    {
+     "id": "caio",
+     "label": "CAIO playbook",
+     "title": "CAIO playbook",
+     "color": "blue"
+    },
+    {
+     "id": "ai-strategy",
+     "label": "AI strategy builder",
+     "title": "AI strategy builder",
+     "color": "blue"
+    },
+    {
+     "id": "ai-operating-model",
+     "label": "AI operating model &amp; workforce",
+     "title": "AI operating model & workforce",
+     "color": "amber"
+    },
+    {
+     "id": "usecase-roi",
+     "label": "Use-case ROI &amp; portfolio",
+     "title": "Use-case ROI & portfolio",
+     "color": "purple"
+    },
+    {
+     "id": "ai-budget",
+     "label": "AI budget &amp; TCO",
+     "title": "AI budget & TCO",
+     "color": "amber"
+    },
+    {
+     "id": "ai-value",
+     "label": "AI value &amp; KPIs",
+     "title": "AI value & KPIs",
+     "color": "teal"
+    },
+    {
+     "id": "ai-board",
+     "label": "Board &amp; risk reporting",
+     "title": "Board & risk reporting",
+     "color": "pink"
+    },
+    {
+     "id": "maturity",
+     "label": "AI &amp; governance maturity assessment",
+     "title": "AI & governance maturity assessment",
+     "color": "blue"
+    },
+    {
+     "id": "vendors",
+     "label": "Vendor comparison",
+     "title": "Vendor comparison",
+     "color": "purple"
+    },
+    {
+     "id": "incidents",
+     "label": "AI incident register",
+     "title": "AI incident register",
+     "color": "pink"
+    }
+   ]
+  }
+ ],
+ "shell": {
+  "brand": "<div class=\"brand\"><div class=\"logo\">A</div><div><b>AI Architecture Atlas</b><small>Interactive flows</small></div><button class=\"menubtn\" id=\"menubtn\" aria-expanded=\"false\">☰ Menu</button></div>",
+  "navtools": "<div class=\"navtools\"><input id=\"navq\" type=\"search\" placeholder=\"Filter pages…\" aria-label=\"Filter pages\"><button id=\"navx\" title=\"Collapse all groups\" aria-label=\"Collapse all groups\">⌃</button></div>",
+  "navfoot": "<div class=\"navfoot\">Tip: use ← → keys to step through the diagram on any page. Click any box for details.</div>",
+  "coursebar": "<div id=\"coursebar\" class=\"coursebar\" hidden></div>"
+ }
+}

@@ -1,0 +1,73 @@
+
+  <span class="kicker">Models · Selection &amp; adaptation</span>
+  <h1>Model selection &amp; strategy</h1>
+  <p class="lead">A <b>foundation model</b> is trained once on broad data and adapted to thousands of tasks. Your job is to pick the right <b>tier</b> for each task, work around its <b>knowledge cutoff</b>, and choose the cheapest adaptation that works: prompt, retrieve, fine-tune or distill. Walk the adaptation ladder, then try the chooser.</p>
+  <div data-flow="adaptladder" data-theme="soft"></div>
+  <h2>Adaptation chooser</h2>
+  <p class="muted">Tick what's true for your task.</p>
+  <div class="card"><div class="sec-ctl" id="adChk"></div><div id="adOut" style="margin-top:12px"></div></div>
+  <h2>Foundation models</h2>
+  <div class="grid g2">
+    <div class="card"><h3>What makes a model "foundational"</h3><p>Self-supervised pre-training on web-scale data gives general capabilities (language, code, reasoning, vision) that transfer to tasks it was never explicitly trained on. Post-training then shapes it into an assistant. One model serves chat, extraction, coding and agents.</p></div>
+    <div class="card"><h3>Knowledge cutoff</h3><p>The model knows nothing after its training data ends, and it may not know exactly when that was. It will confidently describe "current" prices, laws or leaders from the past. Fixes: put today's date in the system prompt, give it web search or retrieval for anything time-sensitive, and instruct it to say when information may be stale.</p></div>
+  </div>
+  <h2>Model families &amp; tiers</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Tier</th><th>Typical use</th><th>Latency</th><th>Relative cost</th><th>Watch out for</th></tr>
+    <tr><td><b>Small / fast</b></td><td>Classification, routing, extraction, autocomplete, high-volume summaries</td><td>Lowest</td><td>1×</td><td>Shallow reasoning, instruction slips</td></tr>
+    <tr><td><b>Mid</b></td><td>Most chat, RAG answers, tool use, coding help</td><td>Low</td><td>~3–5×</td><td>Long multi-step plans</td></tr>
+    <tr><td><b>Large / frontier</b></td><td>Complex reasoning, agents, hard code, nuanced writing</td><td>Higher</td><td>~10–20×</td><td>Cost at volume</td></tr>
+    <tr><td><b>Reasoning mode</b></td><td>Math, planning, debugging, multi-constraint problems</td><td>Highest (thinks first)</td><td>Extra thinking tokens</td><td>Overkill for simple tasks</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">Multipliers are illustrative; check your provider's pricing. Route each request to the cheapest tier that passes your evals, and escalate on low confidence.</p>
+  <h2>Fine-tune vs RAG vs prompt</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Need</th><th>Prompting</th><th>RAG</th><th>Fine-tuning</th></tr>
+    <tr><td>New or changing facts</td><td>Only if they fit in the prompt</td><td><b>Best</b>: update the index, cite sources</td><td>Poor: facts go stale, hallucinations persist</td></tr>
+    <tr><td>Format, tone, house style</td><td>Good with examples</td><td>No help</td><td><b>Best</b> at high volume</td></tr>
+    <tr><td>Narrow skill (a classifier, a DSL)</td><td>OK</td><td>No help</td><td><b>Best</b></td></tr>
+    <tr><td>Lower cost and latency at scale</td><td>Long prompts are expensive</td><td>Adds retrieval latency</td><td><b>Best</b> with a smaller tuned model</td></tr>
+    <tr><td>Time to first version</td><td><b>Hours</b></td><td>Days</td><td>Weeks (data, training, evals)</td></tr>
+  </table></div>
+  <h2>Knowledge distillation</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Teacher → student</h3><p>A large teacher model generates outputs (or full probability distributions) on your task; a small student is trained to reproduce them.</p></div>
+    <div class="card"><h3>When it pays off</h3><p>High, steady volume on a well-defined task where a frontier model works but is too slow or expensive. Typical result: most of the quality at a fraction of the cost.</p></div>
+    <div class="card"><h3>Pitfalls</h3><p>The student inherits the teacher's errors, and narrow students fail outside their task. Check license terms: some providers restrict using outputs to train competing models.</p></div>
+  </div>
+<div id="model-strategy" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Model strategy: open vs closed, build vs buy</h2>
+  <p class="lead">Before any architecture diagram comes a sourcing decision: <b>which models</b>, <b>hosted by whom</b>, and <b>how much do you build yourself</b>? Walk the decision flow, then check the self-hosting break-even in Key formulas.</p>
+  <div data-flow="modelstrat" data-theme="soft"></div>
+  <h2>Open-weight vs closed models</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>Closed / API-only</th><th>Open-weight</th></tr>
+    <tr><td>Examples</td><td>Frontier models from Anthropic, OpenAI, Google</td><td>Llama, Mistral, Qwen, DeepSeek, Gemma families</td></tr>
+    <tr><td>Capability</td><td>Usually the frontier</td><td>Close behind; strong for many tasks</td></tr>
+    <tr><td>Data control</td><td>Vendor terms, regions, zero-retention options</td><td>Full: runs in your VPC or on-prem</td></tr>
+    <tr><td>Customization</td><td>Prompting, some fine-tuning APIs</td><td>Any fine-tuning, quantization, distillation</td></tr>
+    <tr><td>Cost model</td><td>Per token; no idle cost</td><td>GPU hours; cheap at high, steady volume</td></tr>
+    <tr><td>Operations</td><td>None</td><td>Serving, scaling, patching, evals are yours</td></tr>
+    <tr><td>License</td><td>Terms of service</td><td>Varies: Apache/MIT vs custom licenses with use limits</td></tr>
+  </table></div>
+  <h2>Build vs buy vs partner</h2>
+  <div class="grid g3">
+    <div class="card" style="border-top:3px solid var(--blue)"><span class="tag">Buy</span><h3>SaaS or platform</h3><p>Fastest to value for common problems (support bots, meeting notes, coding assistants). Risk: lock-in, generic workflows, data residency.</p><p class="muted">Choose when the use case is not a differentiator.</p></div>
+    <div class="card" style="border-top:3px solid var(--purple)"><span class="tag" style="color:var(--purple)">Partner</span><h3>Platform + your logic</h3><p>Build on an agent platform or a vendor's APIs with your own prompts, tools, data and evals. The common middle path for enterprises.</p><p class="muted">Choose when you need customization without running infrastructure.</p></div>
+    <div class="card" style="border-top:3px solid var(--green)"><span class="tag" style="color:var(--green)">Build</span><h3>Own the stack</h3><p>Custom orchestration, self-hosted or fine-tuned models, your own eval and observability. Maximum control and differentiation, maximum ownership cost.</p><p class="muted">Choose when AI is the product or the core advantage.</p></div>
+  </div>
+  <h3 style="margin-top:20px">Avoiding lock-in</h3>
+  <div class="grid g3">
+    <div class="card"><p><b>Abstract the model call.</b> A gateway or thin client lets you swap providers per route.</p></div>
+    <div class="card"><p><b>Own your evals.</b> A portable eval suite is what makes switching safe.</p></div>
+    <div class="card"><p><b>Use open protocols.</b> MCP for tools and A2A for agents keep integrations portable.</p></div>
+  </div>
+  <h2>Scaling, emergence &amp; the frontier</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Scaling laws</h3><p>Loss falls predictably as parameters, data and compute grow. Compute-optimal training (the "Chinchilla" result) uses roughly 20 training tokens per parameter; many modern models train far beyond that to make inference cheaper.</p></div>
+    <div class="card"><h3>Emergent abilities</h3><p>Some skills look like they appear suddenly at a certain scale. Researchers debate how real the jumps are: with smoother, continuous metrics, many abilities improve gradually, and the "jump" is partly an artifact of all-or-nothing scoring.</p></div>
+    <div class="card"><h3>AGI &amp; frontier outlook</h3><p>Frontier labs say they are pursuing general-purpose systems that match or exceed humans on most cognitive work. Timelines are genuinely contested, from a few years to many decades. Definitions differ too. For planning, assume capabilities keep improving quickly and design systems that benefit from better models (thin harnesses, strong evals).</p></div>
+    <div class="card"><h3>What this means for builders</h3><p>Re-run your evals on each new model release. Delete scaffolding the new model doesn't need. Keep humans on irreversible decisions regardless of benchmark scores. Budget for prices falling and capabilities rising.</p></div>
+  </div>
+</div>

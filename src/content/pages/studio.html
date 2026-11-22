@@ -1,0 +1,27 @@
+
+  <span class="kicker">🛠 Workbench</span>
+  <h1>Agent Flow Studio</h1>
+  <p class="lead" style="margin-bottom:6px">Design an agentic flow from the Atlas building blocks. The Performance Overview scores it live on 8 dimensions, with one-click fixes and a simulated run.</p>
+  <div class="sfshell">
+    <aside class="sfside" id="sfside"></aside>
+    <div class="sfmain">
+      <div class="sftop">
+        <button class="sfib" id="sfundo" title="Undo (Ctrl+Z)">↶</button><button class="sfib" id="sfredo" title="Redo (Ctrl+Y)">↷</button>
+        <div class="sfttl"><select id="sftpl" title="Load a template"></select><div class="muted" id="sfsub" style="font-size:12px"></div></div>
+        <button class="sfib" id="sfio" title="Export / import JSON">⛁</button><button class="sfib" id="sfsim" title="Simulate a run">▶</button><button class="sfib" id="sfhelp" title="How it works">ⓘ</button>
+      </div>
+      <div class="stcanvas" id="sfwrap"><div class="sfhelpbox card" id="sfhelpbox" hidden><b>How it works</b><ul style="margin:6px 0 0;padding-left:18px;font-size:13px"><li>Click a block on the left to add it. If a block is selected, the new one chains after it.</li><li>Drag cards to move them. Drag from the dot on a card's bottom edge to another card to connect them, or click the dot and then the target.</li><li>Click a connection or its label to rename or delete it. <kbd>Delete</kbd> removes the selection; <kbd>Esc</kbd> cancels.</li><li>Card chips: inputs · outputs · open issues · estimated latency (ms).</li><li>The score is the weighted share of the applicable checks that pass. Checks that don't apply are skipped.</li></ul></div><div id="sfcv"></div></div>
+      <div class="sfbot"><button class="sfib" id="sflayout" title="Auto-arrange">⊞</button><button class="sfib" id="sffit" title="Fit to screen">⤢</button><span class="muted" id="sfhint" style="flex:1;font-size:12.5px;margin-left:6px"></span><div class="sfzoom"><button id="sfzo">−</button><span id="sfzoom">100%</span><button id="sfzi">+</button></div></div>
+    </div>
+    <aside class="sfpanel">
+      <div style="display:flex;align-items:flex-start;margin-bottom:10px"><div style="flex:1"><b>Performance overview</b><div class="muted" style="font-size:12px">Live score of this flow</div></div></div>
+      <div id="sfinspc"></div>
+      <div class="sfsec">Insight metrics</div>
+      <div class="sfsearch"><span>⌕</span><input id="sffq" type="search" placeholder="Search findings…"></div>
+      <div id="sfmetrics"></div>
+      <div class="sfsec">Flow objectives <span class="muted" id="sfobjn" style="font-weight:500"></span></div>
+      <div id="sfobj"></div>
+    </aside>
+  </div>
+  <div class="card" id="sfiobox" hidden style="margin-top:12px"><h3>Export / import flow JSON</h3><textarea id="sfjson" rows="8" style="width:100%;font:12.5px/1.4 'JetBrains Mono',monospace;padding:10px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"></textarea><div class="ctlrow"><button class="b pri" id="sfcopy">Copy JSON</button><button class="b" id="sfapply">Import pasted JSON</button><span class="muted" id="sfiomsg" style="font-size:13px"></span></div></div>
+  <div class="card" id="sfsimbox" hidden style="margin-top:12px"><div class="ctlrow" style="margin-top:0"><h3 style="margin:0">Simulated run</h3><label style="flex:1">Sample request <input type="text" id="sfq" value="My order #4417 arrived damaged, can I get a refund?" style="flex:1;min-width:240px;font:inherit;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"></label><button class="b pri" id="sfrerun">Run again</button></div><div id="sflog" class="mono" style="font-size:13px;margin-top:10px"></div><div id="sfsum"></div><p class="muted" style="font-size:12.5px;margin:8px 0 0">Simulated: no real model or tool is called. Latency and call counts are rough estimates per block type, adding up sequentially (parallel branches would be faster).</p></div>

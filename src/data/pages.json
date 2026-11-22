@@ -1,0 +1,982 @@
+[
+ {
+  "id": "course",
+  "title": "AI mastery course",
+  "navLabel": "AI mastery course",
+  "group": null,
+  "inNav": true,
+  "accent": "green",
+  "lead": "",
+  "kicker": ""
+ },
+ {
+  "id": "overview",
+  "title": "How the pieces of an AI system fit together",
+  "navLabel": "Big picture",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "An LLM generates text. RAG gives it knowledge. An agent lets it act. MCP standardizes how it reaches tools. A2A lets agents work with other agents. Walk the end-to-end request below, then open each layer.",
+  "kicker": "From prompts to powerful systems"
+ },
+ {
+  "id": "rag",
+  "title": "Retrieval-Augmented Generation & its math",
+  "navLabel": "Retrieval-Augmented Generation & its math",
+  "group": "RAG & knowledge",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "LLMs augmented with retrieved knowledge. Two pipelines: offline ingestion builds the index, online query retrieves, reranks and composes the prompt at runtime, so answers have fewer hallucinations and cite sources.",
+  "kicker": "1 · RAG"
+ },
+ {
+  "id": "agents",
+  "title": "AI agents: the loop & its anatomy",
+  "navLabel": "AI agents: the loop & its anatomy",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "green",
+  "lead": "An agent wraps an LLM in a loop: plan → act → observe → reflect, with memory and tools, until the goal is met or a stop condition fires. The result is closed-loop execution in real systems.",
+  "kicker": "2 · AI Agents"
+ },
+ {
+  "id": "mcp",
+  "title": "Model Context Protocol & server roles",
+  "navLabel": "Model Context Protocol & server roles",
+  "group": "Protocols",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "A standard way for LLM applications to use tools and data. Hosts (an IDE, a desktop assistant, an internal playground) run MCP clients that talk to MCP servers, which wrap real systems like a CRM, a SQL warehouse or a file drive.",
+  "kicker": "3 · MCP"
+ },
+ {
+  "id": "a2a",
+  "title": "Agent-to-Agent coordination",
+  "navLabel": "A2A",
+  "group": "Protocols",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "MCP connects an agent to tools. A2A connects an agent to other agents, which may be owned by other teams, partners or vendors. Agents publish Agent Cards, get discovered through a registry, and exchange tasks, status events and artifacts through a governed gateway.",
+  "kicker": "4 · A2A"
+ },
+ {
+  "id": "patterns",
+  "title": "Harness, loop & graph engineering",
+  "navLabel": "Harness, loop & graph engineering",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "Three ways to build agent systems: a harness to empower one agent, a loop to refine output, a graph to handle complex work. Most production systems nest them, for example a graph whose nodes are harnessed agents with internal loops.",
+  "kicker": "5 · Building agent systems"
+ },
+ {
+  "id": "optimization",
+  "title": "LLM optimization & serving",
+  "navLabel": "LLM optimization & serving",
+  "group": "Architecture",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "The goal: make LLMs smaller, faster, cheaper and more efficient without sacrificing quality. Techniques act at different stages: training, compression, inference and serving. Filter by stage and click a card for trade-offs.",
+  "kicker": "6 · Performance"
+ },
+ {
+  "id": "rag-variants",
+  "title": "10 RAG architectures, from naive to multi-agent",
+  "navLabel": "RAG architectures",
+  "group": "RAG & knowledge",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Every variant fixes a specific weakness of the one before it: bad ranking, short queries, wrong documents, missing relationships, unnecessary retrieval, or a single fixed source. Pick a variant to walk through its flow.",
+  "kicker": "1b · RAG architectures"
+ },
+ {
+  "id": "mcp-protocol",
+  "title": "MCP protocol & clients",
+  "navLabel": "MCP protocol & clients",
+  "group": "Protocols",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "The standardized bridge between AI models and external systems. MCP decouples AI from systems: change servers, not your agent. Below is the message flow between the AI application, the MCP client, the MCP server and the external system.",
+  "kicker": "3b · MCP architecture"
+ },
+ {
+  "id": "agent-kit",
+  "title": "Agent dev kit & project structure",
+  "navLabel": "Agent dev kit & project structure",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "green",
+  "lead": "CLAUDE.md + Skills + Hooks + Subagents + Plugins. Five layers, each with a different job: CLAUDE.md sets the rules, skills provide expertise, hooks enforce quality, subagents delegate work, and plugins distribute it all to your team. MCP servers and agent teams extend it outward.",
+  "kicker": "7 · Claude Code"
+ },
+ {
+  "id": "tool-call",
+  "title": "Agent tools & tool calls",
+  "navLabel": "Agent tools & tool calls",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "green",
+  "lead": "The model never runs the tool. It emits a structured tool call (name + arguments), the runtime executes it, and the result goes back into the conversation state as a ToolMessage. The model then reasons over that result and answers.",
+  "kicker": "2b · Under the hood"
+ },
+ {
+  "id": "workflows",
+  "title": "Workflows and patterns",
+  "navLabel": "Workflows & patterns",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "green",
+  "lead": "From rule-based automation to agentic workflows, plus the components of an agent and four core patterns: agentic RAG, tool use, reflection and planning. Pick one to walk through it.",
+  "kicker": "2c · AI agents"
+ },
+ {
+  "id": "reference-arch",
+  "title": "Reference architecture & the AI OS",
+  "navLabel": "Reference architecture & the AI OS",
+  "group": "Architecture",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Nine layers of a production agentic system: goal-driven, multi-agent, orchestrated, observable and reliable. Step through a request end to end, or click any layer for details.",
+  "kicker": "5b · Reference"
+ },
+ {
+  "id": "ontology",
+  "title": "The self-evolving ontology",
+  "navLabel": "Self-evolving ontology",
+  "group": "RAG & knowledge",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Structure that sharpens as agents use it. Instead of a fixed document, the ontology (content + schema + tools over your real data) is a state that learns: agent trajectories reveal gaps, small semantic changes are proposed, and they are kept only if they beat the previous version.",
+  "kicker": "9 · Knowledge"
+ },
+ {
+  "id": "jev",
+  "title": "JEV vs LLM: when to use which",
+  "navLabel": "JEV vs LLM",
+  "group": "RAG & knowledge",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Same context, different interface, different outcomes. A JEV (as described in this infographic) evaluates predefined decisions: you define the questions and get typed answers with probabilities, in parallel, with no parsing. An LLM generates text that you then parse into a decision.",
+  "kicker": "10 · Judgment"
+ },
+ {
+  "id": "voice",
+  "title": "Layers of an AI voice agent",
+  "navLabel": "Voice agent layers",
+  "group": "Applied AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "What's actually working under the call. A good voice agent is not just a voice. It is a connected business system. Trace one call through the layers, then explore each layer and budget your latency.",
+  "kicker": "11 · Voice"
+ },
+ {
+  "id": "ai-landscape",
+  "title": "AI, ML, DL, GenAI, LLMs, RAG & Agentic AI",
+  "navLabel": "AI · ML · DL · GenAI landscape",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "These concepts are related, not interchangeable. Think of them as a hierarchy that keeps building up: each ring is a subset of the one outside it. RAG and agentic AI are not smaller rings. They are system patterns built on top of LLMs. Click a layer.",
+  "kicker": "★ Landscape"
+ },
+ {
+  "id": "llm-types",
+  "title": "8 types of LLMs used in AI agents",
+  "navLabel": "8 types of LLMs",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Different architectures, same goal: smarter agents. LLMs power the brain of an agent, but \"LLM\" now covers very different designs. Pick a type to walk through how it works.",
+  "kicker": "Models"
+ },
+ {
+  "id": "ai-roles",
+  "title": "AI roles & systems design",
+  "navLabel": "AI roles & systems design",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Stop using AI only to get answers. Use it to think, test, create and solve with you. The better question isn't \"What can AI answer?\" but \"What role should AI play in this problem?\" Pick a role to get a starter prompt.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "sop-workflow",
+  "title": "How to turn one SOP into an AI workflow",
+  "navLabel": "SOP → AI workflow",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "A good automation begins as a clear, reviewable process. Nine steps take you from a written procedure to a tested AI workflow. Walk the steps, then fill in the builder for your own process.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "productivity",
+  "title": "Build an AI-powered productivity system",
+  "navLabel": "AI productivity system",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Capture → organize → prioritize → execute → review. AI takes the repetitive work so human time goes to judgment. AI is the assistant, not the business: you still set priorities, check AI output and make the final decisions.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "how-llms-work",
+  "title": "How LLMs work, from prompt to response",
+  "navLabel": "How LLMs work (deep dive)",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "A decoder-only transformer turns your prompt into tokens, then vectors, runs them through stacked layers of causal self-attention and feed-forward networks, and predicts one token at a time. Step through the pipeline, then try each stage on live text.",
+  "kicker": "Models · deep dive"
+ },
+ {
+  "id": "guardrails",
+  "title": "AI guardrail categories",
+  "navLabel": "AI guardrails",
+  "group": "Trust & compliance",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "Seven layers of control around an AI system: input, prompt, retrieval, tool, output, runtime and memory. No single guardrail catches everything; defense in depth does. Step through the layers, then throw attacks at the system and see which layer stops them.",
+  "kicker": "5d · Safety"
+ },
+ {
+  "id": "automation-ideas",
+  "title": "15 AI automation ideas",
+  "navLabel": "15 AI automation ideas",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Practical workflows that remove repetitive daily work. AI automation isn't about replacing you; it removes repetitive steps, not human judgment. Every idea runs through the same engine: trigger → input → AI processing → action → human review → done. Pick one.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "roadmaps",
+  "title": "AI roadmaps & career paths",
+  "navLabel": "AI roadmaps & career paths",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Two learning paths. The AI engineer roadmap goes from Python to shipped AI products. The LLM engineering roadmap goes deeper on the model itself, from fundamentals and pre-training to deployment and security. Tick off what you already know to see what's left.",
+  "kicker": "Career"
+ },
+ {
+  "id": "build-agent",
+  "title": "How to build an AI agent",
+  "navLabel": "How to build an AI agent",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Eight steps from idea to a tested agent: purpose → system prompt → model → tools → memory → orchestration → interface → evals. Step through them, then use the checklist to track your own build. Each step links to the Atlas page that goes deeper.",
+  "kicker": "2f · AI agents"
+ },
+ {
+  "id": "agent-governance",
+  "title": "AI agents watching agents",
+  "navLabel": "Agents watching agents",
+  "group": "Trust & compliance",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Human review at the end of the chain doesn't scale; it becomes a bottleneck with a compliance label on it. The model that scales: agents check agents, every action is logged, and humans govern the system and handle the high-stakes exceptions instead of inspecting every transaction.",
+  "kicker": "5e · Governance"
+ },
+ {
+  "id": "prompt-skills",
+  "title": "Prompt vs Project vs Skill",
+  "navLabel": "Prompt vs Project vs Skill",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Same AI, three levels of setup. A prompt is instructions typed every time. A project holds files and instructions that every chat inside it remembers. A skill teaches a process once, and it loads automatically when the task comes up.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "agent-catalog",
+  "title": "Agent catalog: 30 agents to build & 100 agent ideas",
+  "navLabel": "Agent catalog (30 + 100)",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Thirty reference agent types in six layers, the DASH template for designing any of them, a build order, and 100 department-level agent ideas you can search.",
+  "kicker": "Applied"
+ },
+ {
+  "id": "pm-map",
+  "title": "AI product manager learning map",
+  "navLabel": "AI PM learning map",
+  "group": "Applied AI",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "The core PM concepts, the tools and KPIs, the soft skills, and seven prioritization methods ranked from beginner-friendly to advanced, with a working RICE / ICE calculator.",
+  "kicker": "Career"
+ },
+ {
+  "id": "prompt-eng",
+  "title": "Prompt engineering: the complete guide",
+  "navLabel": "Prompt engineering guide",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "A good prompt is a work brief, not a magic phrase. It tells the AI what to produce, who it's for, what to use, which rules to follow, how to structure it and what success looks like. Better prompts aren't longer prompts. They're clearer transfers of intent.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "prompt-debug",
+  "title": "Prompt debugger: fix weak AI answers",
+  "navLabel": "Prompt debugger",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Different failures need different fixes. Diagnose the failure, change one major variable, test the result. Then check the revision on several cases, and remember: a good prompt doesn't make the answer automatically true.",
+  "kicker": "Working with AI"
+ },
+ {
+  "id": "studio",
+  "title": "Agent Flow Studio",
+  "navLabel": "Agent Flow Studio",
+  "group": null,
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Design an agentic flow from the Atlas building blocks. The Performance Overview scores it live on 8 dimensions, with one-click fixes and a simulated run.",
+  "kicker": "🛠 Workbench"
+ },
+ {
+  "id": "ml-basics",
+  "title": "ML fundamentals",
+  "navLabel": "ML fundamentals",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Every LLM, recommender and fraud model rests on the same ideas: learn from data, hold some data back to check yourself, and balance fitting the training data against generalizing to new data. Walk the workflow, then drag the complexity slider to watch overfitting happen.",
+  "kicker": "Foundations · Machine learning"
+ },
+ {
+  "id": "nn-arch",
+  "title": "Neural networks: architectures & learning",
+  "navLabel": "Neural networks: architectures & learning",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Different data has different structure, and each architecture builds that structure in. CNNs assume nearby pixels matter together, RNNs read sequences in order, transformers let every token look at every other token, and state-space models compress long sequences into a running state. Step through a CNN, then compare the families.",
+  "kicker": "Models · Deep learning"
+ },
+ {
+  "id": "post-training",
+  "title": "How models are trained: from pre-training to alignment",
+  "navLabel": "How models are trained",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "A raw pre-trained model completes text; it doesn't follow instructions or refuse harmful requests. Post-training turns it into an assistant: supervised fine-tuning on demonstrations, then preference learning (RLHF, DPO, Constitutional AI), then reinforcement learning on tasks with checkable answers. Walk the pipeline.",
+  "kicker": "Models · Training"
+ },
+ {
+  "id": "gen-media",
+  "title": "Generative media: diffusion, GANs & CLIP",
+  "navLabel": "Generative media",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Image, video and audio generators mostly work by learning to remove noise. Start from pure static, and a network guided by your prompt cleans it up step by step until a picture appears. Walk a text-to-image pipeline, then scrub through the noise schedule.",
+  "kicker": "Models · Multimodal"
+ },
+ {
+  "id": "vector-search",
+  "title": "Vector search internals & long context vs RAG",
+  "navLabel": "Vector search & long context",
+  "group": "RAG & knowledge",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Exact nearest-neighbor search compares the query with every vector, which is too slow at millions of chunks. Approximate nearest neighbor (ANN) indexes trade a sliver of recall for orders-of-magnitude speed. Step through an HNSW search, then decide when a long context window can replace retrieval.",
+  "kicker": "Foundations · RAG internals"
+ },
+ {
+  "id": "ai-security",
+  "title": "AI security: OWASP Top 10s & supply chain",
+  "navLabel": "AI security (OWASP)",
+  "group": "Trust & compliance",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "The OWASP GenAI Security Project maintains two lists every team building with LLMs should know: the Top 10 for LLM Applications 2026 and the Top 10 for Agentic Applications. Read them together once a model can use tools. Step through the attack surface, then check which risks your controls cover.",
+  "kicker": "Design & performance · Security"
+ },
+ {
+  "id": "agent-payments",
+  "title": "Agent payments & commerce protocols",
+  "navLabel": "Agent payments & commerce",
+  "group": "Protocols",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "When an agent buys something, three questions need answers: did the user really authorize this, how does the agent check out with the merchant, and how does money actually move? Several open protocols now cover these layers, and they tend to stack rather than compete. Walk a purchase end to end.",
+  "kicker": "Protocols · Commerce"
+ },
+ {
+  "id": "applied-ml",
+  "title": "Classic ML applications: recommenders, forecasting & vision",
+  "navLabel": "Recommenders, forecasting, vision & robotics",
+  "group": "Applied AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Much of the AI that runs businesses isn't generative at all. Recommenders decide what you see, forecasts decide what gets stocked and staffed, and computer vision inspects, counts and reads. LLMs increasingly sit beside these systems rather than replacing them. Step through a two-stage recommender.",
+  "kicker": "Applied · Classic ML"
+ },
+ {
+  "id": "model-selection",
+  "title": "Model selection & strategy",
+  "navLabel": "Model selection & strategy",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "A foundation model is trained once on broad data and adapted to thousands of tasks. Your job is to pick the right tier for each task, work around its knowledge cutoff, and choose the cheapest adaptation that works: prompt, retrieve, fine-tune or distill. Walk the adaptation ladder, then try the chooser.",
+  "kicker": "Models · Selection & adaptation"
+ },
+ {
+  "id": "prompt-advanced",
+  "title": "Advanced prompting & context engineering",
+  "navLabel": "Advanced prompting & context",
+  "group": "Prompting & AI at work",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Prompt engineering is about wording. Context engineering is about everything the model sees: instructions, examples, tools, memory, retrieved documents and history, assembled fresh for every call within a token budget. Walk the context assembly, then build a budget.",
+  "kicker": "Working with AI · Advanced prompting"
+ },
+ {
+  "id": "llmops",
+  "title": "ADLC & LLMOps",
+  "navLabel": "ADLC & LLMOps",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "An AI feature is never \"done\". Prompts, models, data and user behavior all drift. LLMOps is the loop that keeps quality measurable: golden datasets and benchmarks offline, CI gates on every change, canaries and A/B tests online, monitoring in production, and human feedback flowing back into the eval set. Walk the loop.",
+  "kicker": "Build & ship · Operations"
+ },
+ {
+  "id": "agent-runtime",
+  "title": "Agents in production: runtimes, identity & events",
+  "navLabel": "Agents in production",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Demo agents run in a chat window. Production agents are triggered by events, run for minutes or hours in the background, act under a verifiable identity, survive crashes, and sometimes operate software through its screen. Walk an event-driven background agent.",
+  "kicker": "Foundations · Agents in production"
+ },
+ {
+  "id": "doc-ai",
+  "title": "Document AI, IDP & NLP tasks",
+  "navLabel": "Document AI & NLP",
+  "group": "Applied AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Most enterprise knowledge is trapped in PDFs, scans, forms and email. Document AI turns them into structured data, intelligent document processing (IDP) wraps that in a validated workflow with human review, and classic NLP tasks (entities, sentiment, classification, summarization) run on top. Walk an IDP pipeline.",
+  "kicker": "Applied · Documents & language"
+ },
+ {
+  "id": "ai-compliance",
+  "title": "Responsible AI, regulation & compliance",
+  "navLabel": "Responsible AI, regulation & compliance",
+  "group": "Trust & compliance",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "AI compliance is now a patchwork: comprehensive AI laws (EU, South Korea), targeted rules (China's labeling rules, US state laws on hiring, frontier models and chatbots), privacy law applied to AI (GDPR, CCPA), sector regulators (finance, health, employment) and voluntary standards (NIST AI RMF, ISO/IEC 42001). Walk the compliance program, find the obligations that apply to you, and check your evidence. This page is a map, not legal advice.",
+  "kicker": "Design & performance · Compliance"
+ },
+ {
+  "id": "playground",
+  "title": "Diagram playground",
+  "navLabel": "Diagram Playground",
+  "group": null,
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Design your own architecture diagram in the same style as the rest of the Atlas. Add boxes and connections, drag boxes to arrange them, and the playground writes the steps and the sequence diagram for you. Every diagram gets the same Play, step-through, Diagram/Sequence toggle and ⤓ Export menu (GIF, PNG, SVG, interactive HTML, Mermaid, JSON). Your work is saved in this browser.",
+  "kicker": "Build & ship · Playground"
+ },
+ {
+  "id": "caio",
+  "title": "The Chief AI Officer playbook",
+  "navLabel": "CAIO playbook",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "A Chief AI Officer turns AI from scattered experiments into a managed portfolio that pays back. The job has six parts: set the strategy, pick and fund the right use cases, build the shared platform, govern the risk, grow the talent and adoption, and prove the value to the board. Step through the operating loop, then use the tools in this section to do each part.",
+  "kicker": "CAIO · Playbook"
+ },
+ {
+  "id": "ai-strategy",
+  "title": "AI strategy builder",
+  "navLabel": "AI strategy builder",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "A good AI strategy fits on one page: an ambition, the outcomes it serves, where the value is, which use cases come first, the capabilities to build, how risk is governed, a roadmap, and the metrics that prove it. Start with the posture quiz, then fill the canvas. It saves as you type and exports as Markdown.",
+  "kicker": "CAIO · Strategy"
+ },
+ {
+  "id": "usecase-roi",
+  "title": "Use-case ROI & portfolio prioritization",
+  "navLabel": "Use-case ROI & portfolio",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Every AI idea competes for the same people, data and budget. Score each one on value, cost, feasibility, data readiness, risk and strategic fit, then fund a balanced portfolio: quick wins to build momentum, a few big bets, and nothing that costs more than it returns. Edit the table, or load the sample portfolio.",
+  "kicker": "CAIO · Portfolio"
+ },
+ {
+  "id": "ai-budget",
+  "title": "AI budget & total cost of ownership",
+  "navLabel": "AI budget & TCO",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "Model tokens are usually the smallest line in an AI budget. People, data work, platform, change management and governance dominate. Plan three years across the full cost stack, size inference from real volumes, and see the split.",
+  "kicker": "CAIO · Finance"
+ },
+ {
+  "id": "ai-value",
+  "title": "AI value tracking & KPIs",
+  "navLabel": "AI value & KPIs",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "\"We launched it\" is not value. Track a short chain of metrics for each initiative: adoption (are people using it?), operational (is the work faster or better?), financial (did cost or revenue move?), plus quality and risk (is it safe and accurate?). Measure the baseline before launch, and report the gap.",
+  "kicker": "CAIO · Value"
+ },
+ {
+  "id": "ai-board",
+  "title": "Board & risk reporting",
+  "navLabel": "Board & risk reporting",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "Boards want three things from AI reporting: is it creating value, are we exposed, and what do you need from us? Rate your AI risks on the heatmap, then export a board pack outline that pulls in your strategy, portfolio and KPIs from the other CAIO tools.",
+  "kicker": "CAIO · Board"
+ },
+ {
+  "id": "industry",
+  "title": "Industry reference solutions",
+  "navLabel": "Industry reference solutions",
+  "group": "Applied AI",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Complete, reusable blueprints for five industries. Each covers the architecture, the agents and what they do, the data and systems they touch, the compliance obligations that apply, and a starter business case you can open in the Agent ROI calculator or add to your use-case portfolio. Pick an industry.",
+  "kicker": "Applied AI · Reference solutions"
+ },
+ {
+  "id": "frameworks",
+  "title": "My frameworks",
+  "navLabel": "My frameworks",
+  "group": "Architecture",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "A portfolio of independent frameworks for building governed, efficient agentic systems: how agents are declared (ABL), orchestrated (TKI), routed cheaply (NEXUS, MPM), gated before they act (Risk Kernel), explained to people (AGIL), and run as one governed runtime (AXIS). Walk how they fit together.",
+  "kicker": "Portfolio · Independent work"
+ },
+ {
+  "id": "fde",
+  "title": "FDE playbook",
+  "navLabel": "FDE playbook",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Forward-deployed engineers sit with the customer and take an AI solution from a fuzzy problem to production value. This playbook gives each phase a template you can fill in, save, and export as Markdown: discovery, solution design, success plan, go-live and handoff.",
+  "kicker": "Build & ship · Forward-deployed engineering"
+ },
+ {
+  "id": "practice",
+  "title": "Quizzes, flashcards & study techniques",
+  "navLabel": "Quizzes, flashcards & study techniques",
+  "group": "Learn & practice",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Practice every concept on the Atlas with spaced repetition. Cards you rated New or Learning in AI Acumen come up first; cards you get right come back after longer gaps (1, 3, 7, 16, then 35 days), and misses come back today. Filter by area or page.",
+  "kicker": "Learn · Practice"
+ },
+ {
+  "id": "decide",
+  "title": "Architecture decision wizard",
+  "navLabel": "Architecture decision wizard",
+  "group": "Architecture",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Answer eight questions about your use case and get a recommended architecture: the pattern (prompt, RAG, workflow or agents), retrieval, protocols, model tier and hosting, guardrails and human oversight, and how to evaluate it. You get a diagram of the result, links to the pages that explain each choice, and an architecture decision record you can export.",
+  "kicker": "Build & ship · Decisions"
+ },
+ {
+  "id": "team",
+  "title": "Team mode",
+  "navLabel": "Team mode",
+  "group": "Learn & practice",
+  "inNav": false,
+  "accent": "blue",
+  "lead": "Learn together. Everyone who can open this Atlas and is signed in shares a progress board: pages explored, course lessons, AI Acumen score and practice mastery. Every page also gets a Team notes panel at the bottom for questions, tips and links. Share the Atlas with your team from its page on claude.ai to bring them in.",
+  "kicker": "Learn · Team"
+ },
+ {
+  "id": "changes",
+  "title": "What's changed",
+  "navLabel": "What's changed",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Every release of the Atlas, newest first, and the review status of pages whose facts change over time (laws, standards, protocols, products). Pages show a Last reviewed badge; it turns amber after 90 days. A scheduled task checks these topics monthly and reports what needs updating.",
+  "kicker": "About · Changelog"
+ },
+ {
+  "id": "proposal",
+  "title": "Proposal builder",
+  "navLabel": "Proposal builder",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Turn an industry blueprint and your decision-wizard answers into a customer-ready solution proposal: executive summary, architecture, scope, timeline, team, ROI, risks and compliance. Edit the inputs, preview it live, then export it as a document or a slide deck.",
+  "kicker": "Build & ship · Customer-ready"
+ },
+ {
+  "id": "evalhub",
+  "title": "Eval Hub",
+  "navLabel": "Eval Hub",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Build a golden set, set a pass bar, paste the outputs your system produced, and score them. Each case can be checked by rules (must include, must not include, regex), by you, or by Claude as a judge. This is \"evals are the spec\" in practice: agree the set and the bar with the customer before launch.",
+  "kicker": "Build & ship · Evaluation"
+ },
+ {
+  "id": "cost",
+  "title": "LLM cost estimator",
+  "navLabel": "LLM cost estimator",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "Estimate the monthly cost of an AI workload, then see what routing does to it. Start from an all-frontier baseline and move traffic to cheaper layers: cache hits, rules and small specialist models (the NEXUS / MPM idea), small and mid-tier models, and prompt caching for repeated context.",
+  "kicker": "Build & ship · FinOps"
+ },
+ {
+  "id": "reuse",
+  "title": "Reuse library",
+  "navLabel": "Reuse library",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Every deployment should leave something behind. Log reusable connectors, prompts, eval sets, templates and runbooks from each engagement so the next one starts ahead. With team mode, the library is shared with everyone on the Atlas; otherwise it's saved in your browser.",
+  "kicker": "Build & ship · Team"
+ },
+ {
+  "id": "labs",
+  "title": "Scenario labs",
+  "navLabel": "Scenario labs",
+  "group": "Learn & practice",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "Production incidents to diagnose. Read the alert, open the evidence one clue at a time, pick the likely cause and your first move, then write a short root-cause note. Claude grades your write-up against a model answer (or compare it yourself). Fewer clues opened earns more points.",
+  "kicker": "Learn · Scenario labs"
+ },
+ {
+  "id": "flaws",
+  "title": "Spot the flaw",
+  "navLabel": "Spot the flaw",
+  "group": "Learn & practice",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Each diagram below is a real-looking architecture with one serious design flaw. Study it (click boxes for details), choose what's wrong, and the flaw is highlighted with an explanation and the fix.",
+  "kicker": "Learn · Design review"
+ },
+ {
+  "id": "certify",
+  "title": "AI Architect certification",
+  "navLabel": "Certification",
+  "group": "Learn & practice",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Three tiers that combine what you've studied with a final exam. Your progress comes from the course, practice, scenario labs and the exam on this page. Earn a tier and download a certificate. These are Atlas learning milestones for your team, not an accredited credential.",
+  "kicker": "Learn · Certification"
+ },
+ {
+  "id": "maturity",
+  "title": "AI & governance maturity assessment",
+  "navLabel": "AI & governance maturity assessment",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Rate your organization on 24 statements across six dimensions. You get a radar profile against illustrative reference stages, your two weakest dimensions, and a 12-month roadmap that is added to your board pack.",
+  "kicker": "CAIO · Assessment"
+ },
+ {
+  "id": "vendors",
+  "title": "Vendor & platform comparison",
+  "navLabel": "Vendor comparison",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Compare agent platforms, model providers or vector databases on weighted criteria. Adjust the weights to your priorities, score each option 1–5 from your own evaluation, and export a decision memo. No scores are prefilled: they should come from your demos, proofs of concept and reference calls.",
+  "kicker": "CAIO · Sourcing"
+ },
+ {
+  "id": "incidents",
+  "title": "AI incident register",
+  "navLabel": "AI incident register",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "Log AI incidents and near-misses, map each to the controls that should have caught it, and watch the risk heatmap and trend. A summary is added to your board pack.",
+  "kicker": "CAIO · Risk"
+ },
+ {
+  "id": "builder",
+  "title": "Page builder",
+  "navLabel": null,
+  "group": null,
+  "inNav": false,
+  "accent": "purple",
+  "lead": "Paste notes or upload an infographic and Claude drafts a new Atlas page: title, summary, an interactive diagram with steps, key concepts and practice cards. Review the draft, then save it to My pages in the menu. Saved pages live in your browser; export one to have it merged into the Atlas permanently.",
+  "kicker": "My pages · Builder"
+ },
+ {
+  "id": "llm-judge",
+  "title": "LLM as a judge",
+  "navLabel": "LLM as a judge",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "A capable model, given a clear rubric, grades the outputs of another model, agent or person: scoring answers, comparing two versions, checking against a reference, or ticking off a checklist. It makes evaluation fast and cheap enough to run on every release and every conversation. But a judge is itself a model that needs checking: calibrate it against human labels and design out its known biases.",
+  "kicker": "Build & ship · Evaluation"
+ },
+ {
+  "id": "llm-roles",
+  "title": "LLM as everything: roles across every domain",
+  "navLabel": "LLM as everything (roles)",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "The same model can act as an architect, coder, reviewer, tester, judge, analyst, writer or support agent. What changes is the role prompt, the context and tools it gets, and how much a human checks its work. Pick a role and a domain to see what the role does there, its inputs and outputs, guardrails, the right level of autonomy, and a starter role prompt.",
+  "kicker": "Agents · Roles"
+ },
+ {
+  "id": "agent-decisions",
+  "title": "Agent goals & decision making",
+  "navLabel": "Agent goals & decision making",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Decision making turns reasoning into action: the agent generates options, scores them against its goals and constraints, picks one, acts, and learns from the result. Good agents also know when not to decide: when confidence is low or the stakes are high, the right decision is to ask a person.",
+  "kicker": "Agents · Agent components"
+ },
+ {
+  "id": "agent-swarms",
+  "title": "Multi-agent systems: swarms & orchestrators",
+  "navLabel": "Multi-agent systems: swarms & orchestrators",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "A swarm is many agents that share information, divide work and adapt together. Done well, it solves tasks too broad or parallel for one agent. Done badly, it multiplies cost, latency and failure points. Start with one agent and add more only where the work genuinely splits.",
+  "kicker": "Agents · Agent frameworks"
+ },
+ {
+  "id": "automation-pipelines",
+  "title": "Automation pipelines",
+  "navLabel": "Automation pipelines",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Automation pipelines are end-to-end workflows that move work across systems, data and teams without manual steps: a trigger starts them, tasks ingest and transform data, results are stored and delivered, and everything is monitored. AI makes pipelines smarter (classify, extract, decide), but the orchestration around AI should stay deterministic, observable and safe to re-run.",
+  "kicker": "Build & ship · Automation platforms"
+ },
+ {
+  "id": "context-retrieval",
+  "title": "Context retrieval across apps & databases",
+  "navLabel": "Context retrieval across stores",
+  "group": "RAG & knowledge",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "One request, many stores. Agents rarely find what they need in a single vector index: the answer may sit in a SQL table, a graph, a ticketing app and a wiki at once. A retrieval layer translates the question, routes it to the right stores, writes the right query for each, retrieves, refines and reranks the results, and lets the model ask for more if needed. Platforms such as Airweave sync many apps and databases into one searchable layer for agents.",
+  "kicker": "RAG & knowledge · Context engineering"
+ },
+ {
+  "id": "agent-spectrum",
+  "title": "Automation, digital workers & AI agents",
+  "navLabel": "Automation vs digital workers vs agents",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Three ways to get work done by software, from most predictable to most flexible. Automation follows fixed rules and triggers. A digital worker follows a defined workflow (understand → process → execute → record) with AI inside some steps, validations at each one and a full log. An AI agent decides its own path. Most real systems combine all three: automation for the routine, digital workers for structured judgment, agents for the exceptions.",
+  "kicker": "Agents · Choosing the approach"
+ },
+ {
+  "id": "ai-projects",
+  "title": "The AI project-building workflow",
+  "navLabel": "AI project-building workflow",
+  "group": "Learn & practice",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Idea → plan → build → test → showcase. For students and early-career builders: use AI to go faster without handing over the understanding. The goal isn't a repo for GitHub; it's a project you can understand, explain and defend in an interview.",
+  "kicker": "Learn · Build with AI"
+ },
+ {
+  "id": "paths",
+  "title": "Where do you want to start?",
+  "navLabel": "Choose your path",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "This Atlas has more than a hundred pages. You don't need them all. Pick the path that matches your role: each one is a short, ordered set of pages with a time estimate and a clear outcome, and it ends in something you can use the same day. Your progress is saved in this browser, and a bar at the top of each page shows where you are in your path.",
+  "kicker": "Start here · Choose your path"
+ },
+ {
+  "id": "about",
+  "title": "About the AI Architecture Atlas",
+  "navLabel": "About this Atlas",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "A free, interactive guide to how modern AI systems are designed, built, governed and paid for. It is written for four kinds of reader at once: executives deciding where AI fits, customers and business owners scoping a project, forward-deployed engineers delivering one, and anyone learning the field from scratch.",
+  "kicker": "Start here · About"
+ },
+ {
+  "id": "cx-arch",
+  "title": "Contact-center AI reference architecture",
+  "navLabel": "Contact-center AI architecture",
+  "group": "Customer service AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Customer service is where most enterprises meet AI at scale. A modern contact center puts an AI layer across every channel: a virtual agent resolves what it safely can, hands off to a person with full context when it can't, assists the human during the conversation, and analyzes 100% of conversations afterwards. Step through one customer journey below.",
+  "kicker": "Customer service AI · Architecture"
+ },
+ {
+  "id": "cx-metrics",
+  "title": "Contact-center AI metrics & value calculator",
+  "navLabel": "CX metrics & value calculator",
+  "group": "Customer service AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "The contact-center business case rests on a handful of metrics: containment (resolved without a person), average handle time (AHT) for what still reaches a person, first-contact resolution (FCR) and customer satisfaction (CSAT). Enter your own numbers; nothing here uses industry benchmarks you can't verify.",
+  "kicker": "Customer service AI · Business case"
+ },
+ {
+  "id": "cx-assist",
+  "title": "Agent assist & live-agent handoff",
+  "navLabel": "Agent assist & handoff",
+  "group": "Customer service AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "The best customer-service AI makes the human better, not absent. Two moments decide the experience: the handoff, where the virtual agent passes the customer to a person without making them repeat themselves, and assist, where AI helps that person in real time and writes up the conversation afterwards.",
+  "kicker": "Customer service AI · Human + AI"
+ },
+ {
+  "id": "cx-migration",
+  "title": "From IVR & legacy bots to LLM agents",
+  "navLabel": "IVR & legacy bot migration",
+  "group": "Customer service AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Most organizations already have an IVR menu and an intent-based chatbot. Replacing them in one go is risky; migrating intent by intent, with the old system as a safety net, is not. The plan below moves from logs to shadow mode to live traffic, and the scorer helps you decide what each intent should become.",
+  "kicker": "Customer service AI · Modernization"
+ },
+ {
+  "id": "cx-qa",
+  "title": "QA at scale & omnichannel continuity",
+  "navLabel": "QA at scale & omnichannel",
+  "group": "Customer service AI",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Traditional QA reviews a tiny sample of conversations by hand. With transcription and an LLM judge you can score every conversation against the same rubric, then spend human time calibrating the judge and coaching. The same conversation record is what lets a customer move from chat to phone without starting over.",
+  "kicker": "Customer service AI · Quality"
+ },
+ {
+  "id": "fde-discovery",
+  "title": "Discovery kit",
+  "navLabel": "Discovery kit",
+  "group": "FDE kit",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "The first week decides the project. Use this kit to run discovery the same way every time: the questions to ask, who to ask, and the documents to collect. Tick what you've covered, add notes, and export a requirements brief to share with the customer.",
+  "kicker": "FDE kit · Week one"
+ },
+ {
+  "id": "fde-integration",
+  "title": "Enterprise integration patterns",
+  "navLabel": "Enterprise integration patterns",
+  "group": "FDE kit",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "An agent is only as useful as the systems it can reach. Most enterprise work happens in CRM, ITSM, ERP and HR systems; reaching them safely means picking the right pattern, and making sure the agent acts as the user, with that user's permissions, rather than as an all-powerful service account.",
+  "kicker": "FDE kit · Integration"
+ },
+ {
+  "id": "fde-privacy",
+  "title": "Privacy engineering for AI",
+  "navLabel": "Privacy engineering",
+  "group": "FDE kit",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "Personal data flows through prompts, logs, indexes and evaluation sets. Privacy engineering decides where it is removed, where it is replaced with tokens that can be reversed only by authorized code, where it is stored and for how long, and who can retrieve it.",
+  "kicker": "FDE kit · Data protection"
+ },
+ {
+  "id": "fde-observability",
+  "title": "Observability & on-call for AI agents",
+  "navLabel": "Observability & on-call",
+  "group": "FDE kit",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "You can't fix what you can't see. Trace every request end to end, from the user message through retrieval, model calls and tools, using a shared vocabulary so any backend can read it. OpenTelemetry's GenAI semantic conventions provide that vocabulary; they moved to their own repository in June 2026 and are still marked Development, so pin a version.",
+  "kicker": "FDE kit · Run it"
+ },
+ {
+  "id": "fde-testing",
+  "title": "Regression testing for conversations",
+  "navLabel": "Conversation regression testing",
+  "group": "FDE kit",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "A conversational agent changes whenever its prompt, model, knowledge or tools change. Regression testing catches what broke: a golden set of real conversations with expected outcomes, simulated users that probe edge cases, and coverage across languages and channels. Run it on every change, and block release when it fails.",
+  "kicker": "FDE kit · Quality"
+ },
+ {
+  "id": "fde-handover",
+  "title": "Handover & customer enablement",
+  "navLabel": "Handover & enablement",
+  "group": "FDE kit",
+  "inNav": true,
+  "accent": "orange",
+  "lead": "A project isn't done when it goes live; it's done when the customer can run it without you. Plan hypercare, train the people who will own it, agree who does what, and leave a runbook they can actually use.",
+  "kicker": "FDE kit · Go-live & after"
+ },
+ {
+  "id": "glossary",
+  "title": "Glossary",
+  "navLabel": "Glossary",
+  "group": "Start here",
+  "inNav": true,
+  "accent": "blue",
+  "lead": "Every term in the Atlas in one place, in plain language, with a link to the page that explains it. Search, filter by area, or jump to a letter. The same definitions appear when you hover an underlined term on any page.",
+  "kicker": "Start here · Reference"
+ },
+ {
+  "id": "data-readiness",
+  "title": "Data readiness assessment",
+  "navLabel": "Data readiness assessment",
+  "group": "Architecture",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Most AI projects that slip, slip on data, not models. Before choosing an architecture, check every data source the use case needs on six questions: can we reach it, is it accurate, is it complete and current, who owns it and who may see it, may we legally use it this way, and do we have real examples to test against. Score each source below; the result tells you what is ready, what can be fixed in weeks, and what blocks the project.",
+  "kicker": "Architecture · Before you build"
+ },
+ {
+  "id": "ai-operating-model",
+  "title": "AI operating model, roles & workforce",
+  "navLabel": "AI operating model & workforce",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "Strategy says what to do with AI; the operating model says who does it and how decisions get made. Three choices matter most: how centralized the AI team is, which roles you hire or grow, and how you bring the rest of the workforce along. Most AI programs that stall have the technology working and the organization not.",
+  "kicker": "CAIO · Organization & people"
+ },
+ {
+  "id": "acumen",
+  "title": "AI Acumen",
+  "navLabel": "AI Acumen",
+  "group": null,
+  "inNav": true,
+  "accent": "teal",
+  "lead": "These are the concepts people across the AI industry are expected to know in 2026, from ML basics to agents, protocols, LLMOps, safety and strategy. Each one is mapped to where the Atlas covers it, and anything not covered yet is marked as a gap. Rate yourself on each concept to see your acumen score and what to learn next.",
+  "kicker": "Industry concept map"
+ }
+]

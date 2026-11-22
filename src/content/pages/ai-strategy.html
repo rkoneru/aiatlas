@@ -1,0 +1,44 @@
+
+  <span class="kicker">CAIO · Strategy</span>
+  <h1>AI strategy builder</h1>
+  <p class="lead">A good AI strategy fits on one page: an <b>ambition</b>, the <b>outcomes</b> it serves, where the <b>value</b> is, which <b>use cases</b> come first, the <b>capabilities</b> to build, how risk is <b>governed</b>, a <b>roadmap</b>, and the <b>metrics</b> that prove it. Start with the posture quiz, then fill the canvas. It saves as you type and exports as Markdown.</p>
+  <div data-flow="strategyflow" data-theme="soft"></div>
+  <h2>Strategic posture quiz</h2>
+  <div class="card"><div id="sqQ"></div><div id="sqOut" style="margin-top:12px"></div></div>
+  <h2>Strategy canvas</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><button class="b" id="scEx">Load example</button><button class="b" id="scTop">Pull top use cases from the portfolio</button><button class="b" id="scClear">Clear</button><button class="b pri" id="scMd" style="margin-left:auto">⤓ Export Markdown</button><button class="b" id="scHtml">⤓ Export HTML</button></div>
+    <div class="sc-grid" id="scForm"></div>
+    <div class="muted" id="scMsg" style="font-size:12.5px;margin-top:8px"></div>
+  </div>
+  <h2>One-page preview</h2>
+  <div class="card sc-prev" id="scPrev"></div>
+<div id="ai-adoption" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">AI strategy, roadmap &amp; adoption</h2>
+  <p class="lead">Most AI programs that stall don't fail on technology. They fail on <b>focus</b> (too many scattered pilots), <b>foundations</b> (data, platform, governance) or <b>adoption</b> (people don't change how they work). Walk from ambition to measured value.</p>
+  <div data-flow="aistrat" data-theme="soft"></div>
+  <h2>Building the strategy</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Ambition</span><h3>Tie AI to business outcomes</h3><p>Start from three to five measurable business goals (cost to serve, cycle time, revenue per rep, risk losses), not from "use AI". Decide where AI should differentiate you and where it is just table stakes.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Portfolio</span><h3>Balance quick wins and big bets</h3><p>Score candidate use cases on value, feasibility, risk and data readiness (see <a href="#pm-map">RICE</a>). Fund a mix: productivity quick wins, process redesign, and a few differentiating products. Kill pilots that miss their metrics.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Foundations</span><h3>Build once, reuse everywhere</h3><p>A shared platform (model gateway, RAG, agent runtime, evals, observability), governed data access, and a governance process. Without these, every team rebuilds the same plumbing.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Operating model</span><h3>Who does what</h3><p>Common pattern: a central AI enablement team (platform, standards, governance) with embedded builders in business units. Forward-deployed engineers bridge the two by building with the business.</p></div>
+  </div>
+  <h2>Roadmap horizons</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Horizon</th><th>Focus</th><th>Typical outcomes</th></tr>
+    <tr><td><b>0–3 months</b></td><td>Enable and prove</td><td>Approved tools for everyone, AI policy and literacy training, 2–3 high-value pilots with baselines</td></tr>
+    <tr><td><b>3–12 months</b></td><td>Scale what works</td><td>Shared platform, production agents in priority workflows, eval and monitoring practice, governance in place</td></tr>
+    <tr><td><b>12+ months</b></td><td>Transform</td><td>Redesigned processes and roles, AI in products, continuous improvement loop, measurable P&amp;L impact</td></tr>
+  </table></div>
+  <h2>Change management &amp; adoption</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Why people resist</h3><p>Fear for jobs, distrust of outputs, extra work during transition, and tools that don't fit their real workflow.</p></div>
+    <div class="card"><h3>What works</h3><p>Visible executive use, champions in every team, role-specific training with real tasks, and redesigning the workflow rather than bolting AI on.</p></div>
+    <div class="card"><h3>Trust</h3><p>Be clear about what AI does and doesn't decide, keep humans accountable, show sources, and make it easy to report bad outputs.</p></div>
+    <div class="card"><h3>Measure adoption</h3><p>Weekly active users, tasks completed with AI, time saved (sampled, not self-reported only), quality and satisfaction.</p></div>
+    <div class="card"><h3>Redesign roles</h3><p>Move people from doing the work to reviewing, handling exceptions and improving the system. Plan reskilling paths early.</p></div>
+    <div class="card"><h3>Communicate</h3><p>Explain the why, share wins and failures openly, and update policies as tools and laws change. See <a href="#ai-compliance">AI compliance</a>.</p></div>
+  </div>
+</div>

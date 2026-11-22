@@ -1,0 +1,24 @@
+
+  <span class="kicker">Customer service AI · Architecture</span>
+  <h1>Contact-center AI reference architecture</h1>
+  <p class="lead">Customer service is where most enterprises meet AI at scale. A modern contact center puts an AI layer across every channel: a <b>virtual agent</b> resolves what it safely can, <b>hands off</b> to a person with full context when it can't, <b>assists</b> the human during the conversation, and <b>analyzes 100%</b> of conversations afterwards. Step through one customer journey below.</p>
+  <div data-flow="cxarch" data-theme="soft"></div>
+  <h2>The layers</h2>
+  <div class="grid g3">
+    <div class="card"><h3>📞 Channels</h3><p class="muted">Voice (phone, IVR), web and in-app chat, messaging (SMS, WhatsApp), email and social. Each has different latency, length and compliance rules, but they should share one conversation record.</p></div>
+    <div class="card"><h3>🔀 Routing &amp; identity</h3><p class="muted">Identify and verify the customer, detect intent and urgency, and decide: virtual agent, a specific queue, or a priority human. Routing uses the customer's history, not just the words of the first message.</p></div>
+    <div class="card"><h3>🤖 Virtual agent</h3><p class="muted">An LLM with retrieval over policies and knowledge, tools for the customer's own data (orders, bookings, balances), and <b>deterministic flows</b> where steps must happen exactly (authentication, payments, disclosures).</p></div>
+    <div class="card"><h3>🤝 Handoff</h3><p class="muted">Escalation with a context packet: who the customer is, what they asked, what was tried, sentiment, and the suggested next step. The customer never repeats themselves. See <a href="#cx-assist">assist &amp; handoff</a>.</p></div>
+    <div class="card"><h3>🧑‍💼 Agent assist</h3><p class="muted">Real-time help for the human: suggested answers with sources, next-best action, form filling, compliance reminders and an automatic after-call summary.</p></div>
+    <div class="card"><h3>📊 Analytics &amp; QA</h3><p class="muted">Every conversation transcribed, summarized, tagged and scored against a QA rubric; trends feed back into knowledge, flows and coaching. See <a href="#cx-qa">QA &amp; omnichannel</a>.</p></div>
+  </div>
+  <h2>Design rules that matter</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Rule</th><th>Why</th></tr>
+    <tr><td><b>Deterministic where it must be, generative where it helps</b></td><td class="muted">Identity verification, payments, legally required disclosures and cancellations follow fixed flows. Explaining a policy, troubleshooting and summarizing are where LLMs shine.</td></tr>
+    <tr><td><b>Always offer a way out</b></td><td class="muted">A clear route to a human at any point. Trapping customers in a bot loop destroys satisfaction faster than anything else.</td></tr>
+    <tr><td><b>Ground every answer</b></td><td class="muted">Answers come from approved knowledge and the customer's own records, never the model's memory. No source → say so and hand off.</td></tr>
+    <tr><td><b>Voice is its own discipline</b></td><td class="muted">Latency budgets under about a second per turn, barge-in, short answers, spelling of names and numbers, and DTMF fallback. See <a href="#voice">voice agent layers</a>.</td></tr>
+    <tr><td><b>Measure resolution, not deflection</b></td><td class="muted">A contained conversation where the customer calls back tomorrow is a failure. See <a href="#cx-metrics">metrics</a>.</td></tr>
+    <tr><td><b>Compliance by channel</b></td><td class="muted">Call recording consent, AI disclosure rules, outbound calling rules (such as the US TCPA), PCI DSS for card data and data retention limits differ by channel and country.</td></tr>
+  </table></div>

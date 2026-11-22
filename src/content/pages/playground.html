@@ -1,0 +1,75 @@
+
+  <span class="kicker">Build &amp; ship · Playground</span>
+  <h1>Diagram playground</h1>
+  <p class="lead">Design your own architecture diagram in the same style as the rest of the Atlas. Add boxes and connections, drag boxes to arrange them, and the playground writes the <b>steps</b> and the <b>sequence diagram</b> for you. Every diagram gets the same Play, step-through, Diagram/Sequence toggle and <b>⤓ Export</b> menu (GIF, PNG, SVG, interactive HTML, Mermaid, JSON). Your work is saved in this browser.</p>
+  <div class="pg-top card">
+    <div class="pg-tb">
+      <label class="pg-tpl">Start from <select id="pgTpl"><option value="">Choose a template…</option><option value="agent">Agent with tools</option><option value="rag">RAG pipeline</option><option value="approval">Approval workflow</option><option value="blank">Blank canvas</option></select></label>
+      <button class="b" id="pgImportBtn">⇪ Import text or JSON</button>
+      <button class="b" id="pgLayout">⊞ Auto layout</button>
+      <button class="b" id="pgConnect" aria-pressed="false">↗ Connect mode</button>
+      <button class="b" id="pgUndo" title="Undo">↶ Undo</button>
+      <span class="muted" id="pgSaved" style="font-size:12.5px;margin-left:auto"></span>
+    </div>
+    <div class="pg-import" id="pgImport" hidden>
+      <p class="muted" style="margin:0 0 6px;font-size:13px">One connection per line: <code>User -&gt; Agent : asks a question</code>. Use <code>--&gt;</code> for a dashed line and <code>&lt;-&gt;</code> for two-way. Optional first line: <code>title: My diagram</code>. You can also paste a JSON file exported from any Atlas diagram.</p>
+      <textarea id="pgImportTxt" rows="7" spellcheck="false" placeholder="title: Support agent&#10;Customer -> Support agent : question&#10;Support agent -> Knowledge base : search&#10;Knowledge base --> Support agent : articles&#10;Support agent -> Ticketing : create ticket&#10;Support agent --> Customer : answer"></textarea>
+      <div class="pg-tb" style="margin-top:8px"><button class="b pri" id="pgImportGo">Build diagram</button><button class="b" id="pgImportCancel">Cancel</button><span class="muted" id="pgImportMsg" style="font-size:13px"></span></div>
+    </div>
+  </div>
+  <div class="pg-wrap">
+    <div class="pg-ed card">
+      <div class="pg-tabs" role="tablist"><button class="on" data-t="diagram">Diagram</button><button data-t="nodes">Boxes <span id="pgNc"></span></button><button data-t="edges">Connections <span id="pgEc"></span></button><button data-t="steps">Steps <span id="pgSc"></span></button></div>
+      <div class="pg-pane" data-p="diagram">
+        <label class="pg-f req">Title<input id="pgTitle" maxlength="80" placeholder="e.g. Customer support agent"></label>
+        <label class="pg-f">Description<textarea id="pgDesc" rows="3" maxlength="400" placeholder="What does this diagram show? Shown under the diagram before Play."></textarea></label>
+        <label class="pg-f">Kicker / category<input id="pgCat" maxlength="40" placeholder="e.g. Agents"></label>
+        <label class="pg-f">Intro voice-over <span class="muted" style="font-weight:500">(optional)</span><textarea id="pgVoIntro" rows="3" maxlength="1500" placeholder="Spoken when Play starts. Leave blank to read the title and description."></textarea></label>
+        <div class="pg-vo"><button class="b" type="button" data-prev="intro">▶ Preview voice</button><span class="muted" data-vonote></span></div>
+        <div class="pg-hint"><b>How to use</b><ol><li>Pick a template or import text above, or add boxes in the <b>Boxes</b> tab.</li><li>Drag boxes in the preview to arrange them.</li><li>Turn on <b>Connect mode</b>, then click two boxes to connect them.</li><li>Click any box or connection to edit it here.</li><li>Steps and the sequence diagram are generated automatically; switch to manual in <b>Steps</b> to write your own.</li></ol></div>
+      </div>
+      <div class="pg-pane" data-p="nodes" hidden>
+        <div class="pg-list" id="pgNodes"></div>
+        <button class="b" id="pgAddNode">＋ Add box</button>
+        <div class="pg-form" id="pgNodeForm"></div>
+      </div>
+      <div class="pg-pane" data-p="edges" hidden>
+        <div class="pg-list" id="pgEdges"></div>
+        <button class="b" id="pgAddEdge">＋ Add connection</button>
+        <div class="pg-form" id="pgEdgeForm"></div>
+      </div>
+      <div class="pg-pane" data-p="steps" hidden>
+        <label class="pg-sw"><input type="checkbox" id="pgAuto" checked> Generate steps automatically from the connections</label>
+        <p class="muted" style="font-size:12.5px;margin:4px 0 10px" id="pgAutoNote">Steps follow the connections outward from the starting boxes. Each step becomes a band in the sequence diagram.</p>
+        <div class="pg-list" id="pgSteps"></div>
+        <button class="b" id="pgAddStep">＋ Add step</button>
+        <div class="pg-form" id="pgStepForm"></div>
+      </div>
+      <div class="pg-val" id="pgVal"></div>
+    </div>
+    <div class="pg-prev">
+      <div class="pg-hintbar muted" id="pgHintbar">Drag boxes to move them · click a box to edit it</div>
+      <div id="pgFlow"></div>
+    </div>
+  </div>
+
+  <div class="card ig" id="igStudio">
+    <div class="ig-h"><div><span class="kicker" style="margin:0">New</span><h2 style="margin:4px 0 2px">🖼 Infographic studio</h2><p class="muted" style="margin:0">Turn this diagram, or any topic, into a poster-style infographic like the ones in the Atlas: header, how-it-works steps, the diagram, section cards, a comparison, key numbers and a tagline. Pick a style and size, edit anything, then download it as PNG or SVG.</p></div></div>
+    <div class="ig-src"><button class="b" id="igFromDia">⇣ Start from this diagram</button><span class="ig-ai" id="igAiBox" hidden><input id="igTopic" placeholder="Topic, e.g. How RAG works for customer support"><select id="igAud"><option value="general">General audience</option><option value="exec">Executives</option><option value="eng">Engineers</option><option value="students">Students</option></select><button class="b pri" id="igGen">✦ Generate with Claude</button><button class="b" id="igStop" hidden>Stop</button></span><button class="b" id="igClear">Clear</button><span class="muted" id="igMsg" style="font-size:13px"></span></div>
+    <div class="ig-wrap">
+      <div class="ig-ed">
+        <div class="ig-row"><label>Style<div class="chips" id="igTheme" style="margin-left:0"></div></label></div>
+        <div class="ig-row2"><label>Size<select id="igFmt"><option value="portrait">Portrait 1080 × 1350</option><option value="tall">Tall 1080 × 1920 (Pinterest)</option><option value="landscape">Landscape 1600 × 900 (slide)</option><option value="square">Square 1080 × 1080</option></select></label><label class="ig-ck"><input type="checkbox" id="igFit"> Fit exactly to size</label><label class="ig-ck"><input type="checkbox" id="igDia"> Include the diagram</label></div>
+        <label class="pg-f">Kicker<input data-f="kicker" maxlength="60"></label>
+        <label class="pg-f req">Title<input data-f="title" maxlength="90"></label>
+        <label class="pg-f">Subtitle<textarea data-f="subtitle" rows="2" maxlength="300"></textarea></label>
+        <label class="pg-f">How it works <span class="muted" style="font-weight:500">(one step per line)</span><textarea data-f="steps" rows="4"></textarea></label>
+        <label class="pg-f">Section cards <span class="muted" style="font-weight:500">(<code>## 🔍 Heading</code> then <code>- bullet</code> lines)</span><textarea data-f="sections" rows="10" spellcheck="false"></textarea></label>
+        <label class="pg-f">Comparison <span class="muted" style="font-weight:500">(optional: first line <code>Left | Right</code>, then rows)</span><textarea data-f="compare" rows="4" spellcheck="false"></textarea></label>
+        <label class="pg-f">Key numbers <span class="muted" style="font-weight:500">(optional: <code>value | label</code> per line; only figures you can source)</span><textarea data-f="stats" rows="3" spellcheck="false"></textarea></label>
+        <label class="pg-f">Tagline<input data-f="tagline" maxlength="120"></label>
+        <label class="pg-f">Footer<input data-f="footer" maxlength="120"></label>
+      </div>
+      <div class="ig-prev"><div class="ig-tb"><b style="flex:1">Preview</b><span class="muted" id="igDim" style="font-size:12.5px"></span><button class="b pri" id="igPng">⤓ PNG</button><button class="b" id="igSvg">⤓ SVG</button><button class="b" id="igJson">⤓ JSON</button></div><div class="ig-canvas" id="igCanvas"></div><span class="muted" id="igXMsg" style="font-size:12.5px"></span></div>
+    </div>
+  </div>

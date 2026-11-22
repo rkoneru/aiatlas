@@ -1,0 +1,28 @@
+
+  <span class="kicker">FDE kit · Integration</span>
+  <h1>Enterprise integration patterns</h1>
+  <p class="lead">An agent is only as useful as the systems it can reach. Most enterprise work happens in CRM, ITSM, ERP and HR systems; reaching them safely means picking the right pattern, and making sure the agent acts <b>as the user</b>, with that user's permissions, rather than as an all-powerful service account.</p>
+  <div data-flow="fdeint" data-theme="soft"></div>
+  <h2>Pick the pattern</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Pattern</th><th>How it works</th><th>Use when</th><th>Watch out for</th></tr>
+    <tr><td><b>Tool over API</b></td><td class="muted">The agent calls a typed tool, often exposed through an MCP server, that wraps the system's REST or GraphQL API.</td><td class="muted">The system has a documented API. The default choice.</td><td class="muted">Rate limits, pagination, and tools that are too broad</td></tr>
+    <tr><td><b>Event-driven</b></td><td class="muted">The system emits webhooks or events (case created, order shipped); the agent reacts or updates the conversation.</td><td class="muted">Proactive notifications, long-running processes</td><td class="muted">Ordering, retries and duplicate events (make handlers idempotent)</td></tr>
+    <tr><td><b>iPaaS / integration hub</b></td><td class="muted">The agent calls one integration layer that already connects many systems.</td><td class="muted">The customer already runs an integration platform</td><td class="muted">An extra hop in latency; who owns the flows</td></tr>
+    <tr><td><b>Data sync for retrieval</b></td><td class="muted">Content is synced into a search index with permissions attached.</td><td class="muted">Read-heavy questions over documents and records</td><td class="muted">Freshness and permission drift between source and index</td></tr>
+    <tr><td><b>UI automation (RPA)</b></td><td class="muted">A bot drives the system's screens.</td><td class="muted">Legacy systems with no API, as a last resort</td><td class="muted">Brittle when screens change; slow; hard to secure</td></tr>
+  </table></div>
+  <h2>Common systems</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>System type</th><th>Examples</th><th>Typical agent actions</th></tr>
+    <tr><td><b>CRM</b></td><td class="muted">Salesforce, Microsoft Dynamics, HubSpot</td><td class="muted">Look up a customer or case, log an interaction, update an opportunity</td></tr>
+    <tr><td><b>ITSM / service desk</b></td><td class="muted">ServiceNow, Jira Service Management, Zendesk</td><td class="muted">Create or update a ticket, check status, search the knowledge base</td></tr>
+    <tr><td><b>ERP / commerce</b></td><td class="muted">SAP, Oracle, Shopify</td><td class="muted">Order status, returns, invoices, inventory</td></tr>
+    <tr><td><b>HR</b></td><td class="muted">Workday, SuccessFactors</td><td class="muted">Leave balance, policy questions, onboarding tasks</td></tr>
+    <tr><td><b>Contact center</b></td><td class="muted">Genesys, NICE, Amazon Connect, Five9</td><td class="muted">Transfer with context, read queue state, write dispositions</td></tr>
+  </table></div>
+  <h2>Identity: act as the user</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Do</h3><ul class="muted" style="margin:0;padding-left:18px"><li>Sign users in with the customer's identity provider (SSO with OIDC or SAML)</li><li>Call systems with a token for <b>that user</b>: OAuth on-behalf-of or token exchange (RFC 8693)</li><li>Scope each tool to the least privilege it needs</li><li>Log every call with the user, the agent and the tool</li></ul></div>
+    <div class="card"><h3>Avoid</h3><ul class="muted" style="margin:0;padding-left:18px"><li>One admin service account for all users: the agent can then read what the user can't</li><li>Long-lived API keys inside prompts or tool code</li><li>Letting the model choose which identity to use</li><li>Writes without a confirmation step for anything irreversible</li></ul></div>
+  </div>

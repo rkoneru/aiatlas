@@ -1,0 +1,33 @@
+
+  <span class="kicker">Models · deep dive</span>
+  <h1>How LLMs work, from prompt to response</h1>
+  <p class="lead">A decoder-only transformer turns your prompt into tokens, then vectors, runs them through stacked layers of causal self-attention and feed-forward networks, and predicts one token at a time. Step through the pipeline, then try each stage on live text.</p>
+  <div data-flow="llmpipe"></div>
+  <h2>1 · Tokenization → token IDs</h2>
+  <div class="card">
+    <input type="text" id="tkin" value="How do I prepare for a PM interview?" style="width:100%;font:inherit;padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)">
+    <div id="tkout" style="margin-top:12px"></div>
+    <p class="muted" style="margin:8px 0 0;font-size:13px">Illustrative only. Real tokenizers (BPE, SentencePiece) learn subword pieces from data, so common words are one token and rare words split into several. The IDs here are made up but consistent: the same piece always gets the same ID.</p>
+  </div>
+  <h2>2 · Embedding + position</h2>
+  <div class="grid g2">
+    <div class="card"><div class="formula"><i>X</i> = <i>E</i><sub>t</sub> + <i>E</i><sub>p</sub></div><p class="muted" style="margin:10px 0 0">Each token ID looks up a row in the embedding matrix <i>E</i> ∈ ℝ<sup>V×d</sup> (vocabulary × model width). Positional information, learned or RoPE, is added so the model knows word order. Similar meanings end up as nearby vectors. <a href="#rag-math">Try cosine similarity →</a></p></div>
+    <div class="card"><div class="formula">FFN(<i>x</i>) = σ(<i>x</i><i>W</i><sub>1</sub> + <i>b</i><sub>1</sub>)<i>W</i><sub>2</sub> + <i>b</i><sub>2</sub></div><p class="muted" style="margin:10px 0 0">After attention, each token goes through a feed-forward network: expand to about 4× the width, apply a non-linearity (GELU, SwiGLU…), project back. <b>LayerNorm</b> (<i>γ</i>·(<i>x</i>−<i>μ</i>)/√(<i>σ</i>²+<i>ε</i>) + <i>β</i>) and residual connections keep the deep stack stable.</p></div>
+  </div>
+  <h2>3 · Causal self-attention</h2>
+  <div class="card">
+    <div class="formula">Attention(<i>Q</i>,<i>K</i>,<i>V</i>) = softmax( <span class="frac"><span><i>QK</i><sup>T</sup></span><span>√<i>d<sub>k</sub></i></span></span> + <i>M</i> ) <i>V</i></div>
+    <div class="ctlrow" style="margin-top:12px"><label><input type="checkbox" id="atmask" checked> Causal mask (can't look at future tokens)</label><span class="muted" style="font-size:13px">Click a row to see where that token "looks".</span></div>
+    <div class="grid g2" style="align-items:start"><div id="atgrid" style="overflow-x:auto"></div><div id="atinfo"></div></div>
+    <p class="muted" style="margin:8px 0 0;font-size:13px">Weights are illustrative, not from a real model. In <b>multi-head attention</b>, several heads run this in parallel, each learning a different relationship (syntax, coreference, position…). Their outputs are concatenated and projected back.</p>
+  </div>
+  <h2>4 · Next-token prediction &amp; sampling</h2>
+  <div class="card">
+    <div class="formula"><i>P</i>(<i>w<sub>i</sub></i> | context) = <span class="frac"><span>exp(<i>z<sub>i</sub></i> / <i>T</i>)</span><span>Σ<sub>j</sub> exp(<i>z<sub>j</sub></i> / <i>T</i>)</span></span></div>
+    <p class="muted" style="margin:10px 0 0">Context: <b>"How do I prepare for a PM interview?"</b> → first token of the answer.</p>
+    <div class="ctlrow"><label>Temperature <input type="range" id="smt" min="5" max="200" value="100"><span class="out" id="smtv"></span></label><label>Top-k <input type="range" id="smk" min="1" max="7" value="7"><span class="out" id="smkv"></span></label><button class="b pri" id="smgo">Sample a token</button><button class="b" id="smgr">Greedy</button></div>
+    <div id="smbars"></div><p id="smres" style="margin:8px 0 0"></p>
+    <p class="muted" style="margin:8px 0 0;font-size:13px">Low temperature means sharp, predictable choices; high temperature means flatter, more creative ones. Top-k removes the long tail. The chosen token is appended and the whole process repeats.</p>
+  </div>
+  <h2>5 · Training objective</h2>
+  <div class="card"><div class="formula">ℒ = − <span class="frac"><span>1</span><span><i>n</i></span></span> Σ<sub><i>t</i>=1</sub><sup><i>n</i></sup> log <i>P</i>(<i>x<sub>t</sub></i> | <i>x</i><sub>1</sub>, …, <i>x</i><sub><i>t</i>−1</sub>)</div><p class="muted" style="margin:10px 0 0">Pre-training is just next-token prediction with cross-entropy loss, over trillions of tokens, optimized by gradient descent (Adam). Capabilities like translation or coding emerge from doing this at scale. Instruction-following comes later, from fine-tuning. <a href="#roadmaps">See the LLM engineering roadmap →</a></p></div>

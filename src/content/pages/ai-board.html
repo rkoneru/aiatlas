@@ -1,0 +1,22 @@
+
+  <span class="kicker">CAIO · Board</span>
+  <h1>Board &amp; risk reporting</h1>
+  <p class="lead">Boards want three things from AI reporting: <b>is it creating value</b>, <b>are we exposed</b>, and <b>what do you need from us</b>? Rate your AI risks on the heatmap, then export a board pack outline that pulls in your strategy, portfolio and KPIs from the other CAIO tools.</p>
+  <div data-flow="boardpack" data-theme="soft"></div>
+  <h2>AI risk heatmap</h2>
+  <div class="grid g2">
+    <div class="card"><div id="rkList"></div><button class="b" id="rkAdd" style="margin-top:8px">＋ Add risk</button></div>
+    <div class="card"><svg id="rkMap" viewBox="0 0 420 420" style="width:100%;height:auto"></svg><p class="muted" style="font-size:12.5px;margin:6px 0 0">Likelihood (across) × impact (up), each 1–5. Numbers match the list.</p></div>
+  </div>
+  <h2>Risk appetite statements</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Low appetite</h3><p>Fully automated decisions that affect people's rights (hiring, credit, health); unreviewed external communications in regulated areas; any use that breaches law or licensing.</p></div>
+    <div class="card"><h3>Moderate appetite</h3><p>Customer-facing assistants with human escalation; agents taking reversible actions under spend and scope limits; vendor models with contractual data protections.</p></div>
+    <div class="card"><h3>High appetite</h3><p>Internal productivity tools, drafting and summarization with human review, experimentation in sandboxes with synthetic or approved data.</p></div>
+    <div class="card"><h3>Escalate to the board</h3><p>Material incidents, new high-risk use cases, major vendor dependencies, and regulatory findings.</p></div>
+  </div>
+  <h2>Board pack</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><label style="font-size:13px">Organization <input id="bpOrg" placeholder="e.g. Acme Corp" style="width:180px"></label><label style="font-size:13px">Quarter <input id="bpQ" placeholder="e.g. Q1 2027" style="width:110px"></label><button class="b pri" id="bpMd" style="margin-left:auto">⤓ Export board pack (.md)</button></div>
+    <div class="sc-prev" id="bpPrev" style="margin-top:12px"></div>
+  </div>

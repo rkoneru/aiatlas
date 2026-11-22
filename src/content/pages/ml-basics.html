@@ -1,0 +1,36 @@
+
+  <span class="kicker">Foundations · Machine learning</span>
+  <h1>ML fundamentals</h1>
+  <p class="lead">Every LLM, recommender and fraud model rests on the same ideas: learn from data, hold some data back to check yourself, and balance fitting the training data against generalizing to new data. Walk the workflow, then drag the complexity slider to watch overfitting happen.</p>
+  <div data-flow="mlflow" data-theme="soft"></div>
+  <h2>Three ways to learn</h2>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Supervised</span><h3>Learn from labeled examples</h3><p>Every input comes with the right answer. Predict a <b>category</b> (classification: spam, churn, defect) or a <b>number</b> (regression: price, demand).</p><span class="pill">logistic regression</span><span class="pill">gradient boosting</span><span class="pill">neural nets</span></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Unsupervised</span><h3>Find structure without labels</h3><p><b>Clustering</b> groups similar items, dimensionality reduction compresses them, and anomaly detection flags the odd ones out. Often run over embeddings.</p><span class="pill">k-means</span><span class="pill">HDBSCAN</span><span class="pill">PCA · UMAP</span></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Self-supervised</span><h3>Make labels from the data itself</h3><p>Hide part of the input and predict it: the next token, a masked word, a cropped image patch. This is how LLMs and embedding models pre-train on trillions of unlabeled tokens.</p><span class="pill">next-token</span><span class="pill">masked LM</span><span class="pill">contrastive</span></div>
+  </div>
+  <h2>Overfitting playground</h2>
+  <p class="muted">Twelve noisy training points (blue) sampled from a smooth curve, plus a held-out validation set (orange). Raise the model complexity (polynomial degree) and add L2 regularization to see the bias–variance trade-off.</p>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><label>Complexity (degree) <input type="range" id="mlDeg" min="1" max="11" value="3"><span class="out" id="mlDegV">3</span></label><label>L2 regularization λ <input type="range" id="mlLam" min="0" max="8" value="0"><span class="out" id="mlLamV">0</span></label><button class="b" id="mlNew">New sample</button></div>
+    <div class="ml-wrap"><svg id="mlFit" viewBox="0 0 520 300" role="img" aria-label="Polynomial fit"></svg><svg id="mlCurve" viewBox="0 0 360 300" role="img" aria-label="Error by degree"></svg></div>
+    <div id="mlMsg" class="callout" style="margin:12px 0 0"></div>
+  </div>
+  <h2>Core ideas</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Train / validation / test split</h3><p>Train on one part, tune choices (model type, hyperparameters, prompts) on a second, and report on a third you touch only once. A typical split is 70/15/15. With time-ordered data, split by time so you never train on the future. The same discipline applies to LLM evals: a golden set you keep tuning against stops measuring generalization.</p></div>
+    <div class="card"><h3>Overfitting &amp; generalization</h3><p>A model that memorizes noise scores well on training data and badly on anything new. Signs: training error keeps falling while validation error rises. Fixes: more data, simpler models, regularization, early stopping, data augmentation, cross-validation.</p></div>
+    <div class="card"><h3>Bias–variance trade-off</h3><p><b>Bias</b> is error from assumptions too simple to capture the pattern (underfitting). <b>Variance</b> is error from sensitivity to the particular training sample (overfitting). Total error = bias² + variance + irreducible noise. The sweet spot sits where validation error bottoms out.</p></div>
+    <div class="card"><h3>Regularization &amp; dropout</h3><p><b>L2 (weight decay)</b> penalizes large weights; <b>L1</b> pushes weights to exactly zero. <b>Dropout</b> randomly switches off units during training so the network can't rely on any one path. <b>Early stopping</b> halts training when validation loss stops improving.</p></div>
+    <div class="card"><h3>Feature engineering</h3><p>Turning raw data into informative inputs: ratios, time since last event, rolling averages, one-hot categories, text embeddings. Deep learning learns many features itself, but for tabular business data (the bulk of enterprise ML) good features plus gradient boosting is still hard to beat.</p></div>
+    <div class="card"><h3>Clustering in practice</h3><p>Embed support tickets, then cluster them to discover intents. Segment customers by behavior. Group near-duplicate documents before indexing. <b>k-means</b> needs k up front; <b>HDBSCAN</b> finds the number of clusters and labels outliers as noise.</p></div>
+  </div>
+  <h2>Choosing an approach</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>You have…</th><th>You want…</th><th>Start with</th></tr>
+    <tr><td>Labeled tabular data</td><td>A prediction or score</td><td>Gradient-boosted trees (XGBoost, LightGBM)</td></tr>
+    <tr><td>Unlabeled items</td><td>Groups or segments</td><td>Embeddings + k-means / HDBSCAN</td></tr>
+    <tr><td>A few labeled text examples</td><td>Classification</td><td>An LLM with few-shot prompting, then a small fine-tuned classifier at volume</td></tr>
+    <tr><td>Rare events</td><td>Catch the unusual</td><td>Anomaly detection (isolation forest, autoencoders)</td></tr>
+    <tr><td>A reward signal, not labels</td><td>A policy that acts</td><td>Reinforcement learning (or bandits for simple choices)</td></tr>
+  </table></div>

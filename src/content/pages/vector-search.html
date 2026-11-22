@@ -1,0 +1,33 @@
+
+  <span class="kicker">Foundations · RAG internals</span>
+  <h1>Vector search internals &amp; long context vs RAG</h1>
+  <p class="lead">Exact nearest-neighbor search compares the query with every vector, which is too slow at millions of chunks. <b>Approximate nearest neighbor (ANN)</b> indexes trade a sliver of recall for orders-of-magnitude speed. Step through an HNSW search, then decide when a long context window can replace retrieval.</p>
+  <div data-flow="hnsw" data-theme="soft"></div>
+  <h2>Index types</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Index</th><th>How it works</th><th>Speed</th><th>Memory</th><th>Recall</th><th>Use when</th></tr>
+    <tr><td><b>Flat (brute force)</b></td><td>Compare against every vector</td><td>Slow at scale</td><td>Full vectors</td><td>100%</td><td>&lt;100k vectors, or as ground truth for evals</td></tr>
+    <tr><td><b>HNSW</b></td><td>Multi-layer proximity graph; greedy hops from coarse to fine layers</td><td>Very fast</td><td>High (vectors + graph links)</td><td>~95–99%</td><td>The default in most vector DBs</td></tr>
+    <tr><td><b>IVF</b></td><td>Cluster vectors into cells; search only the nearest few cells</td><td>Fast</td><td>Moderate</td><td>Tunable with nprobe</td><td>Large collections, batch building</td></tr>
+    <tr><td><b>PQ / quantized</b></td><td>Compress vectors into short codes (product or binary quantization)</td><td>Fast</td><td>8–32× smaller</td><td>Lower; rerank to recover</td><td>Billions of vectors, memory-bound</td></tr>
+    <tr><td><b>DiskANN-style</b></td><td>Graph index served from SSD</td><td>Fast</td><td>Low RAM</td><td>High</td><td>Huge corpora on a budget</td></tr>
+  </table></div>
+  <h2>Knobs that matter</h2>
+  <div class="grid g3">
+    <div class="card"><h3>HNSW: M &amp; ef</h3><p><b>M</b> is links per node (more = better recall, more memory). <b>ef_search</b> is the candidate list size at query time: raise it for recall, lower it for latency.</p></div>
+    <div class="card"><h3>IVF: nlist &amp; nprobe</h3><p>More cells (nlist) make each search smaller; probing more cells (nprobe) recovers recall.</p></div>
+    <div class="card"><h3>Filters</h3><p>Metadata filters (tenant, date, permission) can wreck ANN recall if applied after search. Prefer engines with filtered or pre-filtered HNSW.</p></div>
+    <div class="card"><h3>Measure recall@k</h3><p>Compare ANN results with exact search on a sample of queries. Tune until recall@10 meets your bar before tuning anything else.</p></div>
+    <div class="card"><h3>Dimensions &amp; quantization</h3><p>Matryoshka embeddings let you truncate 3072 → 512 dims; int8 or binary quantization cuts memory further. Re-score the top results with full vectors.</p></div>
+    <div class="card"><h3>Hybrid by default</h3><p>Pair ANN with BM25 keyword search and fuse ranks. See <a href="#rag-variants">RAG architectures</a>.</p></div>
+  </div>
+  <h2>Long context vs RAG</h2>
+  <p class="muted">Million-token windows make it tempting to paste everything in. Sometimes that's right; often it's slow, expensive and less accurate. Use the calculator in Key formulas below to compare cost.</p>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>Stuff the long context</th><th>Retrieve (RAG)</th></tr>
+    <tr><td>Best when</td><td>One document or a small, fixed set; whole-document reasoning; prototyping</td><td>Large or growing corpora; many users; fresh data; permissions per document</td></tr>
+    <tr><td>Cost &amp; latency</td><td>Pays for every token on every call (prompt caching helps a lot)</td><td>Pays for a few chunks per call</td></tr>
+    <tr><td>Accuracy</td><td>Can miss facts buried mid-context ("lost in the middle")</td><td>Can miss facts retrieval didn't surface</td></tr>
+    <tr><td>Citations &amp; access control</td><td>Harder</td><td>Natural: each chunk has a source and an ACL</td></tr>
+    <tr><td>Common hybrid</td><td colspan="2">Retrieve whole relevant documents (not tiny chunks), then let a long-context model reason over them, with the stable prefix cached.</td></tr>
+  </table></div>

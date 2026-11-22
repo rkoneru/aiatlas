@@ -1,0 +1,27 @@
+
+  <span class="kicker">1b · RAG architectures</span>
+  <h1>10 RAG architectures, from naive to multi-agent</h1>
+  <p class="lead">Every variant fixes a specific weakness of the one before it: bad ranking, short queries, wrong documents, missing relationships, unnecessary retrieval, or a single fixed source. Pick a variant to walk through its flow.</p>
+  <div class="tabs" id="ragvtabs"></div>
+  <div data-flow="ragv"></div>
+  <div class="grid g3" style="margin-top:14px" id="ragvdetail"></div>
+  <h2>Compare them all</h2>
+  <div class="card tablewrap"><table id="ragvtable"></table></div>
+  <div class="callout">Rule of thumb: start with <b>retrieve-and-rerank + hybrid search</b>. Add <b>corrective</b> or <b>adaptive</b> routing when you see failures. Reach for <b>graph</b> or <b>agentic</b> RAG only when questions are multi-hop or span several systems.</div>
+<div id="rag-compare" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">RAG vs Agentic RAG vs Graph RAG</h2>
+  <p class="lead">Different approaches, same goal: better answers. <b>RAG = retrieve.</b> <b>Agentic RAG = plan + act.</b> <b>Graph RAG = think in connections.</b> Switch between them to compare the flows.</p>
+  <div class="tabs" id="rctabs"></div>
+  <div data-flow="rc"></div>
+  <h2>Side by side</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th style="color:var(--blue)">RAG</th><th style="color:var(--orange)">Agentic RAG</th><th style="color:var(--green)">Graph RAG</th></tr>
+    <tr><td><b>Core loop</b></td><td>Retrieve → augment → generate</td><td>Plan → retrieve with tools → evaluate → generate</td><td>Classify → local graph traversal or global community summaries → synthesize</td></tr>
+    <tr><td><b>Knowledge store</b></td><td>Vector DB (index + metadata)</td><td>Vector DB plus tools, APIs and MCP servers</td><td>Vector DB plus knowledge graph plus community reports (offline indexed)</td></tr>
+    <tr><td><b>Decides to retrieve?</b></td><td>Always</td><td>Planning agent decides; evaluator can re-retrieve</td><td>Always, but chooses local vs global search</td></tr>
+    <tr><td><b>Strengths</b></td><td>Simple and effective · factual Q&amp;A · single-turn tasks</td><td>Planning and tool integration · multi-step reasoning · complex tasks</td><td>Complex, multi-entity queries · "big picture" questions · more contextual answers</td></tr>
+    <tr><td><b>Cost / latency</b></td><td>Lowest</td><td>Medium–high (several LLM calls)</td><td>High indexing cost; global search is many map calls</td></tr>
+    <tr><td><b>Fails when</b></td><td>The answer spans many documents or needs a decision</td><td>Loops without a step budget; evaluator is mis-tuned</td><td>Graph extraction is noisy; data changes faster than re-indexing</td></tr>
+  </table></div>
+</div>

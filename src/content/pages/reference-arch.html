@@ -1,0 +1,24 @@
+
+  <span class="kicker">5b · Reference</span>
+  <h1>Reference architecture &amp; the AI OS</h1>
+  <p class="lead">Nine layers of a production agentic system: goal-driven, multi-agent, orchestrated, observable and reliable. Step through a request end to end, or click any layer for details.</p>
+  <div data-flow="refarch"></div>
+  <h2>Layer by layer</h2>
+  <div class="grid g3" id="refcards"></div>
+<div id="ai-os" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">The AI operating system</h2>
+  <p class="lead">A prompt that goes in and a response that comes out breaks on complex tasks. Reliable agents need a runtime around the model, the way programs need an operating system: memory, a planner, a scheduler, a tool router, an evaluator and an interface, connected by a knowledge graph of entities and relationships. The loop becomes plan → act → evaluate → improve. The future isn't only bigger models; it's better systems.</p>
+  <div data-flow="aios" data-theme="soft"></div>
+  <h2>What breaks without each component</h2>
+  <p class="muted">Switch a component off to see the failure it would cause.</p>
+  <div class="card" id="aiosKill"></div>
+  <h2>Traditional AI vs an AI operating system</h2>
+  <div class="card tablewrap"><table><tr><th></th><th>Prompt → response</th><th>AI operating system</th></tr>
+    <tr><td><b>Flow</b></td><td>One pass</td><td>Plan → act → evaluate → improve, repeated</td></tr>
+    <tr><td><b>State</b></td><td>Only what's in the prompt</td><td>Memory and a knowledge graph persist across steps and sessions</td></tr>
+    <tr><td><b>Failures</b></td><td>Returned to the user</td><td>Detected by the evaluator; retried or rerouted by the scheduler</td></tr>
+    <tr><td><b>Actions</b></td><td>None, or ad hoc</td><td>Through a tool router with permissions and limits</td></tr>
+    <tr><td><b>Fits</b></td><td>Single questions</td><td>Multi-step, long-running, reliable autonomous work</td></tr></table></div>
+  <p class="muted" style="font-size:13px">Related: <a href="#frameworks">AXIS, an agentic OS (my frameworks)</a> · <a href="#agent-anatomy">Anatomy of an AI agent</a> · <a href="#agent-runtime">Agents in production</a> · <a href="#harness">Harness engineering</a></p>
+</div>

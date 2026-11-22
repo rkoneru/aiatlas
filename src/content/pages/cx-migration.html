@@ -1,0 +1,17 @@
+
+  <span class="kicker">Customer service AI · Modernization</span>
+  <h1>From IVR &amp; legacy bots to LLM agents</h1>
+  <p class="lead">Most organizations already have an IVR menu and an intent-based chatbot. Replacing them in one go is risky; migrating <b>intent by intent</b>, with the old system as a safety net, is not. The plan below moves from logs to shadow mode to live traffic, and the scorer helps you decide what each intent should become.</p>
+  <div data-flow="cxmig" data-theme="soft"></div>
+  <h2>Intent treatment scorer</h2>
+  <p class="muted">Rate an intent on four factors. The result suggests whether it should stay a fixed flow, become an LLM-handled intent with guardrails, or go straight to a person.</p>
+  <div class="card" id="miScore"></div>
+  <h2>Migration plan</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Phase</th><th>What happens</th><th>Exit criterion</th></tr>
+    <tr><td><b>1 · Assess</b></td><td class="muted">Mine call and chat logs: top intents by volume, current containment and transfer per intent, failure reasons, dead-end menu paths.</td><td class="muted">Ranked intent list with baselines</td></tr>
+    <tr><td><b>2 · Shadow</b></td><td class="muted">The LLM agent sees live conversations but doesn't answer; its responses are scored against what happened.</td><td class="muted">Agreed quality bar met on a golden set</td></tr>
+    <tr><td><b>3 · Hybrid</b></td><td class="muted">LLM handles open questions and understanding; fixed flows still run authentication and transactions. Start with a share of traffic.</td><td class="muted">Resolved containment and CSAT at or above baseline</td></tr>
+    <tr><td><b>4 · Expand</b></td><td class="muted">Add intents and channels one at a time; voice usually after chat.</td><td class="muted">Each intent passes its own gate</td></tr>
+    <tr><td><b>5 · Retire</b></td><td class="muted">Decommission menus and intents the new system has replaced; keep a fallback path for outages.</td><td class="muted">No traffic on retired paths for an agreed period</td></tr>
+  </table></div>

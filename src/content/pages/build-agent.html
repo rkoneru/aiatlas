@@ -1,0 +1,42 @@
+
+  <span class="kicker">2f · AI agents</span>
+  <h1>How to build an AI agent</h1>
+  <p class="lead">Eight steps from idea to a tested agent: <b>purpose → system prompt → model → tools → memory → orchestration → interface → evals</b>. Step through them, then use the checklist to track your own build. Each step links to the Atlas page that goes deeper.</p>
+  <div data-flow="buildag"></div>
+  <h2>Build checklist</h2>
+  <div class="card"><div class="ctlrow" style="margin-top:0"><b id="bachk" style="font-size:18px"></b><button class="b" id="bareset" style="margin-left:auto">Clear</button></div><div id="balist"></div><p class="muted" style="margin:6px 0 0;font-size:13px">Saved in this browser only.</p></div>
+  <h2>Where to build it</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Category</th><th>Product</th><th>Deployment</th><th>Key features</th><th>Best for</th></tr>
+    <tr><td rowspan="3"><b>Consumer AI agents</b></td><td>ChatGPT (OpenAI)</td><td>Cloud</td><td>Custom GPTs, voice, vision, memory, image generation</td><td>General-purpose assistant, creative work</td></tr>
+    <tr><td>Claude (Anthropic)</td><td>Cloud</td><td>Projects, artifacts, analysis, long context</td><td>Research, writing, coding</td></tr>
+    <tr><td>Perplexity</td><td>Cloud</td><td>Search-first, citations</td><td>Research, fact-checking</td></tr>
+    <tr><td rowspan="3"><b>Agentic coding tools</b></td><td>Cursor</td><td>Local + cloud</td><td>Full IDE, multi-file editing</td><td>Professional developers, complex projects</td></tr>
+    <tr><td>Windsurf</td><td>Local + cloud</td><td>Agentic flows, codebase awareness</td><td>Team development, large codebases</td></tr>
+    <tr><td>Claude Code (Anthropic)</td><td>Local · cloud</td><td>Terminal-native, git integration, autonomous coding</td><td>CLI workflows, automation scripts</td></tr>
+    <tr><td rowspan="3"><b>No-code builders</b></td><td>Lindy</td><td>Cloud</td><td>Thousands of integrations, natural-language workflows</td><td>Business automation, non-technical teams</td></tr>
+    <tr><td>Relay.app</td><td>Cloud</td><td>Human-in-the-loop, Gmail/Slack native</td><td>Team workflows that need approvals</td></tr>
+    <tr><td>n8n</td><td>Cloud / self-host</td><td>400+ integrations, open source</td><td>Technical teams, data-privacy needs</td></tr>
+    <tr><td rowspan="3"><b>Development frameworks</b></td><td>LangGraph</td><td>Local / cloud</td><td>Graph-based flows, state management, cycles</td><td>Complex workflows, production apps</td></tr>
+    <tr><td>CrewAI</td><td>Local / cloud</td><td>Role-based agents, task delegation</td><td>Multi-agent teams</td></tr>
+    <tr><td>LlamaIndex</td><td>Local / cloud</td><td>RAG-first, data connectors, query engines</td><td>Knowledge-intensive apps, document Q&amp;A</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">I left out the infographic's model-version column because versions change every few months. Check each product for its current models.</p>
+<div id="claude-agent" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Build an agent in Claude, without code</h2>
+  <p class="lead">You can set up a capable, agent-like assistant in the Claude app with no code: a <b>project</b> holds its instructions and knowledge, <b>connectors</b> give it access to your apps, <b>skills</b> teach it repeatable workflows, and <b>scheduled tasks</b> let it run on its own. Use the worksheet below to write its instructions.</p>
+  <div class="callout">Viral "build an agent in 10 minutes" guides often describe screens that don't exist. These steps follow Claude's help center as of November 2026; menus can move, so check <a href="https://support.claude.com">support.claude.com</a> if something looks different.</div>
+  <h2>Steps</h2>
+  <div class="grid g2" id="caSteps"></div>
+  <h2>Agent design worksheet</h2>
+  <p class="muted">Fill this in, then paste the result into your project's instructions.</p>
+  <div class="grid g2 jg-b"><div class="card" id="caForm"></div><div class="card"><div class="ctlrow" style="margin-top:0"><b style="flex:1">Project instructions</b><button class="b" id="caCopy">Copy</button><button class="b" id="caSave">⤓ .md</button><span class="muted" id="caMsg" style="font-size:13px"></span></div><pre class="jg-pre" id="caOut"></pre></div></div>
+  <h2>Test it before you rely on it</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Typical tasks</h3><p class="muted" style="margin:0">Run five real requests it should handle and check the results yourself.</p></div>
+    <div class="card"><h3>Edge cases</h3><p class="muted" style="margin:0">Ambiguous requests, missing data, things it should refuse or escalate.</p></div>
+    <div class="card"><h3>Permissions</h3><p class="muted" style="margin:0">Confirm it can only reach the connectors and actions you intended.</p></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#build-agent">How to build an AI agent</a> · <a href="#prompt-skills">Prompt vs project vs skill</a> · <a href="#agent-kit">Agent dev kit</a></p>
+</div>

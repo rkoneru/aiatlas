@@ -1,0 +1,38 @@
+
+  <span class="kicker">Agents · Choosing the approach</span>
+  <h1>Automation, digital workers &amp; AI agents</h1>
+  <p class="lead">Three ways to get work done by software, from most predictable to most flexible. <b>Automation</b> follows fixed rules and triggers. A <b>digital worker</b> follows a defined workflow (understand → process → execute → record) with AI inside some steps, validations at each one and a full log. An <b>AI agent</b> decides its own path. Most real systems combine all three: automation for the routine, digital workers for structured judgment, agents for the exceptions.</p>
+  <div data-flow="spectrum" data-theme="soft"></div>
+  <h2>Side by side</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>⚙️ Automation</th><th>🧾 Digital worker</th><th>🤖 AI agent</th></tr>
+    <tr><td><b>How it works</b></td><td>Rules and triggers</td><td>A defined workflow with AI steps and checks</td><td>Perceives, reasons and chooses its own steps</td></tr>
+    <tr><td><b>Path</b></td><td>Same every time</td><td>Same steps, AI handles variation inside them</td><td>May differ every time</td></tr>
+    <tr><td><b>Handles</b></td><td>Structured, repetitive work</td><td>Semi-structured work: documents, emails, forms</td><td>Open-ended, novel or multi-step problems</td></tr>
+    <tr><td><b>Traceability</b></td><td>Full</td><td>Full: every step logged and auditable</td><td>Needs tracing; reasoning is harder to audit</td></tr>
+    <tr><td><b>Consistency</b></td><td>Very high</td><td>High</td><td>Variable without evals and guardrails</td></tr>
+    <tr><td><b>Improves by</b></td><td>Someone changing the rules</td><td>Tuning steps, prompts and validations</td><td>Better prompts, tools, memory and evals (it doesn't learn on its own unless you build that in)</td></tr>
+    <tr><td><b>Cost to start</b></td><td>Low</td><td>Medium</td><td>Higher, plus per-run model cost</td></tr></table></div>
+  <h2>Which fits your task?</h2>
+  <div class="card" id="spFit"></div>
+  <p class="muted" style="font-size:13px">Related: <a href="#agent-fit">Where agents fit</a> · <a href="#automation-pipelines">Automation pipelines</a> · <a href="#agent-runtime">Agentic process automation vs RPA</a> · <a href="#decide">Architecture decision wizard</a></p>
+<div id="agent-fit" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Where do AI agents actually fit?</h2>
+  <p class="lead">A practical map for deciding when to deploy an agent, and when to leave the task alone. <b>Fits:</b> bounded, reviewable, goal-directed tasks. <b>Doesn't fit:</b> irreversible, ambiguous, high-stakes calls.</p>
+  <div data-flow="fit4"></div>
+  <h2>Fit checker</h2>
+  <p class="muted">Answer five questions about a task you have in mind.</p>
+  <div class="card"><div id="fitq"></div><div class="callout" id="fitout" style="margin-bottom:0"></div></div>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><h3>Agents vs automation</h3><p class="muted" style="margin:0"><b>Automation</b> follows a fixed script: same steps every time, no judgment calls. An <b>agent</b> is given a goal, plans its own steps, uses tools and adapts. Rule of thumb: if the steps never change, automate it; if the path varies, an agent may help.</p></div>
+    <div class="card"><h3>Where agents actually help</h3><ul style="margin:0;padding-left:18px"><li>Research and synthesis</li><li>Triage and routing</li><li>Drafting that gets revised</li><li>Monitoring and flagging</li></ul></div>
+    <div class="card"><h3>Where agents still fail</h3><ul style="margin:0;padding-left:18px"><li>Irreversible actions: payments, deletions, signed contracts</li><li>Tasks with no clear definition of success</li><li>Judgment calls with no precedent</li><li>Anything you can't audit afterwards</li></ul></div>
+  </div>
+  <h2>A rollout timeline</h2>
+  <div class="states"><span class="st done">Month 1 · one bounded task with a clear pass/fail signal</span><span class="arrow">→</span><span class="st done">Month 2 · give it tool access, human reviews every output</span><span class="arrow">→</span><span class="st on">Months 3–6 · widen scope once the error rate is measured and low; review becomes spot-check, then exception-only</span></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>The honest trade-off</h3><p class="muted" style="margin:0">An agent trades your direct control of each step for speed across many steps. That only pays off inside a defined boundary. <b>Narrow scope</b>: one task, clear rules, quick to trust. <b>Wide scope</b>: many tasks, vague rules, hard to trust or debug. Value follows intent, not the number of agents you deploy.</p></div>
+    <div class="card"><h3>Avoid these mistakes</h3><ul style="margin:0;padding-left:18px"><li>Production access before testing</li><li>No handoff back to a human</li><li>Vague or unmeasured success</li><li>No logs to review after the fact</li></ul></div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+
+  <span class="kicker">Models · Deep learning</span>
+  <h1>Neural networks: architectures &amp; learning</h1>
+  <p class="lead">Different data has different structure, and each architecture builds that structure in. <b>CNNs</b> assume nearby pixels matter together, <b>RNNs</b> read sequences in order, <b>transformers</b> let every token look at every other token, and <b>state-space models</b> compress long sequences into a running state. Step through a CNN, then compare the families.</p>
+  <div data-flow="nnarch" data-theme="soft"></div>
+  <h2>The four families</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">CNN · convolutional</span><h3>Shared local filters</h3><p>Small filters (say 3×3) slide across an image and detect edges, then textures, then parts, then objects as layers stack. Pooling shrinks the map. Weight sharing makes CNNs efficient and translation-tolerant. Still the backbone of many vision, medical imaging and audio front-ends.</p><span class="pill">ResNet</span><span class="pill">EfficientNet</span><span class="pill">YOLO</span></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">RNN · LSTM · GRU</span><h3>A running memory</h3><p>Process one step at a time, carrying a hidden state forward. LSTMs add gates to keep information over longer spans. Training is sequential (slow on GPUs) and long-range memory fades, which is exactly the problem attention solved.</p><span class="pill">LSTM</span><span class="pill">GRU</span><span class="pill">seq2seq</span></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Transformer</span><h3>Attention over everything</h3><p>Every token attends to every other token in parallel, so training scales on GPUs and long-range dependencies are easy. The cost is quadratic in sequence length. Powers LLMs, vision transformers (ViT), speech and multimodal models. See <a href="#how-llms-work">How LLMs work</a>.</p><span class="pill">GPT · Claude</span><span class="pill">BERT</span><span class="pill">ViT</span></div>
+    <div class="card"><span class="tag" style="color:var(--green)">State-space models</span><h3>Linear-time sequence models</h3><p>Mamba-style SSMs keep a fixed-size state updated by selective, input-dependent rules. They run in linear time with constant memory per token, which suits very long sequences. Many recent models are <b>hybrids</b> that interleave SSM layers with a few attention layers.</p><span class="pill">Mamba</span><span class="pill">Jamba</span><span class="pill">hybrids</span></div>
+  </div>
+  <h2>Side by side</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Family</th><th>Built-in assumption</th><th>Cost vs length n</th><th>Parallel training</th><th>Long-range recall</th><th>Best for</th></tr>
+    <tr><td><b>CNN</b></td><td>Locality, translation</td><td>O(n)</td><td>Yes</td><td>Limited by receptive field</td><td>Images, video frames, spectrograms</td></tr>
+    <tr><td><b>RNN / LSTM</b></td><td>Order, recency</td><td>O(n)</td><td>No</td><td>Weak</td><td>Small streaming tasks, legacy systems</td></tr>
+    <tr><td><b>Transformer</b></td><td>Almost none</td><td>O(n²) attention</td><td>Yes</td><td>Strong</td><td>Language, multimodal, most frontier models</td></tr>
+    <tr><td><b>SSM (Mamba)</b></td><td>Compressible history</td><td>O(n)</td><td>Yes (scan)</td><td>Good, weaker on exact copy</td><td>Very long sequences, genomics, audio</td></tr>
+  </table></div>
+  <h2>Building blocks you'll see everywhere</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Activations</h3><p>ReLU, GELU, SiLU/SwiGLU add the non-linearity that lets stacked layers learn curves, not just lines.</p></div>
+    <div class="card"><h3>Normalization</h3><p>BatchNorm (CNNs) and LayerNorm/RMSNorm (transformers) keep activations in a stable range so deep networks train.</p></div>
+    <div class="card"><h3>Residual connections</h3><p>Add each block's input to its output. Gradients flow through hundreds of layers instead of vanishing.</p></div>
+    <div class="card"><h3>Dropout</h3><p>Randomly zero activations during training to reduce co-adaptation and overfitting. Turned off at inference.</p></div>
+    <div class="card"><h3>Pooling &amp; stride</h3><p>Downsample feature maps so later layers see a wider area for the same cost.</p></div>
+    <div class="card"><h3>Embeddings</h3><p>Lookup tables that map discrete tokens or IDs to dense vectors the network can work with.</p></div>
+  </div>
+<div id="nn-learning" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">How neural networks learn</h2>
+  <p class="lead">Every model, from a spam filter to a frontier LLM, learns the same way: make a prediction, measure the error, work out how each weight contributed (<b>backpropagation</b>), and nudge every weight a little downhill (<b>gradient descent</b>). Walk one training step, then try the learning-rate playground.</p>
+  <div data-flow="trainstep" data-theme="soft"></div>
+  <h2>Gradient descent playground</h2>
+  <p class="muted">The loss surface is a long, narrow valley. Start at the dot and take steps against the gradient. Too small a learning rate crawls; too large overshoots and diverges. Momentum helps cross the valley floor.</p>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><label>Learning rate <input type="range" id="gdLr" min="1" max="24" value="8"><span class="out" id="gdLrV"></span></label><label><input type="checkbox" id="gdMom"> Momentum (0.9)</label><label>Steps <input type="range" id="gdN" min="5" max="80" value="30"><span class="out" id="gdNV"></span></label></div>
+    <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px" class="gd-wrap"><svg id="gdSvg" viewBox="0 0 420 300" style="width:100%;background:var(--soft);border-radius:10px"></svg><svg id="gdLoss" viewBox="0 0 300 300" style="width:100%;background:var(--soft);border-radius:10px"></svg></div>
+    <div id="gdMsg" class="callout" style="margin:12px 0 0"></div>
+  </div>
+  <h2>The mechanics</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Gradient descent</span><h3>Downhill, one step at a time</h3><p>The gradient says which direction increases the loss fastest; step the other way. <b>Mini-batch SGD</b> estimates the gradient from a small batch, which is noisy but cheap. <b>Momentum</b> smooths the path. <b>Adam/AdamW</b> adapts the step per parameter and is the default for transformers. A <b>learning-rate schedule</b> (warm-up, then cosine decay) matters as much as the optimizer.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Backpropagation</span><h3>Blame assignment by the chain rule</h3><p>After the forward pass computes the loss, the backward pass applies the chain rule layer by layer, from the output back to the input, to get every weight's gradient in one sweep. Frameworks (PyTorch, JAX) do this automatically with <b>autograd</b>. Problems: gradients can <b>vanish</b> or <b>explode</b> in deep networks; residual connections, normalization and gradient clipping fix most of it.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Batches, epochs &amp; scale</span><h3>How much data per step</h3><p>An <b>epoch</b> is one pass over the data. Larger batches give smoother gradients and better GPU use but need higher learning rates and can generalize slightly worse. LLM pre-training usually sees each token about once, measured in tokens rather than epochs, and is spread across thousands of GPUs with data, tensor and pipeline parallelism.</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">Mixed precision &amp; checkpoints</span><h3>Making training affordable</h3><p>Train in bf16 or fp8 with fp32 master weights to halve memory and speed up math. Gradient checkpointing trades compute for memory by recomputing activations. Save checkpoints often: long runs fail.</p></div>
+  </div>
+  <h2>Encoder, decoder, encoder–decoder</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Architecture</th><th>Attention</th><th>Trained to</th><th>Good at</th><th>Examples</th></tr>
+    <tr><td><b>Encoder-only</b></td><td>Bidirectional: every token sees every other token</td><td>Fill in masked tokens</td><td>Understanding: classification, embeddings, NER, reranking</td><td>BERT, RoBERTa, most embedding models</td></tr>
+    <tr><td><b>Decoder-only</b></td><td>Causal: each token sees only earlier tokens</td><td>Predict the next token</td><td>Generation, chat, reasoning, code; general-purpose</td><td>GPT, Claude, Llama, Gemini</td></tr>
+    <tr><td><b>Encoder–decoder</b></td><td>Encoder bidirectional; decoder causal + cross-attention to the encoder</td><td>Map an input sequence to an output sequence</td><td>Translation, summarization, speech recognition</td><td>T5, BART, Whisper</td></tr>
+  </table></div>
+  <h2>Positional encoding</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Why it's needed</h3><p>Attention treats its input as a set. Without position information, "dog bites man" and "man bites dog" look identical.</p></div>
+    <div class="card"><h3>Absolute &amp; learned</h3><p>The original transformer added sine waves of different frequencies; GPT-2 learned one vector per position. Both struggle beyond the trained length.</p></div>
+    <div class="card"><h3>RoPE (rotary)</h3><p>Rotate query and key vectors by an angle proportional to position, so attention scores depend on <i>relative</i> distance. Used by most modern LLMs. Scaling tricks (position interpolation, YaRN) stretch the rotations to extend context length.</p></div>
+  </div>
+  <h2>Symbolic AI vs connectionism</h2>
+  <div class="grid g3">
+    <div class="card" style="border-top:3px solid var(--blue)"><span class="tag">Symbolic (GOFAI)</span><h3>Rules and logic</h3><p>Hand-written knowledge: expert systems, logic programming, planners, knowledge graphs. Precise, explainable and verifiable, but brittle and expensive to build.</p></div>
+    <div class="card" style="border-top:3px solid var(--purple)"><span class="tag" style="color:var(--purple)">Connectionist</span><h3>Learned representations</h3><p>Neural networks learn patterns from data. Robust to messy input and broad, but statistical, hard to inspect, and prone to confident mistakes.</p></div>
+    <div class="card" style="border-top:3px solid var(--green)"><span class="tag" style="color:var(--green)">Neuro-symbolic, today</span><h3>Both together</h3><p>Modern systems combine them: an LLM plans and talks, while code interpreters, solvers, ontologies, schemas and rule engines provide exactness. See <a href="#ontology">self-evolving ontology</a> and <a href="#jev">JEV vs LLM</a>.</p></div>
+  </div>
+</div>

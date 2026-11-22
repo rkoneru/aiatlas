@@ -1,0 +1,79 @@
+
+  <span class="kicker">1 · RAG</span>
+  <h1>Retrieval-Augmented Generation &amp; its math</h1>
+  <p class="lead">LLMs augmented with retrieved knowledge. Two pipelines: <b>offline ingestion</b> builds the index, <b>online query</b> retrieves, reranks and composes the prompt at runtime, so answers have fewer hallucinations and cite sources.</p>
+  <div data-flow="rag"></div>
+  <h2>Retrieval playground</h2>
+  <p class="muted">Query: <b>"How do we handle a P1 payments outage?"</b> Adjust top-k and the rerank threshold to see what ends up in the prompt. Relevant chunks are marked ✓ so you can see recall vs. noise.</p>
+  <div class="card">
+    <div class="ctlrow">
+      <label>top-k <input type="range" id="rk" min="1" max="8" value="5"><span class="out" id="rkv">5</span></label>
+      <label><input type="checkbox" id="rro" checked> Rerank</label>
+      <label>min rerank score <input type="range" id="rt" min="0" max="100" value="50"><span class="out" id="rtv">0.50</span></label>
+    </div>
+    <div class="stats" id="rstats"></div>
+    <div id="rchunks"></div>
+    <div class="callout" id="rhint"></div>
+  </div>
+  <h2>Design choices that matter</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Chunking</h3><p class="muted">Split on structure (headings, sections), not fixed characters. Keep metadata (source, date, ACL) on every chunk.</p></div>
+    <div class="card"><h3>Hybrid retrieval</h3><p class="muted">Combine vector similarity with keyword (BM25) search. Exact identifiers like error codes are often missed by embeddings alone.</p></div>
+    <div class="card"><h3>Rerank &amp; filter</h3><p class="muted">A cross-encoder reranker over the top 20–50 candidates usually beats raising k. Filter by permissions before the LLM sees anything.</p></div>
+    <div class="card"><h3>Citations</h3><p class="muted">Give chunks IDs in the prompt and require the model to cite them. That makes answers auditable and lets you measure faithfulness.</p></div>
+    <div class="card"><h3>Evaluate</h3><p class="muted">Measure retrieval (recall@k, MRR) separately from generation (faithfulness, answer relevance). Fix the weaker half first.</p></div>
+    <div class="card"><h3>Freshness</h3><p class="muted">Incremental re-indexing on document change, plus TTLs for fast-moving sources such as incident notes.</p></div>
+  </div>
+<div id="rag-math" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">RAG formulas &amp; concepts</h2>
+  <p class="lead">The math behind every RAG pipeline: embed, measure similarity, take the top-k, rerank, build context, generate, evaluate. Step through the pipeline, then try each formula on live numbers.</p>
+  <div data-flow="ragmath"></div>
+  <h2>Embeddings &amp; cosine similarity</h2>
+  <div class="grid g2">
+    <div class="card">
+      <div class="formula"><i>e</i> = <i>f</i><sub>emb</sub>(<i>text</i>) &nbsp;&nbsp;·&nbsp;&nbsp; cos(<i>q</i>, <i>d</i>) = <span class="frac"><span><i>q</i> · <i>d</i></span><span>‖<i>q</i>‖ ‖<i>d</i>‖</span></span></div>
+      <p class="muted" style="margin:10px 0 0">Text becomes a vector that captures meaning. Cosine similarity compares direction, not length: 1 means same direction, 0 unrelated, −1 opposite. Real embeddings have hundreds to thousands of dimensions; this demo uses two.</p>
+      <p class="muted" style="margin:8px 0 0"><b>Drag the arrow tips</b> on the right.</p>
+    </div>
+    <div class="card"><div id="cosbox"></div><div id="cosout" class="mono" style="margin-top:8px;font-size:13px"></div></div>
+  </div>
+  <h2>Chunking</h2>
+  <div class="card">
+    <div class="formula">chunks ≈ ⌈ (<i>N</i> − <i>overlap</i>) / (<i>size</i> − <i>overlap</i>) ⌉</div>
+    <div class="ctlrow" style="margin-top:12px">
+      <label>Document tokens <input type="range" id="ckn" min="500" max="50000" step="500" value="12000"><span class="out" id="cknv"></span></label>
+      <label>Chunk size <input type="range" id="cks" min="100" max="2000" step="50" value="500"><span class="out" id="cksv"></span></label>
+      <label>Overlap <input type="range" id="cko" min="0" max="400" step="10" value="100"><span class="out" id="ckov"></span></label>
+    </div>
+    <div id="ckout"></div>
+    <p class="muted" style="margin:6px 0 0;font-size:13.5px">Common approaches: fixed size (e.g. 500 tokens), with overlap (e.g. 100 tokens), or by structure (headings and sections). Overlap keeps sentences that straddle a boundary retrievable, at the cost of more vectors.</p>
+  </div>
+  <h2>Top-k retrieval &amp; reranking</h2>
+  <div class="card">
+    <div class="formula"><i>D<sub>k</sub></i> = TopK<sub><i>d</i>∈<i>D</i></sub> sim(<i>q</i>, <i>d</i>) &nbsp;&nbsp;→&nbsp;&nbsp; <i>s</i>′(<i>q</i>, <i>d</i>) = <i>f</i><sub>rerank</sub>(<i>q</i>, <i>d</i>)</div>
+    <div class="ctlrow" style="margin-top:12px"><label>k <input type="range" id="tkk" min="1" max="6" value="3"><span class="out" id="tkkv"></span></label><label><input type="checkbox" id="tkr" checked> Apply reranker</label></div>
+    <div class="tablewrap"><table id="tktable"></table></div>
+    <p class="muted" style="margin:8px 0 0;font-size:13.5px">The bi-encoder scores query and chunk separately, which is fast but coarse. The reranker reads them together, which is slower but sharper, and can reorder the list: watch d₂ overtake d₁.</p>
+  </div>
+  <h2>Context construction &amp; generation</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Prompt to LLM</h3><pre class="code" id="ctxpre"></pre></div>
+    <div class="card"><div class="formula"><i>y</i> = <i>f</i><sub>LLM</sub>(<i>q</i>, <i>C</i>), &nbsp; <i>C</i> = (<i>d</i><sub>1</sub>, …, <i>d<sub>k</sub></i>)</div><p class="muted" style="margin:10px 0 0">The LLM generates the final answer from the query and the retrieved context, ideally citing the chunk IDs it used. Everything above decides what goes into <i>C</i>, and <i>C</i> caps the quality of <i>y</i>.</p></div>
+  </div>
+  <h2>Evaluation metrics</h2>
+  <p class="muted">Click a result to mark it relevant. Metrics update for the chosen k.</p>
+  <div class="card">
+    <div class="ctlrow"><label>k <input type="range" id="evk" min="1" max="8" value="5"><span class="out" id="evkv"></span></label><span class="muted" style="font-size:13px">Total relevant in the corpus: <b id="evtot"></b> (2 of them were never retrieved)</span></div>
+    <div class="scen" id="evlist"></div>
+    <div class="stats" id="evstats" style="margin-top:12px"></div>
+    <div class="tablewrap"><table>
+      <tr><th>Metric</th><th>Formula</th><th>What it measures</th></tr>
+      <tr><td><b>Recall@k</b></td><td class="mono">|relevant ∩ retrieved@k| / |relevant|</td><td>How much of the relevant information was retrieved</td></tr>
+      <tr><td><b>Precision@k</b></td><td class="mono">|relevant ∩ retrieved@k| / k</td><td>How many retrieved results are relevant</td></tr>
+      <tr><td><b>MRR</b></td><td class="mono">1 / rank of first relevant</td><td>How high the first good result appears</td></tr>
+      <tr><td><b>Faithfulness</b></td><td class="mono">LLM-judged</td><td>Whether the answer is supported by the retrieved context</td></tr>
+    </table></div>
+    <div class="callout" style="margin-bottom:0">Faithfulness does not guarantee factual correctness. Retrieved sources may themselves contain incorrect information.</div>
+  </div>
+</div>

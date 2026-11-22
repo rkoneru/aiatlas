@@ -1,0 +1,34 @@
+
+  <span class="kicker">Design &amp; performance · Security</span>
+  <h1>AI security: OWASP Top 10s &amp; supply chain</h1>
+  <p class="lead">The OWASP GenAI Security Project maintains two lists every team building with LLMs should know: the <b>Top 10 for LLM Applications 2026</b> and the <b>Top 10 for Agentic Applications</b>. Read them together once a model can use tools. Step through the attack surface, then check which risks your controls cover.</p>
+  <div data-flow="aisec" data-theme="soft"></div>
+  <h2>OWASP Top 10 for LLM Applications 2026</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>#</th><th>Risk</th><th>2025 rank</th><th>What it means</th></tr>
+    <tr><td>LLM01</td><td><b>Prompt Injection</b></td><td>1</td><td>Instructions hidden in input or retrieved content hijack the model. Higher stakes now that agents reach private data and take actions.</td></tr>
+    <tr><td>LLM02</td><td><b>Sensitive Information Disclosure</b></td><td>2</td><td>Leaking PII, secrets or other users' data, including RAG retrieval that ignores permissions.</td></tr>
+    <tr><td>LLM03</td><td><b>Excessive Agency</b></td><td>6</td><td>Too many tools, permissions or autonomy for the task. Up three places as models gained operational authority.</td></tr>
+    <tr><td>LLM04</td><td><b>Supply Chain</b></td><td>3</td><td>Tampered weights, unsafe model formats, malicious packages and name-squatting.</td></tr>
+    <tr><td>LLM05</td><td><b>Data and Model Poisoning</b></td><td>4</td><td>Corrupted training, fine-tuning or RAG ingestion data that plants backdoors or bias.</td></tr>
+    <tr><td>LLM06</td><td><b>Unbounded Consumption</b></td><td>10</td><td>Runaway cost or denial of service from token floods and agent loops.</td></tr>
+    <tr><td>LLM07</td><td><b>Misinformation</b></td><td>9</td><td>Confidently wrong output that people or automated systems act on.</td></tr>
+    <tr><td>LLM08</td><td><b>Hidden Context Exposure</b></td><td>7</td><td>Formerly System Prompt Leakage; now also tool schemas, policies and workflow rules.</td></tr>
+    <tr><td>LLM09</td><td><b>Vector and Embedding Weaknesses</b></td><td>8</td><td>Attacks on retrieval: poisoned embeddings, inversion, cross-tenant leakage.</td></tr>
+    <tr><td>LLM10</td><td><b>Improper Output Handling</b></td><td>5</td><td>Passing model output unchecked into browsers, shells, SQL or other systems.</td></tr>
+  </table></div>
+  <h2>OWASP Top 10 for Agentic Applications</h2>
+  <div class="grid g2" id="asiGrid"></div>
+  <h2>Control coverage check</h2>
+  <p class="muted">Tick the controls you have in place. Each risk turns green when at least one strong control covers it.</p>
+  <div class="card"><div class="sec-ctl" id="secCtl"></div><div id="secOut" style="margin-top:14px"></div></div>
+  <h2>Model &amp; agent supply chain</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Safe formats</h3><p>Prefer safetensors over pickle-based checkpoints, which can execute code when loaded.</p></div>
+    <div class="card"><h3>Provenance &amp; signing</h3><p>Pin model versions by hash, verify signatures, and pull only from trusted registries.</p></div>
+    <div class="card"><h3>AI bill of materials</h3><p>Inventory models, datasets, prompts, agents, tools and MCP servers, like an SBOM for AI.</p></div>
+    <div class="card"><h3>Vet MCP servers &amp; plugins</h3><p>Review tool descriptions (they're prompts too), pin versions, and watch for silent updates.</p></div>
+    <div class="card"><h3>Dependency hygiene</h3><p>Lock package versions; watch for typosquatted AI libraries and hallucinated package names.</p></div>
+    <div class="card"><h3>Data lineage</h3><p>Know where training, fine-tuning and RAG data came from, and who can write to it.</p></div>
+  </div>
+  <p class="muted" style="font-size:13px;margin-top:14px">Sources: <a href="https://genai.owasp.org/llm-top-10/">OWASP GenAI LLM Top 10</a> (2026 edition published August 2026) and <a href="https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/">OWASP Top 10 for Agentic Applications</a> (December 2025). Rank changes summarized from the Cloud Security Alliance's comparison. See also <a href="#guardrails">AI guardrails</a>.</p>

@@ -1,0 +1,22 @@
+
+  <span class="kicker">Career</span>
+  <h1>AI roadmaps &amp; career paths</h1>
+  <p class="lead">Two learning paths. The <b>AI engineer roadmap</b> goes from Python to shipped AI products. The <b>LLM engineering roadmap</b> goes deeper on the model itself, from fundamentals and pre-training to deployment and security. Tick off what you already know to see what's left.</p>
+  <h2>AI engineer roadmap</h2>
+  <div data-flow="aierm"></div>
+  <div class="card" style="margin-top:14px">
+    <div class="ctlrow" style="margin-top:0"><label>Your pace <input type="range" id="rmpace" min="50" max="200" step="25" value="100"><span class="out" id="rmpacev"></span></label><b id="rmleft" style="margin-left:auto"></b></div>
+    <div id="rmlist"></div>
+    <p class="muted" style="margin:8px 0 0;font-size:13px">Week ranges come from the roadmap; stages without a range (frameworks, projects, advanced topics) run in parallel and aren't counted. Pace scales the estimate: 2× means roughly double the weekly hours. Your ticks are saved in this browser only.</p>
+  </div>
+  <h2>LLM engineering roadmap</h2>
+  <div data-flow="llmrm"></div>
+  <div class="grid g2" id="llmrmcards" style="margin-top:14px"></div>
+  <p class="muted" style="font-size:13px;margin-top:10px">Based on Maxime Labonne's free <a href="https://github.com/mlabonne/llm-course">LLM course</a> on GitHub (notebooks and reading lists for each stage).</p>
+<div id="careers" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">AI career paths</h2>
+  <p class="lead">What aspect of AI interests you most? Answer two questions to find a role and its key skills, or step through all ten paths in the tree.</p>
+  <div class="card" id="cquiz"></div>
+  <div style="margin-top:14px" data-flow="career"></div>
+</div>

@@ -1,0 +1,25 @@
+
+  <span class="kicker">Models · Training</span>
+  <h1>How models are trained: from pre-training to alignment</h1>
+  <p class="lead">A raw pre-trained model completes text; it doesn't follow instructions or refuse harmful requests. <b>Post-training</b> turns it into an assistant: supervised fine-tuning on demonstrations, then preference learning (RLHF, DPO, Constitutional AI), then reinforcement learning on tasks with checkable answers. Walk the pipeline.</p>
+  <div data-flow="posttrain" data-theme="soft"></div>
+  <h2>The methods</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">SFT · instruction tuning</span><h3>Learn from demonstrations</h3><p>Fine-tune on curated prompt → ideal response pairs written or reviewed by people. Teaches format, tone and instruction following. Quality beats quantity: tens of thousands of excellent examples outperform millions of mediocre ones.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">RLHF</span><h3>Reinforcement learning from human feedback</h3><p>Labelers compare two responses and pick the better one. A <b>reward model</b> learns to predict those preferences. The policy is then optimized (classically with PPO) to earn high reward, with a KL penalty that keeps it close to the SFT model so it can't drift into reward hacking.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">DPO &amp; friends</span><h3>Preference optimization without RL</h3><p>Direct Preference Optimization trains directly on chosen/rejected pairs with a simple classification-style loss. No separate reward model and no RL loop, so it's cheaper and more stable. Variants include IPO, KTO and ORPO.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Constitutional AI · RLAIF</span><h3>AI feedback guided by principles</h3><p>Write a constitution of principles. The model critiques and revises its own outputs against it, and an AI judge produces preference labels in place of (or alongside) human ones. This scales oversight and makes the values being trained explicit and auditable.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">RLVR · verifiable rewards</span><h3>Reward what you can check</h3><p>For math, code and puzzles, the reward comes from a checker (unit tests pass, the answer matches) rather than a learned preference model. Long chains of reasoning that reach correct answers are reinforced. This is how today's reasoning models learn to think before answering.</p></div>
+    <div class="card"><span class="tag" style="color:var(--amber)">Synthetic data</span><h3>Models generating training data</h3><p>Stronger models write instructions, solutions, critiques and hard negatives for weaker ones, or for their own next version. Powerful and cheap, but it needs filtering, verification and diversity checks: training repeatedly on unfiltered model output degrades quality ("model collapse").</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">Data labeling &amp; annotation</span><h3>The human signal</h3><p>Demonstrations, preference comparisons, rubric scores and red-team attacks all come from people, often domain experts. Clear guidelines, inter-annotator agreement checks and gold questions matter more than labeler count.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Continual learning</span><h3>Learning without forgetting</h3><p>Fine-tuning on new data can overwrite old skills (<b>catastrophic forgetting</b>). Mitigations: mix in replay data from earlier training, use adapters (LoRA) per task, regularize toward the old weights, or keep knowledge outside the model with RAG and memory.</p></div>
+  </div>
+  <h2>Which signal for which goal?</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Goal</th><th>Signal</th><th>Method</th><th>Watch out for</th></tr>
+    <tr><td>Follow instructions, house style</td><td>Demonstrations</td><td>SFT</td><td>Copying labelers' mistakes</td></tr>
+    <tr><td>Helpful, harmless, honest</td><td>Human or AI preferences</td><td>RLHF · DPO · RLAIF</td><td>Sycophancy, verbosity, reward hacking</td></tr>
+    <tr><td>Correct reasoning in math and code</td><td>Automatic checkers</td><td>RLVR</td><td>Gaming weak tests, over-long thinking</td></tr>
+    <tr><td>New domain knowledge</td><td>Domain documents</td><td>Continued pre-training, or better: RAG</td><td>Forgetting, stale facts</td></tr>
+    <tr><td>A narrow task at low cost</td><td>Teacher outputs</td><td>Distillation into a small model</td><td>Inheriting the teacher's errors</td></tr>
+  </table></div>

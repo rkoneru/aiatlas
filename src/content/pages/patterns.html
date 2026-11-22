@@ -1,0 +1,44 @@
+
+  <span class="kicker">5 · Building agent systems</span>
+  <h1>Harness, loop &amp; graph engineering</h1>
+  <p class="lead">Three ways to build agent systems: <b>a harness</b> to empower one agent, <b>a loop</b> to refine output, <b>a graph</b> to handle complex work. Most production systems nest them, for example a graph whose nodes are harnessed agents with internal loops.</p>
+  <div class="tabs" id="pattabs"></div>
+  <div data-flow="patterns"></div>
+  <div class="card tablewrap" style="margin-top:14px"><table id="pattable"></table></div>
+  <h2>Loop simulator</h2>
+  <p class="muted">An evaluator–optimizer loop: draft, score, refine. Set the quality bar and the iteration budget. A good stop condition is the difference between self-correction and an infinite loop.</p>
+  <div class="card">
+    <div class="ctlrow">
+      <label>Quality bar <input type="range" id="lq" min="60" max="98" value="85"><span class="out" id="lqv">85</span></label>
+      <label>Max iterations <input type="range" id="li" min="1" max="10" value="6"><span class="out" id="liv">6</span></label>
+      <label>First-draft quality <input type="range" id="l0" min="20" max="80" value="50"><span class="out" id="l0v">50</span></label>
+      <button class="b pri" id="lrun">Run loop</button>
+    </div>
+    <div class="bars" id="lbars"></div>
+    <p id="lres" style="margin-bottom:0"></p>
+  </div>
+  <h2>Which pattern fits?</h2>
+  <div class="card">
+    <label class="toggle"><input type="checkbox" id="q1" checked><span><b>One agent with the right tools could do it end-to-end</b><br><span class="muted">Fits in one context window, and one set of permissions is enough.</span></span></label>
+    <label class="toggle"><input type="checkbox" id="q2"><span><b>Quality improves with critique and revision</b><br><span class="muted">There is a measurable bar, such as tests, a rubric or an evaluator.</span></span></label>
+    <label class="toggle"><input type="checkbox" id="q3"><span><b>Subtasks need different specialists, permissions or owners</b><br><span class="muted">For example retrieval, verification, escalation and follow-up.</span></span></label>
+    <p class="rec" id="qrec"></p><p class="muted" id="qwhy" style="margin:0"></p>
+  </div>
+<div id="harness" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Harness engineering: from powerful models to reliable results</h2>
+  <p class="lead">A harness is the control system around a model: <b>guides</b> that raise the odds of a good first attempt, <b>sensors</b> that let the agent see and correct what it did, and <b>state</b> that lets work survive the end of a context window. The same model can produce broken or working software depending on what surrounds it.</p>
+  <div data-flow="harn"></div>
+  <h2>The seven load-bearing concepts</h2>
+  <p class="muted">Tick the ones your agent already has.</p>
+  <div class="grid g2" id="hncards"></div>
+  <div class="card" id="hnscore" style="margin-top:14px"></div>
+  <h2>Real-world evidence: same model, different harness</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Anthropic · retro game maker</h3><p class="muted" style="margin:0">A solo agent ran about 20 min for about $9, and the game didn't respond to input. A planner–generator–evaluator harness ran about 6 hours for about $200, and the game played successfully.</p></div>
+    <div class="card"><h3>LangChain · Terminal Bench 2.0</h3><div class="memrow" style="grid-template-columns:70px 1fr 50px"><span>Before</span><div class="membar" style="width:52.8%;background:var(--gray)"></div><b class="mono">52.8</b></div><div class="memrow" style="grid-template-columns:70px 1fr 50px"><span>After</span><div class="membar" style="width:66.5%;background:var(--blue)"></div><b class="mono">66.5</b></div><p class="muted" style="margin:6px 0 0">Same model; only the system prompt, tools and middleware changed.</p></div>
+    <div class="card"><h3>Vercel · internal data agent</h3><p class="muted" style="margin:0">They removed about 80% of the tools. The success rate went from 80% to 100% on a small internal question set, with fewer steps and fewer tokens.</p></div>
+  </div>
+  <p class="muted" style="font-size:13px">As reported in the infographic, which rates its own confidence as medium for each case. Use them as directional, not as benchmarks.</p>
+  <div class="callout">Build the loop first, the evaluator second, orchestration last. Keep state outside the model, keep the action space small, and remove harness components as models improve. Related: <a href="#patterns">harness vs loop vs graph</a>, <a href="#agent-kit">Claude Code dev kit</a>.</div>
+</div>

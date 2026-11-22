@@ -1,0 +1,39 @@
+
+  <span class="kicker">3 · MCP</span>
+  <h1>Model Context Protocol &amp; server roles</h1>
+  <p class="lead">A standard way for LLM applications to use tools and data. <b>Hosts</b> (an IDE, a desktop assistant, an internal playground) run MCP clients that talk to <b>MCP servers</b>, which wrap real systems like a CRM, a SQL warehouse or a file drive.</p>
+  <div data-flow="mcp"></div>
+  <h2>Why a standard: M × N → M + N</h2>
+  <div class="card">
+    <div class="ctlrow">
+      <label>AI apps / hosts (M) <input type="range" id="mm" min="1" max="20" value="5"><span class="out" id="mmv">5</span></label>
+      <label>Tools &amp; data sources (N) <input type="range" id="mn" min="1" max="40" value="12"><span class="out" id="mnv">12</span></label>
+    </div>
+    <div class="grid g2">
+      <div class="stat"><span>Custom integrations without MCP (M × N)</span><b id="mx"></b></div>
+      <div class="stat" style="background:color-mix(in srgb,var(--blue) 12%,var(--panel))"><span>With MCP: one client per host, one server per tool (M + N)</span><b id="mp" style="color:var(--blue)"></b></div>
+    </div>
+  </div>
+  <h2>The primitives</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Servers expose</h3>
+      <p><b>Tools</b> <span class="pill">model-controlled</span><br><span class="muted">Functions the model can call, e.g. <code>run_query</code>, <code>create_ticket</code>, described with JSON Schema.</span></p>
+      <p><b>Resources</b> <span class="pill">app-controlled</span><br><span class="muted">Read-only context addressed by URI, e.g. <code>file:///guide.md</code>, DB rows.</span></p>
+      <p style="margin-bottom:0"><b>Prompts</b> <span class="pill">user-controlled</span><br><span class="muted">Reusable templates and workflows the user can invoke.</span></p></div>
+    <div class="card"><h3>Clients offer</h3>
+      <p><b>Sampling</b><br><span class="muted">The server asks the host's LLM to generate something, so the server needs no model keys of its own.</span></p>
+      <p><b>Roots</b><br><span class="muted">Which folders or URIs the server is allowed to work within.</span></p>
+      <p style="margin-bottom:0"><b>Elicitation</b><br><span class="muted">The server asks the user for missing input mid-task.</span></p></div>
+  </div>
+  <p class="muted" style="margin-top:14px">Transport: JSON-RPC 2.0 over <code>stdio</code> (local servers) or <b>Streamable HTTP</b> (remote servers, with OAuth for authorization).</p>
+<div id="mcp-roles" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">The 7 architectural roles of an MCP server</h2>
+  <p class="lead">Not all MCP servers are the same. Choosing the right role keeps servers purpose-built, composable, secure by design and production-ready. Pick a role to see its flow.</p>
+  <div class="tabs" id="roletabs"></div>
+  <div data-flow="roles"></div>
+  <div class="grid g3" style="margin-top:14px" id="roledetail"></div>
+  <div class="grid g5" style="margin-top:14px"><div class="card"><h3>Purpose-built</h3><p class="muted" style="margin:0">Each role solves one problem better.</p></div><div class="card"><h3>Composable</h3><p class="muted" style="margin:0">Combine roles into powerful agent systems.</p></div><div class="card"><h3>Secure by design</h3><p class="muted" style="margin:0">Isolation, auth and state management where they matter.</p></div><div class="card"><h3>Production-ready</h3><p class="muted" style="margin:0">From simple tools to complex enterprise workflows.</p></div></div>
+  <h2>Composing roles</h2>
+  <div class="card"><p style="margin:0">Real deployments combine roles. A typical enterprise setup has a <b>Gateway Connector</b> in front of several <b>Tool Lean-in</b> servers, which centralizes auth, rate limits and logging. <b>Context Providers</b> feed RAG-style reads. A <b>Sandboxed Executor</b> is the trust boundary for code. <b>Workflow Packagers</b> expose approved runbooks so the agent can't improvise risky steps.</p></div>
+</div>

@@ -1,0 +1,29 @@
+
+  <span class="kicker">Applied</span>
+  <h1>Agent catalog: 30 agents to build &amp; 100 agent ideas</h1>
+  <p class="lead">Thirty reference agent types in six layers, the DASH template for designing any of them, a build order, and 100 department-level agent ideas you can search.</p>
+  <h2>Build order</h2>
+  <div data-flow="buildord"></div>
+  <h2>The 30 agents</h2>
+  <div class="card"><div class="scen" id="acf"></div><div class="grid g2" id="aclist" style="margin-top:12px"></div></div>
+  <h2>DASH: the template for every agent</h2>
+  <div class="grid g2">
+    <div class="card"><h3>What to define</h3><ul style="margin:0;padding-left:18px"><li><b>What</b> the agent does: one job only. If it needs two sentences, it's two agents.</li><li><b>What</b> failure it prevents: "without this, [specific bad thing] happens".</li><li><b>Who</b> it's for: builder and user often need different success criteria.</li><li><b>When</b> it triggers, and <b>where</b> it sits in the stack (foundation → intelligence → integration; don't skip layers).</li></ul></div>
+    <div class="card"><h3>Prompt must-haves</h3><ul style="margin:0;padding-left:18px"><li><b>Task</b>: exactly what to do, specific, not generic.</li><li><b>Protocol</b>: the step-by-step process the agent follows.</li><li><b>Constraints</b>: what it must never do. Negative rules matter.</li><li><b>Stop</b>: when to halt. Always define it before deploying.</li></ul></div>
+  </div>
+  <h2>The non-negotiable rules</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Rule</th><th>Why it matters</th><th>Common failure if you skip it</th></tr>
+    <tr><td>Define stopping conditions</td><td>Agents without exit criteria loop indefinitely</td><td>Infinite loops</td></tr>
+    <tr><td>Build the "no result" path</td><td>With no such path, the agent hallucinates confidently at scale</td><td>Confident hallucination</td></tr>
+    <tr><td>Write memory, don't just read it</td><td>Most skip the write path, so the agent never improves</td><td>No learning</td></tr>
+    <tr><td>Pass full context to specialists</td><td>Sub-agents share no memory with the coordinator</td><td>Broken outputs</td></tr>
+    <tr><td>Always include a verification agent</td><td>No agent reliably grades its own output</td><td>Unchecked errors</td></tr>
+    <tr><td>Build foundation before domain</td><td>Skipping layers gives a fragile architecture</td><td>No failure states in planning, so it can't recover</td></tr>
+  </table></div>
+  <h2>100 AI agent ideas</h2>
+  <div class="card">
+    <div class="ctlrow" style="margin-top:0"><input type="search" id="idq" placeholder="Search ideas, e.g. invoice, vendor, onboarding…" style="flex:1;min-width:220px;font:inherit;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"><span class="muted mono" id="idn" style="font-size:13px"></span></div>
+    <div class="scen" id="idf"></div>
+    <div class="grid g3" id="idgrid" style="margin-top:12px"></div>
+  </div>

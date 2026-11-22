@@ -1,0 +1,31 @@
+
+  <span class="kicker">Applied · Documents &amp; language</span>
+  <h1>Document AI, IDP &amp; NLP tasks</h1>
+  <p class="lead">Most enterprise knowledge is trapped in PDFs, scans, forms and email. <b>Document AI</b> turns them into structured data, <b>intelligent document processing (IDP)</b> wraps that in a validated workflow with human review, and classic <b>NLP tasks</b> (entities, sentiment, classification, summarization) run on top. Walk an IDP pipeline.</p>
+  <div data-flow="idp" data-theme="soft"></div>
+  <h2>Reading documents</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">OCR</span><h3>Pixels to text</h3><p>Optical character recognition converts scans and photos to text with positions. Modern engines handle multiple languages and some handwriting; quality still depends on scan resolution, skew and stamps.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Layout &amp; structure</span><h3>Where things are matters</h3><p>Layout models detect headings, paragraphs, tables, key-value pairs, checkboxes and reading order. Table extraction is the hardest part: merged cells and multi-page tables break naive parsers.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Vision-language models</span><h3>Read it like a person</h3><p>VLMs can take the page image and return structured JSON directly, handling layouts no template anticipated. Combine with OCR text for exact character fidelity on IDs and numbers.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Chunking for RAG</span><h3>Structure-aware ingestion</h3><p>Parse documents into sections and tables before chunking, so retrieval returns a whole table or clause rather than half of one. See <a href="#rag">RAG</a>.</p></div>
+  </div>
+  <h2>IDP in practice</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Classify</h3><p>Invoice, receipt, contract, ID, claim form? Route each to the right extraction schema.</p></div>
+    <div class="card"><h3>Extract</h3><p>Fill a typed schema (vendor, date, line items, totals) with a confidence score per field.</p></div>
+    <div class="card"><h3>Validate</h3><p>Business rules: totals add up, the vendor exists, the PO matches, the date is plausible.</p></div>
+    <div class="card"><h3>Human review</h3><p>Low-confidence or rule-failing fields go to a reviewer with the source highlighted. Corrections become training and eval data.</p></div>
+    <div class="card"><h3>Export</h3><p>Post to the ERP, claims or case system through an API, with an audit trail back to the source page.</p></div>
+    <div class="card"><h3>Measure</h3><p>Field-level accuracy, straight-through processing rate (no human touch), and cost and time per document.</p></div>
+  </div>
+  <h2>NLP tasks: LLM or specialist model?</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Task</th><th>What it does</th><th>LLM (prompted)</th><th>Specialist model</th></tr>
+    <tr><td>Named-entity recognition</td><td>Find people, orgs, amounts, dates, IDs</td><td>Flexible, new entity types instantly</td><td>Fast and cheap at volume (spaCy, fine-tuned BERT)</td></tr>
+    <tr><td>Sentiment &amp; emotion</td><td>Positive / negative, frustration, urgency</td><td>Nuanced, explains why</td><td>Cheap, consistent scores for dashboards</td></tr>
+    <tr><td>Classification &amp; intent</td><td>Route tickets, tag topics</td><td>Zero-shot with label descriptions</td><td>Fine-tuned small model once labels stabilize</td></tr>
+    <tr><td>Summarization</td><td>Condense calls, threads, documents</td><td><b>Best</b></td><td>Rarely worth it now</td></tr>
+    <tr><td>Translation</td><td>Between languages</td><td>Strong, handles tone and context</td><td>Dedicated MT for very high volume</td></tr>
+    <tr><td>Information extraction</td><td>Fill structured fields from text</td><td><b>Best</b> with structured output</td><td>For fixed, high-volume formats</td></tr>
+  </table></div>

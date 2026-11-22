@@ -1,0 +1,82 @@
+
+  <span class="kicker">Agents · Agent components</span>
+  <h1>Agent goals &amp; decision making</h1>
+  <p class="lead">Decision making turns reasoning into action: the agent generates options, scores them against its goals and constraints, picks one, acts, and learns from the result. Good agents also know when <i>not</i> to decide: when confidence is low or the stakes are high, the right decision is to ask a person.</p>
+  <div data-flow="agentdecide" data-theme="soft"></div>
+  <h2>Five kinds of decisions</h2>
+  <div class="grid g5">
+    <div class="card"><h3>Deterministic</h3><p class="muted" style="margin:0">Rules give one answer. "If battery &lt; 10% → charge."</p></div>
+    <div class="card"><h3>Probabilistic</h3><p class="muted" style="margin:0">Outcomes are uncertain; choose by likelihood.</p></div>
+    <div class="card"><h3>Multi-criteria</h3><p class="muted" style="margin:0">Balance cost, time, risk, quality.</p></div>
+    <div class="card"><h3>Sequential</h3><p class="muted" style="margin:0">Today's choice changes tomorrow's options.</p></div>
+    <div class="card"><h3>Adaptive</h3><p class="muted" style="margin:0">The policy improves from feedback over time.</p></div>
+  </div>
+  <h2>Decision lab</h2>
+  <p class="muted">Options are scored on weighted criteria. Hard constraints veto an option outright. Each option's chance of succeeding turns the score into an expected value, and if the best option's confidence is below your threshold, the agent escalates to a person instead of acting.</p>
+  <div class="card" id="dlab"></div>
+  <h2>Exploration vs exploitation</h2>
+  <p class="muted">An agent that always picks the option it currently thinks is best may never discover a better one. This simulation runs an ε-greedy agent on three options with hidden success rates.</p>
+  <div class="card" id="bandit"></div>
+  <h2>Decision strategies</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Strategy</th><th>How it decides</th><th>Use when</th></tr>
+    <tr><td><b>Rule-based</b></td><td>Predefined rules or policies</td><td class="muted">Regulated or safety-critical steps; must be explainable</td></tr>
+    <tr><td><b>Model-based</b></td><td>Simulates outcomes with a model of the world</td><td class="muted">Planning, robotics, what-if analysis</td></tr>
+    <tr><td><b>Utility-based</b></td><td>Maximizes expected utility or reward</td><td class="muted">Clear trade-offs between measurable goals</td></tr>
+    <tr><td><b>Cost–benefit</b></td><td>Compares total costs with benefits</td><td class="muted">Business decisions with known costs</td></tr>
+    <tr><td><b>Heuristic</b></td><td>Shortcuts that are good enough</td><td class="muted">Time pressure, huge option spaces</td></tr>
+    <tr><td><b>Learning-based</b></td><td>Learns a policy from data and feedback</td><td class="muted">Repeated decisions with fast feedback</td></tr>
+    <tr><td><b>LLM reasoning</b></td><td>Reasons over options in natural language, often with tools</td><td class="muted">Open-ended choices; pair with rules and checks for anything risky</td></tr></table></div>
+  <h2>Deciding under uncertainty</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Bayesian reasoning</h3><p class="muted" style="margin:0">Update beliefs as evidence arrives.</p></div>
+    <div class="card"><h3>Monte Carlo simulation</h3><p class="muted" style="margin:0">Sample many futures and compare outcomes.</p></div>
+    <div class="card"><h3>MDPs and POMDPs</h3><p class="muted" style="margin:0">Model sequential decisions, with full or partial observation of the state.</p></div>
+    <div class="card"><h3>Reinforcement learning</h3><p class="muted" style="margin:0">Learn the policy from reward over many episodes.</p></div>
+    <div class="card"><h3>Confidence thresholds</h3><p class="muted" style="margin:0">Act only above a confidence bar; otherwise ask or gather more information.</p></div>
+    <div class="card"><h3>Risk-aware scoring</h3><p class="muted" style="margin:0">Penalize variance and worst cases, not only the average.</p></div>
+  </div>
+  <h2>Decision quality checklist</h2>
+  <div class="card"><div class="fde-ck" id="dqCk"></div><p class="muted" id="dqScore" style="font-size:13px;margin:8px 0 0"></p></div>
+  <p class="muted" style="font-size:13px">Related: <a href="#agent-goals">Agent goals</a> · <a href="#jev">JEV vs LLM</a> · <a href="#agent-governance">Agents watching agents</a> · <a href="#decide">Architecture decision wizard</a></p>
+<div id="agent-goals" class="merged"><hr class="mg-hr">
+  
+  <h2 class="mg-h">Agent goals</h2>
+  <p class="lead">Goals tell an agent what it is trying to achieve. They steer what it pays attention to, how it plans, which action it picks and when it stops. No goal means no direction; a vague goal means wasted steps; a goal with no measure means the agent can't tell whether it succeeded.</p>
+  <div data-flow="goalloop" data-theme="soft"></div>
+  <h2>Five types of goals</h2>
+  <div class="grid g5">
+    <div class="card fw-c" style="--c:var(--blue)"><h3>Task</h3><p class="muted">Achieve a defined outcome.</p><p style="font-size:13px;margin:0">"Book a flight to New York."</p></div>
+    <div class="card fw-c" style="--c:var(--teal)"><h3>State</h3><p class="muted">Reach or hold a condition.</p><p style="font-size:13px;margin:0">"Keep the room at 20–24 °C."</p></div>
+    <div class="card fw-c" style="--c:var(--purple)"><h3>Optimization</h3><p class="muted">Maximize or minimize a metric.</p><p style="font-size:13px;margin:0">"Minimize travel time and cost."</p></div>
+    <div class="card fw-c" style="--c:var(--amber)"><h3>Learning</h3><p class="muted">Improve knowledge or skill.</p><p style="font-size:13px;margin:0">"Learn this user's preferences."</p></div>
+    <div class="card fw-c" style="--c:var(--pink)"><h3>Alignment</h3><p class="muted">Act safely, fairly and within values.</p><p style="font-size:13px;margin:0">"Help users safely and fairly."</p></div>
+  </div>
+  <h2>Goal hierarchy builder</h2>
+  <p class="muted">Higher goals guide lower ones; lower goals drive daily actions. Start from a template, edit any level, and export it as a structured goal spec for your agent.</p>
+  <div class="card"><div class="ctlrow" style="margin-top:0"><div class="chips" id="ghTpl" style="margin-left:0"></div><span style="flex:1"></span><button class="b" id="ghMd">⤓ Markdown</button><button class="b" id="ghJson">⤓ JSON spec</button><span class="muted" id="ghMsg" style="font-size:13px"></span></div><div id="ghTree"></div></div>
+  <h2>How goals are represented</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Form</th><th>Example</th><th>Good for</th></tr>
+    <tr><td><b>Natural language</b></td><td><code>"Find the best hotel deal in Paris for May 10–12"</code></td><td class="muted">LLM agents; easy to write, ambiguous to check</td></tr>
+    <tr><td><b>Structured</b></td><td><code>{"task":"book_hotel","city":"Paris","dates":"May 10–12","max_price":250}</code></td><td class="muted">Validation, tool calls, measurable completion</td></tr>
+    <tr><td><b>Logical</b></td><td><code>At(Home) ∧ Has(Ticket)</code></td><td class="muted">Classical planners (STRIPS, PDDL, GOAP)</td></tr>
+    <tr><td><b>Utility / reward</b></td><td><code>maximize(comfort − cost)</code></td><td class="muted">Trade-offs, optimization, reinforcement learning</td></tr>
+    <tr><td><b>Hierarchical</b></td><td><code>Plan trip → book flight → book hotel → pack</code></td><td class="muted">Long tasks; hierarchical task networks</td></tr></table></div>
+  <h2>Choosing actions by goals</h2>
+  <p class="muted">Agents score each option by how much it advances each active goal, weighted by priority. Change the weights or scores to see which option wins.</p>
+  <div class="card" id="goalMx"></div>
+  <h2>Goal management</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Create &amp; prioritize</h3><p class="muted" style="margin:0">Turn user intent into goals; rank by importance and urgency.</p></div>
+    <div class="card"><h3>Update &amp; retire</h3><p class="muted" style="margin:0">Revise goals as context changes; drop ones that no longer apply.</p></div>
+    <div class="card"><h3>Track &amp; resolve conflicts</h3><p class="muted" style="margin:0">Measure progress; resolve clashes by priority, weights or by asking the user.</p></div>
+  </div>
+  <h2>Goal design checklist</h2>
+  <div class="card"><div class="fde-ck" id="gcCk"></div><p class="muted" id="gcScore" style="font-size:13px;margin:8px 0 0"></p></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>Common failure modes</h3><ul class="ind-l"><li>Ambiguous or unclear goals</li><li>Conflicting goals with no priority</li><li>Wrong success metric, so the agent optimizes the proxy</li><li>Short-term goals crowding out long-term ones</li><li>Over-optimizing one goal and ignoring others (including safety)</li></ul></div>
+    <div class="card"><h3>Tools &amp; frameworks</h3><ul class="ind-l"><li>Goal-Oriented Action Planning (GOAP)</li><li>Hierarchical Task Networks (HTN)</li><li>Behavior trees</li><li>Reward functions and reinforcement learning</li><li>Plan-and-execute agent patterns in LLM frameworks</li></ul></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#agent-decisions">Agent decision making</a> · <a href="#agents">AI agents</a> · <a href="#spar">SPAR</a> · <a href="#build-agent">How to build an agent</a></p>
+</div>

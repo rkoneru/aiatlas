@@ -1,0 +1,18 @@
+
+  <span class="kicker">FDE kit · Data protection</span>
+  <h1>Privacy engineering for AI</h1>
+  <p class="lead">Personal data flows through prompts, logs, indexes and evaluation sets. Privacy engineering decides where it is <b>removed</b>, where it is <b>replaced with tokens</b> that can be reversed only by authorized code, where it is <b>stored</b> and for <b>how long</b>, and who can <b>retrieve</b> it.</p>
+  <div data-flow="fdepriv" data-theme="soft"></div>
+  <h2>Try redaction</h2>
+  <p class="muted">A simple pattern-based redactor running in your browser. Production systems combine patterns with trained entity recognizers (for example, Microsoft Presidio) and test both on real samples.</p>
+  <div class="card" id="pvLab"></div>
+  <h2>Decisions to make with the customer</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Decision</th><th>Options</th><th>Notes</th></tr>
+    <tr><td><b>Redact or tokenize</b></td><td class="muted">Remove · mask · reversible token</td><td class="muted">Tokenize when the agent must act on the value later (e.g. look up an account) without the model seeing it.</td></tr>
+    <tr><td><b>Data residency</b></td><td class="muted">Region-pinned model endpoints, storage and logs</td><td class="muted">Check where prompts, outputs, embeddings and traces are processed, not just stored.</td></tr>
+    <tr><td><b>Retention</b></td><td class="muted">Transcripts, logs, traces, eval sets</td><td class="muted">Set a period per data type; make deletion requests reach indexes and backups.</td></tr>
+    <tr><td><b>Provider data use</b></td><td class="muted">Training opt-out, zero data retention options</td><td class="muted">Get it in the contract, not just a settings page.</td></tr>
+    <tr><td><b>Permission-aware retrieval</b></td><td class="muted">Filter by user's access before ranking</td><td class="muted">Carry access lists on every chunk and filter before the model sees anything.</td></tr>
+    <tr><td><b>Legal basis</b></td><td class="muted">GDPR, HIPAA, GLBA, PCI DSS, local laws</td><td class="muted">Involve the customer's privacy officer early; record the basis per purpose.</td></tr>
+  </table></div>

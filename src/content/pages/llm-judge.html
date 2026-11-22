@@ -1,0 +1,26 @@
+
+  <span class="kicker">Build &amp; ship · Evaluation</span>
+  <h1>LLM as a judge</h1>
+  <p class="lead">A capable model, given a clear rubric, grades the outputs of another model, agent or person: scoring answers, comparing two versions, checking against a reference, or ticking off a checklist. It makes evaluation fast and cheap enough to run on every release and every conversation. But a judge is itself a model that needs checking: calibrate it against human labels and design out its known biases.</p>
+  <div data-flow="judge" data-theme="soft"></div>
+  <h2>Six ways to judge</h2>
+  <div class="grid g3" id="jgModes"></div>
+  <h2>Use cases</h2>
+  <div class="ctlrow"><div class="chips" id="jgCats" style="margin-left:0"></div><span class="muted" id="jgN" style="margin-left:auto;font-size:13px"></span></div>
+  <div class="card tablewrap"><table id="jgUC"></table></div>
+  <h2>Known biases and how to counter them</h2>
+  <div class="card tablewrap"><table id="jgBias"></table></div>
+  <h2>Judge prompt builder</h2>
+  <p class="muted">Pick a mode, list your criteria, and choose the safeguards. The builder writes a judge prompt you can copy into your eval pipeline, or test right here with Claude.</p>
+  <div class="grid g2 jg-b"><div class="card" id="jgForm"></div><div class="card"><div class="ctlrow" style="margin-top:0"><b style="flex:1">Judge prompt</b><button class="b" id="jgCopy">Copy</button><button class="b" id="jgSave">⤓ .md</button><span class="muted" id="jgMsg" style="font-size:13px"></span></div><pre class="jg-pre" id="jgOut"></pre></div></div>
+  <div class="card" id="jgTest"></div>
+  <h2>Checklist for a trustworthy judge</h2>
+  <div class="grid g3">
+    <div class="card"><h3>1 · Define "good" first</h3><p>Write the rubric with anchored examples for each score before you automate anything. Vague criteria give noisy judges.</p></div>
+    <div class="card"><h3>2 · Label a human set</h3><p>Have experts grade 50–200 examples. This is the ground truth the judge is measured against.</p></div>
+    <div class="card"><h3>3 · Measure agreement</h3><p>Compare judge and human verdicts (agreement, Cohen's κ, precision on failures). Iterate the prompt until it's good enough for the decision it drives.</p></div>
+    <div class="card"><h3>4 · Prefer binary and pairwise</h3><p>Pass/fail per criterion and A-vs-B comparisons are more stable than 1–10 scores.</p></div>
+    <div class="card"><h3>5 · Use a different model</h3><p>Avoid grading a model with itself; use a different family or a panel of judges for high-stakes calls.</p></div>
+    <div class="card"><h3>6 · Keep humans sampling</h3><p>Re-check a sample every release. Judges drift when the product, the data or the judge model changes.</p></div>
+  </div>
+  <p class="muted" style="font-size:13px">Related: <a href="#evalhub">Eval Hub</a> (run a golden set with Claude as judge) · <a href="#llmops">LLMOps</a> · <a href="#harness">Harness engineering</a> · <a href="#llm-roles">LLM as everything</a></p>

@@ -1,0 +1,9 @@
+
+  <span class="kicker">Build &amp; ship · Evaluation</span>
+  <h1>Eval Hub</h1>
+  <p class="lead">Build a golden set, set a pass bar, paste the outputs your system produced, and score them. Each case can be checked by rules (must include, must not include, regex), by you, or by Claude as a judge. This is "evals are the spec" in practice: agree the set and the bar with the customer before launch.</p>
+  <div class="card"><div class="ctlrow" style="margin-top:0;flex-wrap:wrap"><label style="font-size:13px">Eval set <input id="evName" style="width:220px"></label><label style="font-size:13px">Pass bar <input id="evBar" type="number" min="0" max="100" style="width:70px"> %</label>
+    <button class="b" id="evAdd">＋ Add case</button><button class="b" id="evGen" hidden>✦ Generate cases with Claude</button><button class="b pri" id="evJudge" hidden>✦ Judge all with Claude</button><button class="b" id="evSample">Load sample</button><button class="b" id="evCsv">⤓ CSV</button><button class="b" id="evJson">⤓ JSON</button><span class="muted" id="evMsg" style="font-size:13px"></span></div>
+    <div class="ev-gen" id="evGenBox" hidden><textarea id="evGenTxt" rows="2" placeholder="Describe the system to test, e.g. an HR policy assistant that answers leave and benefits questions for UK employees and must refuse legal advice."></textarea><button class="b pri" id="evGenGo">Generate 8 cases</button></div></div>
+  <div class="ac-stats" id="evStats"></div>
+  <div id="evList"></div>

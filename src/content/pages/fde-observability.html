@@ -1,0 +1,23 @@
+
+  <span class="kicker">FDE kit · Run it</span>
+  <h1>Observability &amp; on-call for AI agents</h1>
+  <p class="lead">You can't fix what you can't see. Trace every request end to end, from the user message through retrieval, model calls and tools, using a shared vocabulary so any backend can read it. OpenTelemetry's <b>GenAI semantic conventions</b> provide that vocabulary; they moved to their own repository in June 2026 and are still marked <i>Development</i>, so pin a version.</p>
+  <h2>One request, as a trace</h2>
+  <p class="muted">Click a span to see the attributes you'd record.</p>
+  <div class="card" id="obTrace"></div>
+  <h2>Dashboards &amp; alerts</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Signal</th><th>Source</th><th>Alert when</th></tr>
+    <tr><td><b>Latency</b> (p50/p95, time to first token)</td><td class="muted"><code>gen_ai.client.operation.duration</code></td><td class="muted">p95 above the experience budget for 10 minutes</td></tr>
+    <tr><td><b>Tokens &amp; cost</b></td><td class="muted"><code>gen_ai.client.token.usage</code> by model and feature</td><td class="muted">Daily spend above forecast; sudden jump per conversation</td></tr>
+    <tr><td><b>Errors</b></td><td class="muted">Span status, <code>error.type</code></td><td class="muted">Error rate above baseline; provider rate limits</td></tr>
+    <tr><td><b>Tool failures</b></td><td class="muted">Tool spans (<code>execute_tool</code>)</td><td class="muted">A tool failing for more than N% of calls</td></tr>
+    <tr><td><b>Quality</b></td><td class="muted">Online eval scores, thumbs-down, escalations</td><td class="muted">Groundedness or CSAT drop versus last week</td></tr>
+    <tr><td><b>Safety</b></td><td class="muted">Guardrail blocks, PII detections</td><td class="muted">Any spike; any confirmed leak (page immediately)</td></tr>
+  </table></div>
+  <h2>On-call runbook</h2>
+  <div class="grid g3">
+    <div class="card"><h3>1 · Triage</h3><p class="muted">Is it the provider, a tool, retrieval or a change we shipped? Check the provider status page, recent deploys and prompt or model changes.</p></div>
+    <div class="card"><h3>2 · Contain</h3><p class="muted">Fail over to a backup model, disable the failing tool, switch to a safe fixed flow, or route to people. Have these switches ready before launch.</p></div>
+    <div class="card"><h3>3 · Learn</h3><p class="muted">Add the failing conversations to the regression set, fix, and write a short post-incident note. See the <a href="#incidents">incident register</a>.</p></div>
+  </div>
