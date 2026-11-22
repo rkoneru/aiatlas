@@ -81,11 +81,10 @@ For these pages, the build adds the other pages' sections (or, for the studio, o
 - Search engines don't index `<template>` content.
 - `scripts/check-links.ts` ignores links inside them.
 
-This is a Phase 1 bridge. Phase 3 replaces it with data modules.
+Since Phase 3 the infographic studio is no longer a companion. It ships with its lazy chunk (see `docs/performance.md`). The others remain: they are inert HTML, a few KB, and replacing them would mean restructuring the CAIO module.
 
 | Page | Companions |
 |---|---|
-| every page except `/playground/` | `#igStudio` |
 | `caio`, `ai-strategy`, `usecase-roi`, `ai-budget`, `ai-value` | the other CAIO pages |
 | `ai-board` | the other CAIO pages, `incidents` |
 | `industry` | the CAIO pages |

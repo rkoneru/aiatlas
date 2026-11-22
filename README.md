@@ -10,7 +10,8 @@ The interactive learning site about AI architecture, built as a static Astro sit
 npm install
 npm run extract           # source/atlas.html -> src/content, src/data, src/styles, src/generated, public/
 npm run extract:analyze   # re-compute page guards (needs Playwright's Chromium); run after big source changes
-npm run build             # -> dist/  (AI off unless PUBLIC_AI_ENABLED=true; see .env.example)
+npm run build             # -> dist/  (AI off unless PUBLIC_AI_ENABLED=true; see .env.example).
+                          #    Renders every page once in Chromium (snapshot): needs `npx playwright install chromium`
 npm run build:ai-test     # -> dist-ai/ with AI on, for the mocked-proxy tests
 npm run build:gh-test     # -> dist-gh/ built for GitHub Pages under /aiatlas/
 npm run dev               # local dev server
@@ -47,4 +48,5 @@ Differences from Cloudflare Pages:
 | [`docs/inventory-findings.md`](docs/inventory-findings.md) | What blocked a clean split, and how each blocker is handled. |
 | [`docs/decisions.md`](docs/decisions.md) | Decisions made so far. |
 | [`docs/runtime-adaptations.md`](docs/runtime-adaptations.md) | How the original runtime works on one URL per page. |
+| [`docs/performance.md`](docs/performance.md) | Per-page runtimes, snapshot, Lighthouse results. |
 | [`docs/platform.md`](docs/platform.md) | The `window.claude.use()` shim: downloads, voice-over, AI, Team mode. |

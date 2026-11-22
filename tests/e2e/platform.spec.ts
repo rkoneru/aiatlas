@@ -64,6 +64,17 @@ test('downloads: diagram SVG and interactive HTML save as files; HTML has no Goo
   const body = fs.readFileSync((await html.path())!, 'utf8');
   expect(body).toContain('class Flow');
   expect(body).not.toContain('fonts.googleapis');
+  // the exported file runs on its own: diagram renders and steps
+  const viewer = await page.context().newPage();
+  const vErrors = watchErrors(viewer);
+  const exported = test.info().outputPath('exported-diagram.html');
+  fs.writeFileSync(exported, body);
+  await viewer.goto('file://' + exported);
+  await expect(viewer.locator('#flow svg.fsvg').first()).toBeAttached();
+  await viewer.locator('#flow .next').click();
+  await expect(viewer.locator('#flow .cap .sn')).toContainText('Step 1');
+  expect(vErrors).toEqual([]);
+  await viewer.close();
   await expect(flow.locator('.expmsg')).toContainText('Saved');
   expect(errors).toEqual([]);
 });
