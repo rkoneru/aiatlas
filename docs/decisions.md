@@ -17,5 +17,9 @@
 |---|---|---|---|
 | Q1 | Pages whose text is mostly drawn by JS (46 of 98) | Build-time snapshot: put the rendered section HTML in the page, keep the original in a `<template>`, and restore it before the runtime starts. | 4 |
 | Q2 | `/` auto-jumped to the last page | `/` stays the home page and shows "Continue where you left off". | 1 (done) |
-| Q3 | Google Fonts `<link>` inside downloaded HTML exports | Remove it; exports fall back to system fonts. | 2 |
-| Q4 | Copy that says "Open the Atlas on claude.ai…" | Replace the strings visitors see (AI-off notices, download fallbacks, voice tooltip) with neutral wording. Leave page content. | 2 |
+| Q3 | Google Fonts `<link>` inside downloaded HTML exports | Remove it; exports fall back to system fonts. | 2 (done) |
+| Q4 | Copy that says "Open the Atlas on claude.ai…" | Replace the strings visitors see (AI-off notices, download fallbacks, voice tooltip) with neutral wording. Leave page content. | 2 (done) |
+
+## Hosting
+
+- GitHub Pages (Jekyll building the raw repo) is switched off. The repo isn't a Jekyll site, and Cloudflare Pages stays the host.

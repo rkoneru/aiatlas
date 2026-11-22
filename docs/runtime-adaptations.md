@@ -42,6 +42,17 @@ Each patch has an expected match count. Extraction fails if the source no longer
 | `practice-stub`, `practice-expose` | "Practice this page" works from every page | Off the practice page the module was a no-op. It now opens `/practice/` filtered to the page. |
 | `no-auto-resume` | `/` no longer jumps to the last page (decision Q2) | The home page shows a "Continue where you left off" link instead. |
 
+### Wording changes (`scripts/copy-patches.json`, decisions Q3 and Q4)
+
+- The downloaded interactive diagram no longer links Google Fonts.
+- "Open the Atlas on claude.ai…" notices become neutral wording: page builder, LLM judge, download fallbacks and Team mode status.
+- The voice-over tooltip no longer says "Claude voice".
+- The Ask the Atlas footer says answers come "through this site".
+
+The same list is applied to the original file in the parity test.
+
+The page builder's notice sits in page content, so `src/content/pages/builder.html` is the one content file that differs from the source. All other content files are byte for byte.
+
 ## 4. `ATLAS` boot script (`src/scripts/boot.ts`)
 
 A classic script that runs before the runtime on every page. It provides:

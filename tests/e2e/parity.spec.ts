@@ -1,13 +1,14 @@
 /**
  * Differential test: each page is rendered in the original single file (source/atlas.html,
- * routed by #hash) and on the built site, with the same seeded Math.random. The page's
+ * routed by #hash, with the same platform shim and declared wording changes) and on the
+ * built site, with the same seeded Math.random. The page's
  * section HTML must match after load, after stepping every diagram, and after changing
  * each input, select and checkbox on the page (up to MAX_CONTROLS per page).
  */
 import { test, expect, type Page } from '@playwright/test';
 import { PAGES, url } from './helpers';
 // @ts-ignore plain JS helper shared with scripts
-import { originalFile, INIT, snapshot, firstDiff } from '../parity-lib.mjs';
+import { originalFile, INIT, snapshot, firstDiff, platformScript } from '../parity-lib.mjs';
 
 const ORIG = originalFile();
 const SETTLE = 1800;
@@ -22,7 +23,7 @@ async function controls(page: Page, id: string) {
 }
 async function act(page: Page, id: string, i: number) {
   await page.evaluate(([id, sel, i]) => {
-    const el = document.querySelector(`main>section#${id}`)!.querySelectorAll(sel)[i as number] as HTMLInputElement & HTMLSelectElement;
+    const el = document.querySelector(`main>section#${id}`)!.querySelectorAll(sel)[i as number] as any;
     if (!el) return;
     if (el.type === 'checkbox' || el.type === 'radio') { el.click(); return; }
     if (el.tagName === 'SELECT') { if (el.options.length > 1) el.selectedIndex = el.options.length - 1; }
@@ -45,7 +46,7 @@ async function stepFlows(page: Page, id: string) {
 
 for (const p of PAGES) {
   test(`parity ${p.id}`, async ({ browser }) => {
-    const ctxO = await browser.newContext(); await ctxO.addInitScript(INIT);
+    const ctxO = await browser.newContext(); await ctxO.addInitScript(INIT); await ctxO.addInitScript(platformScript());
     const ctxB = await browser.newContext(); await ctxB.addInitScript(INIT);
     const po = await ctxO.newPage(), pb = await ctxB.newPage();
     await po.goto(ORIG + '#' + p.id); await pb.goto(url(p.id));

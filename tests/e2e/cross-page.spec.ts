@@ -6,7 +6,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { watchErrors } from './helpers';
 // @ts-ignore
-import { originalFile } from '../parity-lib.mjs';
+import { originalFile, platformScript } from '../parity-lib.mjs';
 
 const ORIG = originalFile();
 const settle = (p: Page, ms = 700) => p.waitForTimeout(ms);
@@ -118,7 +118,7 @@ test('infographic button works on a content page', async ({ page }) => {
 
 test('industry → "Model the ROI" carries the preset to the ROI page, as in the original', async ({ page, browser }) => {
   const read = (p: Page) => p.evaluate(() => [...document.querySelectorAll('#arIn input')].map((i) => (i as HTMLInputElement).value));
-  const o = await (await browser.newContext()).newPage();
+  const octx = await browser.newContext(); await octx.addInitScript(platformScript()); const o = await octx.newPage();
   await o.goto(ORIG + '#industry'); await settle(o);
   await o.locator('#industry [data-k="healthcare"]').click(); await o.locator('#indRoi').click(); await settle(o);
   const want = await read(o);
@@ -158,7 +158,7 @@ test('CAIO tools read each other across pages (strategy imports the portfolio)',
 
 test('nav matches the original, minus Team mode (decision 4)', async ({ page, browser }) => {
   const navText = (p: Page) => p.evaluate(() => [...document.querySelectorAll('#nav a')].map((a) => `${(a as HTMLElement).dataset.href || a.getAttribute('href')}|${a.textContent!.trim()}|${a.getAttribute('title')}`));
-  const o = await (await browser.newContext()).newPage();
+  const octx = await browser.newContext(); await octx.addInitScript(platformScript()); const o = await octx.newPage();
   await o.goto(ORIG + '#rag'); await settle(o);
   await page.goto('/rag/'); await settle(page);
   const want = (await navText(o)).filter((x) => !x.startsWith('#team|'));

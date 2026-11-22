@@ -10,7 +10,8 @@ The interactive learning site about AI architecture, built as a static Astro sit
 npm install
 npm run extract           # source/atlas.html -> src/content, src/data, src/styles, src/generated, public/
 npm run extract:analyze   # re-compute page guards (needs Playwright's Chromium); run after big source changes
-npm run build             # -> dist/
+npm run build             # -> dist/  (AI off unless PUBLIC_AI_ENABLED=true; see .env.example)
+npm run build:ai-test     # -> dist-ai/ with AI on, for the mocked-proxy tests
 npm run dev               # local dev server
 npm run check:links       # internal link check over dist/
 npm run test:e2e          # Playwright: page loads, parity with the original, cross-page features
@@ -28,3 +29,4 @@ npm run test:e2e          # Playwright: page loads, parity with the original, cr
 | [`docs/inventory-findings.md`](docs/inventory-findings.md) | What blocked a clean split, and how each blocker is handled. |
 | [`docs/decisions.md`](docs/decisions.md) | Decisions made so far. |
 | [`docs/runtime-adaptations.md`](docs/runtime-adaptations.md) | How the original runtime works on one URL per page. |
+| [`docs/platform.md`](docs/platform.md) | The `window.claude.use()` shim: downloads, voice-over, AI, Team mode. |

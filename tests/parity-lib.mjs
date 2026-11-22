@@ -4,7 +4,11 @@ import path from 'node:path';
 import os from 'node:os';
 
 export function originalFile() {
-  const html = fs.readFileSync('source/atlas.html', 'utf8').replace(/<link[^>]+fonts\.googleapis[^>]*>/g, '');
+  // The original, with the declared wording changes (scripts/copy-patches.json) applied, so
+  // both sides of the comparison say the same thing.
+  let html = fs.readFileSync('source/atlas.html', 'utf8');
+  for (const p of JSON.parse(fs.readFileSync('scripts/copy-patches.json', 'utf8')).patches) html = html.split(p.find).join(p.replace);
+  html = html.replace(/<link[^>]+fonts\.googleapis[^>]*>/g, '');
   const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'atlas-orig-')), 'atlas.html');
   fs.writeFileSync(f, html);
   return 'file://' + f;
@@ -35,4 +39,9 @@ export async function snapshot(page, id) {
 export function firstDiff(a, b) {
   let i = 0; while (i < a.length && a[i] === b[i]) i++;
   return { at: i, original: a.slice(Math.max(0, i - 120), i + 200), built: b.slice(Math.max(0, i - 120), i + 200) };
+}
+
+/** The platform shim (src/generated/platform.js), injected into the original so both sides have the same capabilities. */
+export function platformScript() {
+  return fs.readFileSync('src/generated/platform.js', 'utf8');
 }
