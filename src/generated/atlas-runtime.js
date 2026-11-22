@@ -241,7 +241,7 @@ Object.assign(Flow.prototype,{
     catch(e){this.go(keep);this.msg('GIF export failed in this browser.',true);}this.host.querySelector('.fwrap').classList.remove('exporting');this.busy(false);},
   defJSON(){return JSON.stringify(this.def,(k,v)=>k==='g'?undefined:v);},
   async expHTML(){
-    const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+    const css=[...document.querySelectorAll('style[data-atlas]')].map(s=>s.textContent).join('\n');
     const src=[`const NS='${NS}';`,voPlain.toString().replace(/^/,'const voPlain='),voStepText.toString(),voIntroText.toString(),sv.toString(),`const N=${N.toString()};`,`const E=${E.toString()};`,`const esc=${esc.toString()};`,"let fid=0;let VIEW='"+this.view+"';",Flow.toString()].join('\n');
     const title=esc(this.def.title||'Diagram'),sec=this.host.closest('section'),h1=sec&&sec.querySelector('h1')?sec.querySelector('h1').textContent:'';
     const html=`<!DOCTYPE html>
@@ -6064,7 +6064,7 @@ const MERGED={"agent-fit":"agent-spectrum","claude-agent":"build-agent","agent-r
 function route(){let id=(ATLAS.hash()||'#overview').slice(1);let jump=null;if(MERGED[id]){jump=id;id=MERGED[id];}if(!sections.some(s=>s.id===id))id='overview';
   sections.forEach(s=>s.hidden=s.id!==id);document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('data-href')==='#'+id));
   document.querySelectorAll('#nav details').forEach(d=>d.classList.toggle('cur',!!d.querySelector('a.active')));document.querySelector('aside').classList.remove('open');document.getElementById('menubtn').setAttribute('aria-expanded','false');
-  Object.values(FLOWS).forEach(f=>f.stop());window.scrollTo(0,0);if(id==='course')cRender();courseBar(id);try{localStorage.setItem('atlas-last',id);}catch(e){}if(jump)setTimeout(()=>{const j=document.getElementById(jump);if(j)j.scrollIntoView({block:'start'});},80);}
+  Object.values(FLOWS).forEach(f=>f.stop());window.scrollTo(0,0);if(id==='course'&&ATLAS.page==='course')cRender();courseBar(id);try{localStorage.setItem('atlas-last',id);}catch(e){}if(jump)setTimeout(()=>{const j=document.getElementById(jump);if(j)j.scrollIntoView({block:'start'});},80);}
 window.addEventListener('hashchange',route);
 /* nav tree: counts, filter, expand/collapse, mobile toggle */
 document.querySelectorAll('#nav details').forEach(d=>d.querySelector('.cnt').textContent=d.querySelectorAll('a').length);

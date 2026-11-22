@@ -141,6 +141,8 @@ const ATLAS = {
   },
 };
 (window as any).ATLAS = ATLAS;
+// Deferred scripts (boot, then the page runtime) all run before DOMContentLoaded.
+document.addEventListener('DOMContentLoaded', () => ATLAS.after());
 
 /* Old shared links (#rag, #rag-math) and hash changes made by the runtime go to the real page. */
 function followHash(replace: boolean) {
@@ -163,6 +165,18 @@ document.addEventListener('click', (e) => {
   if (resolve(id)) { e.preventDefault(); ATLAS.go('#' + id); }
   else if (/^my-/.test(id) && PAGE !== 'builder') { e.preventDefault(); location.href = url('builder') + '#' + id; }
 });
+
+/* The infographic studio is a separate chunk outside /playground/ (scripts/build-runtime.ts):
+   the first Infographic click loads it, then hands over to the real window.IGPAGE. */
+const igUrl = document.documentElement.dataset.ig;
+if (PAGE !== 'playground' && igUrl) {
+  let loading: Promise<void> | null = null;
+  const stub = (id: string) => {
+    loading ||= new Promise<void>((ok, fail) => { const s = document.createElement('script'); s.src = igUrl; s.onload = () => ok(); s.onerror = () => { loading = null; fail(new Error('infographic chunk failed to load')); }; document.body.appendChild(s); });
+    loading.then(() => { const real = (window as any).IGPAGE; if (real && real !== stub) real(id); }).catch((e) => console.warn('[atlas]', e));
+  };
+  (window as any).IGPAGE = stub;
+}
 
 /* Stand-in for the playground's loader on other pages: the call is replayed on /playground/. */
 if (PAGE !== 'playground') (window as any).__pgLoad = (...args: unknown[]) => ATLAS.queue({ call: '__pgLoad', args });

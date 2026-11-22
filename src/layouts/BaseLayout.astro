@@ -10,13 +10,17 @@ import '../styles/site.css';
 import atlasCss from '../styles/atlas.css?raw';
 import nav from '../data/nav.json';
 import bootUrl from '../generated/boot.js?url';
-import runtimeUrl from '../generated/atlas-runtime.js?url';
 import { BASE, pageUrl, pageContent, companionHTML, type PageMeta } from '../lib/site';
 import brandGlyph from '../generated/brand-glyph.svg?raw';
+// Per-page runtimes built by scripts/build-runtime.ts (Phase 3); the infographic studio loads on demand.
+const RUNTIMES = import.meta.glob('../generated/runtime/*.js', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 
 interface Props { page: PageMeta }
 const { page } = Astro.props;
 const title = page.id === 'overview' ? 'AI Architecture Atlas' : `${page.navLabel || page.title} · AI Architecture Atlas`;
+const runtimeUrl = RUNTIMES[`../generated/runtime/${page.id}.js`];
+const infographicUrl = RUNTIMES['../generated/runtime/infographic.js'];
+if (!runtimeUrl || !infographicUrl) throw new Error(`no runtime for ${page.id}: run scripts/build-runtime.ts`);
 const content = pageContent(page.id);
 const companions = companionHTML(page.id);
 // Sidebar logo: the brand glyph (scripts/build-brand.mjs) in place of the source's "A".
@@ -25,7 +29,7 @@ if (!nav.shell.brand.includes(LOGO_SRC)) throw new Error('sidebar logo markup ch
 const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo">${brandGlyph}</div>`);
 ---
 <!DOCTYPE html>
-<html lang="en" data-page={page.id} data-base={BASE}>
+<html lang="en" data-page={page.id} data-base={BASE} data-ig={infographicUrl}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -36,7 +40,7 @@ const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo">${brandGlyph}
 <link rel="manifest" href={`${BASE}site.webmanifest`}>
 <meta name="theme-color" content="#6b46f5">
 <!-- The Atlas stylesheet stays in a <style> element: the diagram, slide and proposal exporters copy it from there. -->
-<style is:inline set:html={atlasCss}></style>
+<style is:inline data-atlas set:html={atlasCss}></style>
 </head>
 <body>
 <div class="app">
@@ -68,8 +72,8 @@ const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo">${brandGlyph}
 </div>
 <div id="atlas-companions" hidden inert aria-hidden="true"></div>
 {companions && <template id="atlas-companions-tpl"><Fragment set:html={companions} /></template>}
-<script is:inline src={bootUrl}></script>
-<script is:inline src={runtimeUrl}></script>
-<script is:inline>ATLAS.after();</script>
+<!-- Deferred: same order and still before DOMContentLoaded, without blocking first paint. -->
+<script is:inline defer src={bootUrl}></script>
+<script is:inline defer src={runtimeUrl}></script>
 </body>
 </html>

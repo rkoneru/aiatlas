@@ -8,7 +8,7 @@ export default defineConfig({
   output: 'static',
   outDir: process.env.ATLAS_OUT_DIR || './dist',
   trailingSlash: 'always',
-  build: { format: 'directory', inlineStylesheets: 'never' },
+  build: { format: 'directory', inlineStylesheets: 'always' },
   // The runtime is shipped as-is: its exporters serialize their own source (see docs/inventory-findings.md B8).
   vite: { build: { assetsInlineLimit: 0 } },
 });

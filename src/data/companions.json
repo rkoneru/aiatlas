@@ -1,23 +1,46 @@
 {
-  "_doc": "Sections (or single elements of a section) attached hidden and inert outside <main> before the runtime starts, for modules that span pages. See docs/runtime-adaptations.md. Phase 3 replaces these with data modules.",
+  "_doc": "Sections attached hidden and inert outside <main> before the runtime starts, for modules that span pages. See docs/runtime-adaptations.md. The infographic studio (#igStudio) used to be attached to every page; since Phase 3 it ships with its lazy chunk (scripts/build-runtime.ts).",
   "groups": {
-    "caio-tools": ["caio", "ai-strategy", "usecase-roi", "ai-budget", "ai-value", "ai-board"]
+    "caio-tools": [
+      "caio",
+      "ai-strategy",
+      "usecase-roi",
+      "ai-budget",
+      "ai-value",
+      "ai-board"
+    ]
   },
-  "all": [
-    { "page": "playground", "select": "#igStudio", "why": "The Infographic button on every page uses the studio's renderer, which only starts when #igStudio exists." }
-  ],
+  "all": [],
   "pages": {
-    "caio": ["@caio-tools"],
-    "ai-strategy": ["@caio-tools"],
-    "usecase-roi": ["@caio-tools"],
-    "ai-budget": ["@caio-tools"],
-    "ai-value": ["@caio-tools"],
-    "ai-board": ["@caio-tools", "incidents"],
-    "industry": ["@caio-tools"],
-    "proposal": ["@caio-tools", "decide"]
+    "caio": [
+      "@caio-tools"
+    ],
+    "ai-strategy": [
+      "@caio-tools"
+    ],
+    "usecase-roi": [
+      "@caio-tools"
+    ],
+    "ai-budget": [
+      "@caio-tools"
+    ],
+    "ai-value": [
+      "@caio-tools"
+    ],
+    "ai-board": [
+      "@caio-tools",
+      "incidents"
+    ],
+    "industry": [
+      "@caio-tools"
+    ],
+    "proposal": [
+      "@caio-tools",
+      "decide"
+    ]
   },
   "why": {
-    "caio-tools": "One module (CAIO tools) runs all six CAIO pages and returns early unless #caio exists; the tools read each other (portfolio → strategy, board pack).",
+    "caio-tools": "One module (CAIO tools) runs all six CAIO pages and returns early unless #caio exists; the tools read each other (portfolio \u2192 strategy, board pack).",
     "industry": "'Model the ROI' and 'Add to portfolio' call the CAIO tools (window.__arSet, __ucAdd), which save through their own render.",
     "ai-board": "The board pack appends the incident register (window.__bpExtra), defined by the incidents module.",
     "proposal": "The proposal uses the ROI model (window.__arModel) and the decision wizard's last result (window.__dwLast)."

@@ -46,7 +46,7 @@ export function companionHTML(id: string): string {
     const meta = PAGES.find((x) => x.id === p)!;
     out += `<section id="${p}" style="--accent:var(--${meta.accent})">${pageContent(p)}</section>`;
   }
-  for (const c of companions.all) {
+  for (const c of companions.all as Array<{ page: string; select: string }>) {
     if (c.page === id || wanted.has(c.page)) continue;
     const src = pageContent(c.page);
     const el = parse(src).querySelector(c.select);

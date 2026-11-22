@@ -123,6 +123,21 @@ export const PATCHES: Patch[] = [
     replace: "cur=null;ATLAS.go('#practice');}\n ATLAS.expose('prForPage',id=>{forPage(id);render();});",
   },
 
+  /* ---- Phase 3: let per-page builds see that the course view only renders on /course/ ---- */
+  {
+    id: 'route-course',
+    why: 'route() renders the course when the current id is "course". With one page per URL that is only true on /course/; stating it lets other pages drop the course renderer (scripts/build-runtime.ts folds ATLAS.page===…).',
+    find: "if(id==='course')cRender();",
+    replace: "if(id==='course'&&ATLAS.page==='course')cRender();",
+  },
+
+  {
+    id: 'export-styles',
+    why: 'The interactive diagram export copied every <style> on the page; in the single file that was only the Atlas stylesheet. The site also inlines its font stylesheet (relative font URLs that break in a downloaded file), so copy the Atlas stylesheet only.',
+    find: "const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\\n');",
+    replace: "const css=[...document.querySelectorAll('style[data-atlas]')].map(s=>s.textContent).join('\\n');",
+  },
+
   /* ---- decision Q2: no automatic jump from / to the last page ---- */
   {
     id: 'no-auto-resume',
