@@ -1,0 +1,114 @@
+# CI on every push: build, link check, unit tests, Playwright (page loads, parity with the
+# original, cross-page features, axe-core accessibility, mobile, SEO, AI with a mocked proxy,
+# GitHub Pages base path; Chromium, Firefox, WebKit) and Lighthouse CI on three pages.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  build:
+    name: Build (site, AI-on, GitHub Pages variants)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Build dist/ (AI off)
+        run: npm run build
+      - name: Build dist-ai/ (AI on, for mocked-proxy tests)
+        run: npm run build:ai-test
+      - name: Build dist-gh/ (/aiatlas/ base path)
+        run: npm run build:gh-test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sites
+          path: |
+            dist
+            dist-ai
+            dist-gh
+            src/generated
+            public/og
+          retention-days: 3
+
+  checks:
+    name: Typecheck, unit tests, links
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: sites }
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npx tsx scripts/check-links.ts dist
+      - run: npx tsx scripts/check-links.ts dist-gh /aiatlas/
+
+  e2e:
+    name: Playwright ${{ matrix.name }}
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: chromium 1/2, project: chromium, shard: 1/2, browsers: chromium }
+          - { name: chromium 2/2, project: chromium, shard: 2/2, browsers: chromium }
+          - { name: ai, project: ai, shard: 1/1, browsers: chromium }
+          - { name: gh-pages, project: gh-pages, shard: 1/1, browsers: chromium }
+          - { name: firefox, project: firefox, shard: 1/1, browsers: chromium firefox }
+          - { name: webkit, project: webkit, shard: 1/1, browsers: chromium webkit }
+    env:
+      ATLAS_ALL_BROWSERS: '1'
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.browsers }}
+      - uses: actions/download-artifact@v4
+        with: { name: sites }
+      - run: npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shard }} --trace off
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-${{ matrix.project }}-${{ strategy.job-index }}
+          path: test-results
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse CI (/, /rag/, /cx-metrics/)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with: { name: sites }
+      - run: npx --yes @lhci/cli@0.14.0 autorun
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: .lighthouseci
+          retention-days: 7
