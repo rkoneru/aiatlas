@@ -126,6 +126,10 @@ async function call(input: unknown, opts: SampleOpts, json: boolean): Promise<{ 
   const body: Record<string, unknown> = { json, tier: opts.modelTier === 'quick' ? 'quick' : 'default' };
   if (Array.isArray(input)) body.messages = input; else body.prompt = String(input ?? '');
   if (opts.images && opts.images.length) body.images = await Promise.all(opts.images.map(imageOf));
+  // Optional Cloudflare Turnstile (docs/ai-proxy.md): a page that renders the widget can set
+  // window.atlasTurnstileToken = async () => token, and the proxy verifies it when TURNSTILE_SECRET is set.
+  const ts = (window as any).atlasTurnstileToken;
+  if (typeof ts === 'function') { try { body.turnstile = await ts(); } catch { /* proxy will refuse if required */ } }
   let res: Response;
   try {
     res = await fetch(__AI_ENDPOINT__, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), signal: opts.signal, credentials: 'same-origin' });

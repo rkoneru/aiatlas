@@ -13,6 +13,7 @@
     "build:gh-test": "ATLAS_BASE=/aiatlas/ ATLAS_OUT_DIR=dist-gh npm run build",
     "test:e2e": "playwright test --trace off",
     "typecheck": "tsc --noEmit -p .",
+    "test:unit": "tsx --test tests/unit/*.test.ts",
     "check:links": "tsx scripts/check-links.ts",
     "lighthouse": "node scripts/lighthouse.mjs",
     "inventory": "node scripts/inventory.mjs",
@@ -35,6 +36,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/jetbrains-mono": "^5.3.0",
     "astro": "^5.18.2"
