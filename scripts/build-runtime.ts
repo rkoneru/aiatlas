@@ -12,6 +12,7 @@
  *     These would have done nothing on this page.
  *  2. diagram definitions (`DEFS.key = …`) whose key no remaining code or data-flow host uses
  *  3. per-page formula entries (`FM['page-id']`) for absent pages
+ *  3b. the release log (`CHANGES`) on every page but /changes/
  *  4. top-level declarations that nothing references any more, when their initializer has
  *     no side effects (literals, functions, object/array data, N()/E() node builders)
  *
@@ -109,7 +110,10 @@ function guardOf(code: string, st: Node): string | null {
   if (body) { const g = earlyReturnGuard(code, body); if (g && g.ret === null) return g.id; }
   return null;
 }
-const PURE_CALLEES = new Set(['N', 'E']);
+// Diagram builders with no side effects: N() and E() build node and edge objects, and Q() is a
+// one-line wrapper around N(). Q only counts while the runtime still defines it exactly so.
+const Q_IS_PURE = RUNTIME.includes("const Q=(id,x,y,t,s,c,d,w=150,h=52)=>N(id,x,y,w,h,t,s,c||'purple',d);");
+const PURE_CALLEES = new Set(Q_IS_PURE ? ['N', 'E', 'Q'] : ['N', 'E']);
 function isPure(n: Node, domReads = false): boolean {
   if (!n) return true;
   if (domReads && n.type === 'CallExpression' && n.arguments.length === 1 && n.arguments[0].type === 'Literal' && /^(\$|document\.(getElementById|querySelector))$/.test(RUNTIME_SLICE(n.callee))) return true;
@@ -244,6 +248,18 @@ function pass(code: string, present: Set<string>, keepIg: boolean, stats: Record
       if (keep.length !== props.length) { cuts.push({ start: d.init.start, end: d.init.end, text: '{' + keep.map((p: Node) => code.slice(p.start, p.end)).join(',') + '}' }); stats.fm = (stats.fm || 0) + props.length - keep.length; }
     },
   });
+
+  // 3b. the release log (`const CHANGES = [...]`) is only rendered into #chLog on the changes
+  //     page; elsewhere the array is never read, so it ships empty.
+  if (!present.has('changes')) {
+    walk.simple(ast, {
+      VariableDeclarator(d: Node) {
+        if (d.id.type !== 'Identifier' || d.id.name !== 'CHANGES' || !d.init || d.init.type !== 'ArrayExpression' || !d.init.elements.length) return;
+        cuts.push({ start: d.init.start, end: d.init.end, text: '[]' });
+        stats.changelog = 1;
+      },
+    });
+  }
 
   // 4. tree-shake declarations nobody references: at top level, and inside IIFE bodies
   //    (closure-local names can only be referenced from inside the closure)

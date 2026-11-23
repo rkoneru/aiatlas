@@ -5625,12 +5625,12 @@ DEFS.cua={vb:[1000,320],title:'A computer-use agent loop',nodes:[Q('goal',20,125
  edges:[E('goal','obs'),E('obs','dec'),E('dec','act'),E('act','chk'),E('chk','obs',{dash:1,curve:70,l:'loop'}),E('chk','gate'),E('chk','done'),E('gate','done',{dash:1})],
  steps:[{title:'Set the goal',n:['goal'],t:'Narrow tasks with a starting point work best.'},{title:'Observe',e:['goal>obs'],t:'See the screen as pixels, structure or both.'},{title:'Decide and act',e:['obs>dec','dec>act'],t:'One action at a time, inside a sandbox.'},{title:'Check',e:['act>chk'],t:'Verify after every step.'},{title:'Loop',e:['chk>obs'],t:'Repeat until done, within a step and cost cap.'},{title:'Confirm risky steps',e:['chk>gate'],t:'A person approves payments, sends and deletions.'},{title:'Finish',e:['chk>done','gate>done'],t:'Result plus a full audit trail.'}]};
 DEFS.codeagent={vb:[1000,320],title:'A coding agent from ticket to merge',nodes:[Q('task',20,125,'Task','issue · spec','gray','A ticket, spec or request, plus the repository instruction file.',150,70),
- Q('ctx',200,30,'Read context','search · open files','blue','Searches, reads files and runs commands to learn the codebase first.',150,62),
- Q('plan',200,220,'Plan','steps · todo list','purple','Breaks the work into steps; for big changes a person reviews the plan.',150,62),
- Q('edit',400,125,'Edit','diffs in a sandbox','green','Changes files in an isolated checkout, never on a shared machine.',150,70),
- Q('test',620,125,'Run & test','build · tests · lint','amber','Runs the checks, reads failures and loops back to edit.',150,70),
- Q('rev',820,30,'Review','agent + human','pink','An automated reviewer and a person read the diff; CI must pass.',160,62),
- Q('pr',820,220,'Pull request','merge · deploy','teal','A person merges. The agent never pushes to the main branch.',160,70)],
+ Q('ctx',214,30,'Read context','search · open files','blue','Searches, reads files and runs commands to learn the codebase first.',150,62),
+ Q('plan',214,220,'Plan','steps · todo list','purple','Breaks the work into steps; for big changes a person reviews the plan.',150,62),
+ Q('edit',410,125,'Edit','diffs in a sandbox','green','Changes files in an isolated checkout, never on a shared machine.',150,70),
+ Q('test',630,125,'Run & test','build · tests · lint','amber','Runs the checks, reads failures and loops back to edit.',150,70),
+ Q('rev',830,30,'Review','agent + human','pink','An automated reviewer and a person read the diff; CI must pass.',160,62),
+ Q('pr',830,220,'Pull request','merge · deploy','teal','A person merges. The agent never pushes to the main branch.',160,70)],
  edges:[E('task','ctx'),E('task','plan'),E('ctx','edit'),E('plan','edit'),E('edit','test'),E('test','edit',{dash:1,curve:70,l:'fix'}),E('test','rev'),E('rev','pr')],
  steps:[{title:'Task in',n:['task'],t:'Start from a clear task and the repository rules.'},{title:'Learn the repo',e:['task>ctx','task>plan'],t:'Read before writing; plan before big changes.'},{title:'Edit in a sandbox',e:['ctx>edit','plan>edit'],t:'Isolated, with no production credentials.'},{title:'Test and loop',e:['edit>test','test>edit'],t:'Tests tell the agent what to fix.'},{title:'Review',e:['test>rev'],t:'Small diffs, automated first pass, human sign-off.'},{title:'Merge',e:['rev>pr'],t:'A named person owns every merge.'}]};
 DEFS.agenteval={vb:[1000,320],title:'An agent evaluation pipeline',nodes:[Q('sc',20,125,'Scenarios','tasks + state','gray','Realistic tasks, each with a starting state, tools and a success check.',150,70),
