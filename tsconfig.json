@@ -1,6 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "source", "node_modules"],
+  "exclude": ["dist", "dist-ai", "dist-gh", "source", "node_modules", "src/generated", "public", "test-results", ".lighthouseci", "assets"],
   "compilerOptions": { "resolveJsonModule": true, "allowImportingTsExtensions": true, "noEmit": true }
 }

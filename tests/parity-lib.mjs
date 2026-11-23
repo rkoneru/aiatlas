@@ -24,6 +24,10 @@ export async function snapshot(page, id) {
     if (!sec) return null;
     const c = sec.cloneNode(true);
     c.removeAttribute('hidden');
+    // The infographic preview (#igCanvas, playground) embeds the diagram with computed styles copied
+    // while its transitions run, so sizes differ from load to load even in the original. Compare its
+    // structure and text, not those copied inline styles.
+    c.querySelectorAll('#igCanvas [style]').forEach((e) => e.removeAttribute('style'));
     // site additions for accessibility (src/scripts/a11y.ts) are not part of the original
     c.querySelectorAll('.atlas-a11y').forEach((e) => e.remove());
     [c, ...c.querySelectorAll('[data-a11y]')].forEach((e) => { const a = e.getAttribute('data-a11y'); if (!a) return; a.split(' ').forEach((n) => e.removeAttribute(n)); e.removeAttribute('data-a11y'); });

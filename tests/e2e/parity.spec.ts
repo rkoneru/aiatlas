@@ -48,6 +48,9 @@ for (const p of PAGES) {
   test(`parity ${p.id}`, async ({ browser }) => {
     const ctxO = await browser.newContext(); await ctxO.addInitScript(INIT); await ctxO.addInitScript(platformScript());
     const ctxB = await browser.newContext(); await ctxB.addInitScript(INIT);
+    // The original copy has no web fonts; block them on the built side too, so code that measures
+    // text (the playground) sees the same fallback font on both sides on any machine.
+    await ctxB.route(/\.woff2?$/, (r) => r.abort());
     const po = await ctxO.newPage(), pb = await ctxB.newPage();
     await po.goto(ORIG + '#' + p.id); await pb.goto(url(p.id));
     await po.waitForTimeout(SETTLE); await pb.waitForTimeout(SETTLE);
