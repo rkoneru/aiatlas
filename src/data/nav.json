@@ -99,6 +99,12 @@
      "color": "purple"
     },
     {
+     "id": "reasoning-models",
+     "label": "Reasoning models &amp; test-time compute",
+     "title": "Reasoning models & test-time compute",
+     "color": "purple"
+    },
+    {
      "id": "llm-types",
      "label": "8 types of LLMs",
      "title": "8 types of LLMs",
@@ -220,6 +226,12 @@
      "id": "agent-runtime",
      "label": "Agents in production",
      "title": "Agents in production",
+     "color": "green"
+    },
+    {
+     "id": "computer-use",
+     "label": "Computer-use &amp; browser agents",
+     "title": "Computer-use & browser agents",
      "color": "green"
     },
     {
@@ -392,6 +404,12 @@
      "color": "green"
     },
     {
+     "id": "agentic-coding",
+     "label": "Agentic coding &amp; software agents",
+     "title": "Agentic coding & software agents",
+     "color": "green"
+    },
+    {
      "id": "llmops",
      "label": "ADLC &amp; LLMOps",
      "title": "ADLC & LLMOps",
@@ -419,6 +437,12 @@
      "id": "llm-judge",
      "label": "LLM as a judge",
      "title": "LLM as a judge",
+     "color": "teal"
+    },
+    {
+     "id": "agent-evals",
+     "label": "Agent evaluation",
+     "title": "Agent evaluation",
      "color": "teal"
     },
     {
@@ -625,6 +649,12 @@
      "id": "ai-budget",
      "label": "AI budget &amp; TCO",
      "title": "AI budget & TCO",
+     "color": "amber"
+    },
+    {
+     "id": "ai-infrastructure",
+     "label": "AI infrastructure &amp; sovereignty",
+     "title": "AI infrastructure & sovereignty",
      "color": "amber"
     },
     {

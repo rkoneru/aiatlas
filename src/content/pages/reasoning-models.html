@@ -1,0 +1,30 @@
+
+  <span class="kicker">Models · Reasoning</span>
+  <h1>Reasoning models &amp; test-time compute</h1>
+  <p class="lead">Reasoning models think before they answer: they work through the problem in <b>reasoning tokens</b>, check and revise their steps, and only then reply. Spending more compute at answer time buys accuracy on hard problems, at a cost in <b>latency and tokens</b>. Walk one request with an effort setting.</p>
+  <div data-flow="reason" data-theme="soft"></div>
+  <h2>Why it works</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Scaling</span><h3>Test-time compute</h3><p>Accuracy on maths, code and multi-step planning keeps rising as a model is allowed to think for longer. This added a second scaling lever next to bigger models and more training data.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Training</span><h3>Learned with reinforcement learning</h3><p>Models learn to reason by being rewarded for correct final answers on problems that can be checked automatically, such as maths with known answers or code with tests. This is reinforcement learning with verifiable rewards (RLVR); GRPO is a common algorithm. See <a href="#post-training">How models are trained</a>.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Controls</span><h3>Adaptive thinking &amp; effort</h3><p>Newer models decide how much to think for each request, and APIs expose an <b>effort level</b> (low to high or max) instead of, or as well as, a fixed token budget. Low effort answers fast; high effort spends more on hard problems.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Visibility</span><h3>Hidden, summarized or shown</h3><p>Providers differ in whether you see the raw reasoning, a summary or nothing. Don't build features that parse it, and don't treat it as a faithful explanation of why the model answered as it did.</p></div>
+  </div>
+  <h2>When to turn reasoning up</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Task</th><th>Effort</th><th>Why</th></tr>
+    <tr><td>Classification, extraction, routing</td><td>Low or off</td><td>Pattern matching: extra thinking adds latency, not accuracy</td></tr>
+    <tr><td>Chat, drafting, summarization</td><td>Low to medium</td><td>Quality depends more on context than on reasoning</td></tr>
+    <tr><td>Multi-step analysis, maths, data questions</td><td>Medium to high</td><td>Checking intermediate steps pays off</td></tr>
+    <tr><td>Coding, debugging, agent planning</td><td>High</td><td>Long chains where an early mistake compounds</td></tr>
+    <tr><td>Hard research problems, offline batch work</td><td>Max</td><td>Accuracy matters more than time or cost</td></tr>
+  </table></div>
+  <h2>What changes for builders</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Prompting</h3><p>Say what you want and how it will be judged; skip the "think step by step" scaffolding older models needed. Give context and constraints rather than reasoning instructions. Examples still help with format. See <a href="#prompt-advanced">Advanced prompting</a>.</p></div>
+    <div class="card"><h3>Cost &amp; latency</h3><p>Reasoning tokens are billed as output and can be several times longer than the visible answer. Leave room for them in the max-token limit, stream the response, and measure cost per task, not per call. See <a href="#cost">LLM cost estimator</a>.</p></div>
+    <div class="card"><h3>Routing</h3><p>Send easy requests to a fast model or low effort, and hard ones to high effort. A router or a cheap classifier often cuts cost more than any prompt change.</p></div>
+    <div class="card"><h3>Evals</h3><p>Run your eval set at each effort level. Accuracy usually flattens out; the point where it does is your setting. Re-check on every new model.</p></div>
+    <div class="card"><h3>Agents</h3><p>In agent loops the model reasons between tool calls. Keep earlier reasoning in the conversation when the API requires it, and let the agent plan before it acts. See <a href="#agents">AI agents</a>.</p></div>
+    <div class="card"><h3>Failure modes</h3><p>Overthinking simple questions, confident wrong answers after long reasoning, and reasoning that ignores what a tool returned. Guardrails and output checks still apply.</p></div>
+  </div>

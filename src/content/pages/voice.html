@@ -13,3 +13,15 @@
     <p id="vlres" style="margin:0"></p>
     <ul class="muted" style="margin:10px 0 0;padding-left:18px;font-size:13.5px"><li>Stream everything: partial transcripts, streamed LLM tokens, streamed TTS.</li><li>Speak a short acknowledgement ("Let me check that…") while a slow tool runs.</li><li>Keep the model and voice servers in the caller's region, and cap tool timeouts with a fallback line.</li></ul>
   </div>
+  <h2>Cascaded vs speech-to-speech</h2>
+  <div class="card tablewrap"><table>
+    <tr><th></th><th>Cascaded (speech-to-text → LLM → text-to-speech)</th><th>Speech-to-speech (native audio model)</th></tr>
+    <tr><td><b>How it works</b></td><td>Three models: transcribe, think in text, speak</td><td>One model hears audio and answers in audio</td></tr>
+    <tr><td><b>Latency</b></td><td>Sum of three stages plus network; streaming each stage keeps it workable</td><td>Lowest: replies can start within a few hundred milliseconds</td></tr>
+    <tr><td><b>Naturalness</b></td><td>Turn-taking needs separate voice-activity and end-of-turn logic</td><td>Better tone, interruptions (barge-in) and backchannels ("mm-hm")</td></tr>
+    <tr><td><b>Control &amp; compliance</b></td><td>Text at every step: easy to log, redact, check and apply guardrails</td><td>Transcripts are a side output; harder to check before it speaks</td></tr>
+    <tr><td><b>Tools &amp; logic</b></td><td>Mature function calling on text models</td><td>Supported, with fewer model choices</td></tr>
+    <tr><td><b>Voices</b></td><td>Mix best-in-class parts and voices</td><td>Limited to the model's own voices</td></tr>
+    <tr><td><b>Best for</b></td><td>Regulated flows, complex tools, IVR replacement</td><td>Conversational, low-latency experiences</td></tr>
+  </table></div>
+  <div class="card"><p style="margin:0"><b>Full-duplex</b> models listen while they speak, so callers can interrupt naturally. Whichever you choose, keep a text transcript for QA and compliance, tell callers they're talking to AI, and test with real line noise and accents. Many teams run a hybrid: speech-to-speech for the conversation, with tools and policy checks in text. See <a href="#cx-arch">Contact-center AI architecture</a>.</p></div>

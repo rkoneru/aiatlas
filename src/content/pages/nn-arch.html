@@ -66,3 +66,8 @@
     <div class="card" style="border-top:3px solid var(--green)"><span class="tag" style="color:var(--green)">Neuro-symbolic, today</span><h3>Both together</h3><p>Modern systems combine them: an LLM plans and talks, while code interpreters, solvers, ontologies, schemas and rule engines provide exactness. See <a href="#ontology">self-evolving ontology</a> and <a href="#jev">JEV vs LLM</a>.</p></div>
   </div>
 </div>
+  <h2>Beyond the Transformer</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Hybrid &amp; state-space models</h3><p>State-space models such as Mamba process a sequence in linear time with a fixed-size memory. Several recent models mix a few attention layers with many state-space or linear-attention layers to handle long contexts more cheaply.</p></div>
+    <div class="card"><h3>Diffusion language models</h3><p>Instead of writing one token at a time, a diffusion language model starts from a masked or noisy draft of the whole answer and refines it in parallel over a few steps. They promise much faster generation and are in early commercial use, mainly for code and short text.</p></div>
+  </div>

@@ -43,6 +43,7 @@ Under Settings → Variables and secrets:
 | `PUBLIC_AI_ENABLED` | `false` | Leave off at launch. |
 | `PUBLIC_PLAUSIBLE_DOMAIN` | `your.domain` | Optional. Omit it for no analytics. |
 | `PUBLIC_CONTACT_EMAIL` | your address | Optional. Otherwise `src/data/site.json` is used. |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key | Optional, only with AI on and `TURNSTILE_SECRET` set. |
 | AI proxy variables | | Only when turning AI on; see `docs/ai-proxy.md`. |
 
 Leave `ATLAS_BASE` unset on Cloudflare, so the site lives at `/`.

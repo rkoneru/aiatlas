@@ -9,7 +9,7 @@ An interactive learning site about AI architecture. It covers:
 - customer-service AI
 - an FDE delivery kit
 
-The site has 98 pages, animated diagrams, calculators, a course, practice, a glossary and search. It's built as a static Astro site from the single-file Atlas in `source/atlas.html`, which stays the content of record.
+The site has 103 pages, animated diagrams, calculators, a course, practice, a glossary and search. It's built as a static Astro site from the single-file Atlas in `source/atlas.html`, which stays the content of record.
 
 - **Live:** https://rkoneru.github.io/aiatlas/ (GitHub Pages). Cloudflare Pages is also ready: see `docs/deploy.md`.
 - **Content:** © Rakesh, CC BY-NC 4.0 (`LICENSE-CONTENT.md`).
@@ -48,6 +48,8 @@ The site has 98 pages, animated diagrams, calculators, a course, practice, a glo
    The parity test compares every page against `source/atlas.html`. If a change is intentional, the test will show exactly where the pages differ.
 6. **Commit and push.** CI runs, and the default branch deploys.
 
+Larger content updates can be written as a script that edits `source/atlas.html` with exact, counted replacements, like `scripts/content/2026-11-trends.py` (the v23 update: five new pages and new sections). The script refuses to run twice.
+
 Wording or accessibility fixes to Atlas text go in `scripts/copy-patches.json`, not in the extracted files. Each entry is a find/replace with an expected match count, and it's applied both to the build and to the original in the parity test.
 
 **Switching to the extracted files as the source.** `src/content/pages/*.html`, `src/data/*.json` and `src/styles/atlas.css` are plain files. If you'd rather edit them directly, stop running `npm run extract`, since it would overwrite them. The runtime (`src/generated/atlas-runtime.js`) is still generated from `source/atlas.html`.
@@ -79,6 +81,7 @@ See `.env.example`. These are `PUBLIC_*` variables, set at build time:
 | `PUBLIC_AI_ENABLED` | Off by default. Every AI button stays hidden until it's on. |
 | `PUBLIC_PLAUSIBLE_DOMAIN` | Analytics, only when set. |
 | `PUBLIC_CONTACT_EMAIL` | The contact address. |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Optional bot check on AI requests; see `docs/ai-proxy.md`. |
 
 The AI proxy has its own server-side settings, listed in `docs/ai-proxy.md`.
 
@@ -87,6 +90,7 @@ The AI proxy has its own server-side settings, listed in `docs/ai-proxy.md`.
 | File | What it covers |
 |---|---|
 | [`docs/todo-rakesh.md`](docs/todo-rakesh.md) | What needs your input. |
+| [`docs/gap-analysis.md`](docs/gap-analysis.md) | AI trends gap analysis, and what the v23 update closed. |
 | [`docs/deploy.md`](docs/deploy.md) | Cloudflare Pages and GitHub Pages deploys, and CI. |
 | [`docs/decisions.md`](docs/decisions.md) | Decisions made. |
 | [`docs/inventory.md`](docs/inventory.md), [`docs/inventory-findings.md`](docs/inventory-findings.md) | Phase 0 inventory, and what blocked a clean split. |

@@ -10,6 +10,16 @@
     <div class="card"><span class="tag" style="color:var(--purple)">Agent identity &amp; delegation</span><h3>Who is this agent acting as?</h3><p>Give each agent its own identity, not a shared service account. For actions on a user's behalf, use OAuth token exchange or on-behalf-of flows to get <b>short-lived, scoped</b> tokens that carry both the user and the agent. Log both identities on every action. Delegation down a chain of agents should only ever narrow scope.</p></div>
     <div class="card"><span class="tag" style="color:var(--orange)">Computer-use &amp; browser agents</span><h3>Operating the screen</h3><p>When there is no API, the agent loops: screenshot (or accessibility tree / DOM) → decide → click or type → observe. Slower and more fragile than APIs, and exposed to prompt injection from any web page. Run in an isolated browser or VM, allowlist domains, and require confirmation for purchases, sends and deletions.</p></div>
   </div>
+  <h2>Agent identity: emerging standards</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Standard</th><th>Status</th><th>What it adds</th></tr>
+    <tr><td><b>OAuth 2.0 token exchange</b> and on-behalf-of flows</td><td>Established</td><td>Short-lived tokens that carry both the user and the agent; one hop of delegation</td></tr>
+    <tr><td><b>IETF WIMSE agent identity</b> (AIMS)</td><td>Working-group draft, Sept 2026</td><td>Agents treated as workloads, each with one cryptographic identifier (for example a SPIFFE ID) and credentials bound to it</td></tr>
+    <tr><td><b>OpenID agent identity profile</b></td><td>Individual draft</td><td>Agent claims in ID tokens: owner, trust posture, authorized capabilities</td></tr>
+    <tr><td><b>MCP authorization</b></td><td>In the MCP spec</td><td>OAuth 2.1 for clients connecting to MCP servers; see <a href="#mcp-protocol">MCP protocol</a></td></tr>
+    <tr><td><b>Card-network agent tokens</b></td><td>Live programs</td><td>Agent-specific payment credentials; see <a href="#agent-payments">Agent payments</a></td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">Open gaps: delegation across several hops (an agent calling an agent calling a tool) and mapping OAuth scopes to agent capabilities. Sources: <a href="https://datatracker.ietf.org/doc/html/draft-ietf-wimse-aims">IETF WIMSE draft</a>, <a href="https://datatracker.ietf.org/doc/draft-sharif-openid-agent-identity/">OpenID agent identity draft</a>, <a href="https://arxiv.org/abs/2604.23280">AI identity survey (2026)</a>. For screen-operating agents, see <a href="#computer-use">Computer-use &amp; browser agents</a>.</p>
   <h2>Agent frameworks</h2>
   <div class="card tablewrap"><table>
     <tr><th>Framework</th><th>Model</th><th>Strength</th></tr>
@@ -31,3 +41,10 @@
     <tr><td>Cost profile</td><td>License per bot, near-zero per run</td><td>Tokens per run, cheaper to build and change</td></tr>
     <tr><td>Best together</td><td colspan="2">The agent reads the email, decides and extracts; RPA or APIs execute the deterministic steps; humans handle exceptions. See <a href="#sop-workflow">SOP → AI workflow</a>.</td></tr>
   </table></div>
+  <h2>Agent front-ends &amp; generative UI</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Streaming &amp; progress</h3><p>Stream tokens and tool progress so people can see work happening. For long runs, show the plan and the current step, with a clear way to stop.</p></div>
+    <div class="card"><h3>Generative UI</h3><p>Instead of only text, the agent returns interface components (a form, a chart, a booking widget) that the app renders. <b>MCP Apps</b>, the first official MCP extension, lets a server ship interactive UI that hosts display in a sandbox.</p></div>
+    <div class="card"><h3>Agent–UI protocols</h3><p>Open protocols such as <b>AG-UI</b> (an event stream between an agent back end and a front end) and <b>A2UI</b> (declarative UI an agent can send safely) mean front ends don't have to be rebuilt for each framework.</p></div>
+    <div class="card"><h3>Approval screens</h3><p>For risky actions, show the exact action, the data it touches and the identity it runs as, with approve, edit and reject. Log the decision with the trace.</p></div>
+  </div>

@@ -4,7 +4,7 @@
  * action runs in the original single file and the results are compared.
  */
 import { test, expect, type Page } from '@playwright/test';
-import { watchErrors } from './helpers';
+import { watchErrors, PAGES } from './helpers';
 // @ts-ignore
 import { originalFile, platformScript } from '../parity-lib.mjs';
 
@@ -60,7 +60,7 @@ test('search covers every page and highlights on the target page', async ({ page
   await page.keyboard.press('/');
   const input = page.locator('.srch input[type=search]');
   await expect(input).toBeFocused();
-  await expect(page.locator('.srch-empty')).toContainText('across all 98 pages');
+  await expect(page.locator('.srch-empty')).toContainText(`across all ${PAGES.length} pages`);
   await input.fill('owasp');
   const hit = page.locator('.srch-hit').filter({ hasText: 'AI security' }).first();
   await expect(hit).toBeVisible();

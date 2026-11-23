@@ -16,6 +16,11 @@ const INFOGRAPHIC = {
 type Seen = { body: any }[];
 async function mock(page: Page, handler?: (body: any, route: Route) => Promise<boolean | void>) {
   const seen: Seen = [];
+  // The AI test build sets PUBLIC_TURNSTILE_SITE_KEY: serve a stand-in widget that issues numbered tokens.
+  await page.route('https://challenges.cloudflare.com/**', (route) => route.fulfill({
+    contentType: 'text/javascript',
+    body: "window.turnstile={n:0,render(el,o){const n=++this.n;setTimeout(()=>o.callback('tok-'+n),10);return 'w'+n;},remove(){}};",
+  }));
   await page.route('**/api/claude', async (route) => {
     const body = JSON.parse(route.request().postData() || '{}');
     seen.push({ body });
@@ -108,4 +113,26 @@ test('errors map to the codes the UI handles: unavailable (server down)', async 
 test('Team mode stays off with AI on', async ({ page }) => {
   await page.goto('/team/');
   await expect(page.locator('#tmStatus')).toContainText("isn't available on this site");
+});
+
+test('Turnstile: loads only on the first AI request and sends a fresh token each time', async ({ page }) => {
+  const errors = watchErrors(page);
+  const loads: string[] = [];
+  page.on('request', (r) => { if (r.url().startsWith('https://challenges.cloudflare.com/')) loads.push(r.url()); });
+  const seen = await mock(page);
+  await page.goto('/rag/');
+  await page.waitForTimeout(500);
+  expect(loads).toEqual([]);
+  await page.locator('.pt-ask').click();
+  const panel = page.locator('.ask-panel');
+  for (const q of ['First question?', 'Second question?']) {
+    await panel.locator('textarea').fill(q);
+    await panel.locator('.ask-send').click();
+    await expect(panel.locator('.ask-log')).toContainText(q);
+    await expect.poll(() => seen.length).toBeGreaterThanOrEqual(q.startsWith('First') ? 1 : 2);
+    await expect(panel.locator('.ask-send')).toBeEnabled();
+  }
+  expect(seen.map((x) => x.body.turnstile)).toEqual(['tok-1', 'tok-2']);
+  expect(loads.length).toBe(1);
+  expect(errors).toEqual([]);
 });

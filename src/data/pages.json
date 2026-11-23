@@ -110,6 +110,16 @@
   "kicker": "7 · Claude Code"
  },
  {
+  "id": "agentic-coding",
+  "title": "Agentic coding & software agents",
+  "navLabel": "Agentic coding & software agents",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "green",
+  "lead": "Coding agents read a repository, plan a change, edit files, run the tests and open a pull request. They are the most widely used agents in production, because code gives them something rare: a fast, objective check on their own work. Walk one change from ticket to merge.",
+  "kicker": "Build & ship · Agentic coding"
+ },
+ {
   "id": "tool-call",
   "title": "Agent tools & tool calls",
   "navLabel": "Agent tools & tool calls",
@@ -228,6 +238,16 @@
   "accent": "purple",
   "lead": "A decoder-only transformer turns your prompt into tokens, then vectors, runs them through stacked layers of causal self-attention and feed-forward networks, and predicts one token at a time. Step through the pipeline, then try each stage on live text.",
   "kicker": "Models · deep dive"
+ },
+ {
+  "id": "reasoning-models",
+  "title": "Reasoning models & test-time compute",
+  "navLabel": "Reasoning models & test-time compute",
+  "group": "Models & ML",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "Reasoning models think before they answer: they work through the problem in reasoning tokens, check and revise their steps, and only then reply. Spending more compute at answer time buys accuracy on hard problems, at a cost in latency and tokens. Walk one request with an effort setting.",
+  "kicker": "Models · Reasoning"
  },
  {
   "id": "guardrails",
@@ -460,6 +480,16 @@
   "kicker": "Foundations · Agents in production"
  },
  {
+  "id": "computer-use",
+  "title": "Computer-use & browser agents",
+  "navLabel": "Computer-use & browser agents",
+  "group": "Agents",
+  "inNav": true,
+  "accent": "green",
+  "lead": "When a system has no API, an agent can operate it the way a person does: look at the screen, decide, click and type, then look again. It reaches the long tail of legacy and web software, at the price of speed, reliability and a much larger attack surface. Walk one loop.",
+  "kicker": "Agents · Computer use"
+ },
+ {
   "id": "doc-ai",
   "title": "Document AI, IDP & NLP tasks",
   "navLabel": "Document AI & NLP",
@@ -528,6 +558,16 @@
   "accent": "amber",
   "lead": "Model tokens are usually the smallest line in an AI budget. People, data work, platform, change management and governance dominate. Plan three years across the full cost stack, size inference from real volumes, and see the split.",
   "kicker": "CAIO · Finance"
+ },
+ {
+  "id": "ai-infrastructure",
+  "title": "AI infrastructure, compute & sovereignty",
+  "navLabel": "AI infrastructure & sovereignty",
+  "group": "CAIO · Chief AI Officer",
+  "inNav": true,
+  "accent": "amber",
+  "lead": "Every AI strategy rests on compute: who provides it, where it runs, what it costs and what happens when it's scarce. This page helps leaders choose between APIs, cloud platforms and owned infrastructure, plan for capacity and power, and decide how much sovereignty they need. Walk the options from API to owned hardware.",
+  "kicker": "CAIO · Infrastructure"
  },
  {
   "id": "ai-value",
@@ -737,6 +777,16 @@
   "inNav": true,
   "accent": "teal",
   "lead": "A capable model, given a clear rubric, grades the outputs of another model, agent or person: scoring answers, comparing two versions, checking against a reference, or ticking off a checklist. It makes evaluation fast and cheap enough to run on every release and every conversation. But a judge is itself a model that needs checking: calibrate it against human labels and design out its known biases.",
+  "kicker": "Build & ship · Evaluation"
+ },
+ {
+  "id": "agent-evals",
+  "title": "Agent evaluation: trajectories, simulated users & pass^k",
+  "navLabel": "Agent evaluation",
+  "group": "Build & ship",
+  "inNav": true,
+  "accent": "teal",
+  "lead": "Evaluating an agent means judging a whole run, not one answer: did it reach the goal, take sensible steps, use tools correctly, stay within policy and budget, and recover from errors? And does it do so every time? Walk an agent eval pipeline from scenario to release gate.",
   "kicker": "Build & ship · Evaluation"
  },
  {

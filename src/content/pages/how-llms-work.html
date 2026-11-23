@@ -31,3 +31,4 @@
   </div>
   <h2>5 · Training objective</h2>
   <div class="card"><div class="formula">ℒ = − <span class="frac"><span>1</span><span><i>n</i></span></span> Σ<sub><i>t</i>=1</sub><sup><i>n</i></sup> log <i>P</i>(<i>x<sub>t</sub></i> | <i>x</i><sub>1</sub>, …, <i>x</i><sub><i>t</i>−1</sub>)</div><p class="muted" style="margin:10px 0 0">Pre-training is just next-token prediction with cross-entropy loss, over trillions of tokens, optimized by gradient descent (Adam). Capabilities like translation or coding emerge from doing this at scale. Instruction-following comes later, from fine-tuning. <a href="#roadmaps">See the LLM engineering roadmap →</a></p></div>
+  <div class="callout">Many models now think before they answer, spending extra tokens on reasoning. See <a href="#reasoning-models">Reasoning models &amp; test-time compute</a>.</div>

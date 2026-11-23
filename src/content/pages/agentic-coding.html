@@ -1,0 +1,50 @@
+
+  <span class="kicker">Build &amp; ship · Agentic coding</span>
+  <h1>Agentic coding &amp; software agents</h1>
+  <p class="lead">Coding agents read a repository, plan a change, edit files, run the tests and open a pull request. They are the most widely used agents in production, because code gives them something rare: a fast, objective check on their own work. Walk one change from ticket to merge.</p>
+  <div data-flow="codeagent" data-theme="soft"></div>
+  <h2>From autocomplete to autonomous</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Level</th><th>What it does</th><th>Human role</th><th>Typical tasks</th></tr>
+    <tr><td><b>Completion</b></td><td>Suggests the next lines as you type</td><td>Writes the code</td><td>Boilerplate, small functions</td></tr>
+    <tr><td><b>Chat &amp; inline edit</b></td><td>Explains or rewrites selected code on request</td><td>Asks, reviews each change</td><td>Refactor a function, explain an error</td></tr>
+    <tr><td><b>Agent in the editor or terminal</b></td><td>Runs a multi-step loop in your checkout: search, edit, run, fix</td><td>Sets the task, watches, approves risky commands</td><td>Fix a failing test, add an endpoint</td></tr>
+    <tr><td><b>Background agent</b></td><td>Works alone in a cloud sandbox and opens a pull request</td><td>Reviews the pull request</td><td>Dependency upgrades, bug backlog, small features</td></tr>
+    <tr><td><b>Agent fleets</b></td><td>Many agents on scheduled or bulk tasks</td><td>Owns the queue and the review policy</td><td>Migrations across repositories, flaky-test triage</td></tr>
+  </table></div>
+  <h2>What makes coding agents work</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag">Context</span><h3>Instruction files</h3><p>A file at the repository root (<code>AGENTS.md</code>, or a tool-specific file such as <code>CLAUDE.md</code>) tells every agent how to build, test and lint, the house conventions and what not to touch. AGENTS.md is an open format hosted by the Agentic AI Foundation. Keep it short and keep it true.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Specs</span><h3>Spec-driven development</h3><p>For anything bigger than a small fix, write the spec first: goal, constraints, acceptance tests and the files in scope. The agent plans against the spec, a person reviews the plan, then it builds. Specs double as documentation.</p></div>
+    <div class="card"><span class="tag" style="color:var(--amber)">Feedback</span><h3>Tests are the agent's eyes</h3><p>An agent is only as good as the checks it can run. Fast unit tests, a type checker, a linter and a reproducible build let it find and fix its own mistakes. Repositories with poor tests get confident, wrong changes.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Isolation</span><h3>Sandboxes, not laptops</h3><p>Run agents in a container or a throwaway checkout with no production credentials, a network allowlist and a time and token budget. Let them push only to their own branch.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Review</span><h3>Review is the new bottleneck</h3><p>Agents write code faster than people can review it. Keep pull requests small, require CI to pass, use an automated reviewer for a first pass, and keep a named person accountable for every merge.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Tools</span><h3>Tools, skills &amp; MCP</h3><p>Give agents the tools developers use, through the command line or MCP servers: issue tracker, docs, logs, read-only database access. Package repeated procedures as skills. See <a href="#agent-kit">Agent dev kit</a>.</p></div>
+  </div>
+  <h2>Good and poor fits</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Good fit</th><th>Poor fit (for now)</th></tr>
+    <tr><td>Well-tested code with a clear definition of done</td><td>Code with no tests or a slow, flaky build</td></tr>
+    <tr><td>Bug fixes with a reproduction</td><td>Vague product decisions ("make it better")</td></tr>
+    <tr><td>Migrations, upgrades and repetitive refactors</td><td>New architecture or cross-team design choices</td></tr>
+    <tr><td>Tests, documentation and small features</td><td>Security-critical code without expert review</td></tr>
+    <tr><td>Exploring and explaining an unfamiliar codebase</td><td>Changes that can only be checked in production</td></tr>
+  </table></div>
+  <h2>Measuring it</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Metric</th><th>What it tells you</th><th>Watch out for</th></tr>
+    <tr><td>Pull requests merged per agent task</td><td>Real throughput</td><td>Counting opened instead of merged</td></tr>
+    <tr><td>Review time and rework</td><td>The hidden cost on reviewers</td><td>Large diffs nobody reads closely</td></tr>
+    <tr><td>Change failure rate and rollbacks</td><td>Quality in production</td><td>Comparing teams with different work</td></tr>
+    <tr><td>Escaped defects and security findings</td><td>Risk</td><td>Agents copying insecure patterns already in the code</td></tr>
+    <tr><td>Cycle time per task type</td><td>Where time is saved</td><td>Self-reported savings without a baseline</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">Public benchmarks such as SWE-bench (fixing real GitHub issues) and terminal-task suites help compare models, but they saturate quickly and can leak into training data. Build a small internal set from your own merged pull requests. See <a href="#agent-evals">Agent evaluation</a>.</p>
+  <h2>Risks &amp; controls</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Prompt injection through code</h3><p>Issues, comments, dependencies and web pages can carry instructions aimed at the agent. Treat repository and web content as untrusted, and never give an agent secrets it doesn't need.</p></div>
+    <div class="card"><h3>Supply chain</h3><p>Agents add dependencies readily, and sometimes invent package names that attackers then register ("slopsquatting"). Pin versions, check new packages against an allowlist and scan every pull request.</p></div>
+    <div class="card"><h3>Destructive commands</h3><p>Block, or require approval for, commands that delete data, force-push, change infrastructure or touch production.</p></div>
+    <div class="card"><h3>Skills atrophy</h3><p>If junior developers never write the code, they never learn to review it. Pair agent use with code reading, design reviews and deliberate practice.</p></div>
+  </div>
+  <div class="callout">Start with one team, one well-tested repository and one task type, for example dependency upgrades. Measure merged pull requests and review time for a month before widening. See <a href="#llmops">ADLC &amp; LLMOps</a>.</div>

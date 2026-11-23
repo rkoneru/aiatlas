@@ -1,0 +1,42 @@
+
+  <span class="kicker">Build &amp; ship · Evaluation</span>
+  <h1>Agent evaluation: trajectories, simulated users &amp; pass^k</h1>
+  <p class="lead">Evaluating an agent means judging a whole <b>run</b>, not one answer: did it reach the goal, take sensible steps, use tools correctly, stay within policy and budget, and recover from errors? And does it do so <b>every time</b>? Walk an agent eval pipeline from scenario to release gate.</p>
+  <div data-flow="agenteval" data-theme="soft"></div>
+  <h2>What to measure</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Layer</th><th>Question</th><th>How to grade</th></tr>
+    <tr><td><b>Outcome</b></td><td>Did it achieve the goal?</td><td>Check the end state in the sandbox (the database row, file or ticket status), in code where possible</td></tr>
+    <tr><td><b>Trajectory</b></td><td>Were the steps sensible?</td><td>Compare tool calls with expected ones; flag loops, repeats and wrong arguments; use a judge model for the rest</td></tr>
+    <tr><td><b>Tool use</b></td><td>Were calls valid and safe?</td><td>Schema validation, tool error rate, calls to forbidden tools</td></tr>
+    <tr><td><b>Policy</b></td><td>Did it follow the rules?</td><td>Rule checks, plus a judge for tone, disclosure and escalation</td></tr>
+    <tr><td><b>Efficiency</b></td><td>How many steps, seconds and tokens?</td><td>Budgets per scenario; regressions fail the gate</td></tr>
+    <tr><td><b>Robustness</b></td><td>Does it survive surprises?</td><td>Inject tool errors, timeouts, ambiguous users and planted instructions</td></tr>
+    <tr><td><b>Consistency</b></td><td>Does it succeed every time?</td><td>Run each scenario k times; report pass@k and pass^k</td></tr>
+  </table></div>
+  <h2>pass@k vs pass^k</h2>
+  <div class="grid g2">
+    <div class="card"><h3>pass@k: at least one success</h3><div class="formula">pass@k = 1 − (1 − <i>p</i>)<sup><i>k</i></sup></div><p>The chance that at least one of <i>k</i> tries succeeds. Right when attempts are checked automatically and only the best is used, such as a coding agent whose tries are run against tests.</p></div>
+    <div class="card"><h3>pass^k: every try succeeds</h3><div class="formula">pass^k = <i>p</i><sup><i>k</i></sup></div><p>The chance that all <i>k</i> tries succeed. Right for customer-facing agents, where every conversation must work. An agent that succeeds 80% of the time has pass^8 of only about 17%.</p></div>
+  </div>
+  <p class="muted" style="font-size:13px">Both formulas assume independent tries with success rate <i>p</i>. In practice, estimate them directly from your <i>k</i> runs per scenario.</p>
+  <h2>Building the eval set</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Start from real work</h3><p>Turn production transcripts, support tickets and failed runs into scenarios. Twenty to fifty good scenarios beat a thousand synthetic ones at the start.</p></div>
+    <div class="card"><h3>Simulated users</h3><p>A second model plays the customer, with a persona, a goal and facts it reveals only when asked. Check the simulator too: unrealistic users make the results meaningless.</p></div>
+    <div class="card"><h3>Sandboxed environments</h3><p>Point tools at test systems with resettable state, so you can grade the end state and rerun safely. See <a href="#fde-testing">Conversation regression testing</a>.</p></div>
+    <div class="card"><h3>Grade with code first</h3><p>Use programmatic checks for anything checkable and a judge model only for judgment calls. Calibrate judges against human labels. See <a href="#llm-judge">LLM as a judge</a>.</p></div>
+    <div class="card"><h3>Long-horizon tasks</h3><p>As agents take on longer work, measure the length of task, in human working time, that they complete reliably. Research groups track this "time horizon", and it has been doubling every several months.</p></div>
+    <div class="card"><h3>Contamination &amp; saturation</h3><p>Public benchmarks leak into training data and stop separating models. Use them to shortlist, then decide with your own private set, refreshed regularly.</p></div>
+  </div>
+  <h2>Public agent benchmarks</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Benchmark</th><th>What it tests</th></tr>
+    <tr><td><b>SWE-bench</b> (Verified)</td><td>Fixing real GitHub issues in open-source repositories, checked by their tests</td></tr>
+    <tr><td><b>τ-bench</b> (tau-bench)</td><td>Customer-service agents with tools, policies and simulated users; introduced pass^k</td></tr>
+    <tr><td><b>OSWorld</b></td><td>Computer-use tasks across real desktop applications</td></tr>
+    <tr><td><b>WebArena</b></td><td>Web tasks on realistic self-hosted sites</td></tr>
+    <tr><td><b>GAIA</b></td><td>Assistant questions that need tools, browsing and several steps</td></tr>
+    <tr><td><b>Terminal-Bench</b></td><td>Tasks completed in a command-line environment</td></tr>
+  </table></div>
+  <div class="callout">Wire the suite into CI: every change to a prompt, model, tool or policy runs it, and a drop in scores blocks the release. Then keep sampling production traces into new scenarios. See <a href="#llmops">ADLC &amp; LLMOps</a> and <a href="#evalhub">Eval Hub</a>.</div>

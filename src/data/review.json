@@ -1,4 +1,52 @@
 {
+ "reasoning-models": {
+  "date": "2026-11-23",
+  "items": [
+   "Reasoning controls (effort levels, budgets) and how providers expose reasoning"
+  ]
+ },
+ "computer-use": {
+  "date": "2026-11-23",
+  "items": [
+   "Computer-use capability, agentic browsers and benchmarks"
+  ]
+ },
+ "agentic-coding": {
+  "date": "2026-11-23",
+  "items": [
+   "Coding-agent practice, instruction-file formats and benchmarks"
+  ]
+ },
+ "agent-evals": {
+  "date": "2026-11-23",
+  "items": [
+   "Agent benchmarks and evaluation practice"
+  ]
+ },
+ "ai-infrastructure": {
+  "date": "2026-11-23",
+  "items": [
+   "Compute options, pricing trends and sovereignty offerings"
+  ]
+ },
+ "agent-runtime": {
+  "date": "2026-11-23",
+  "items": [
+   "Agent identity standards (IETF WIMSE, OpenID) and agent UI protocols"
+  ]
+ },
+ "ai-security": {
+  "date": "2026-11-23",
+  "items": [
+   "OWASP lists, MCP and tool attacks"
+  ]
+ },
+ "voice": {
+  "date": "2026-11-23",
+  "items": [
+   "Voice models, speech-to-speech and latency figures"
+  ]
+ },
  "fde-observability": {
   "date": "2026-11-21",
   "items": [
@@ -31,7 +79,7 @@
   ]
  },
  "ai-compliance": {
-  "date": "2026-11-20",
+  "date": "2026-11-23",
   "items": [
    "EU AI Act dates, US state AI laws, NIST/ISO standards",
    "Regulatory references"
@@ -44,25 +92,25 @@
   ]
  },
  "mcp": {
-  "date": "2026-11-21",
+  "date": "2026-11-23",
   "items": [
    "MCP spec version and primitives"
   ]
  },
  "a2a": {
-  "date": "2026-11-20",
+  "date": "2026-11-23",
   "items": [
    "A2A protocol version and task states"
   ]
  },
  "agent-payments": {
-  "date": "2026-11-20",
+  "date": "2026-11-23",
   "items": [
    "Agent payment protocols (AP2, ACP and others)"
   ]
  },
  "model-selection": {
-  "date": "2026-11-20",
+  "date": "2026-11-23",
   "items": [
    "Model tiers and named models",
    "Vendors and pricing patterns"
@@ -99,22 +147,10 @@
    "Agent frameworks and SDKs"
   ]
  },
- "ai-security": {
-  "date": "2026-11-20",
-  "items": [
-   "OWASP LLM Top 10, threat frameworks"
-  ]
- },
  "caio": {
   "date": "2026-11-20",
   "items": [
    "CAIO mandates and federal guidance"
-  ]
- },
- "voice": {
-  "date": "2026-11-20",
-  "items": [
-   "Voice models and latency figures"
   ]
  }
 }

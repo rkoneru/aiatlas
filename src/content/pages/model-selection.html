@@ -71,3 +71,21 @@
     <div class="card"><h3>What this means for builders</h3><p>Re-run your evals on each new model release. Delete scaffolding the new model doesn't need. Keep humans on irreversible decisions regardless of benchmark scores. Budget for prices falling and capabilities rising.</p></div>
   </div>
 </div>
+  <h2>Small &amp; on-device models</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Why small</h3><p>Small language models (roughly 1–15 billion parameters) handle classification, extraction, routing and short drafting well, at a fraction of the cost and latency. Many are distilled from larger models, and quantized versions run on a laptop or phone.</p></div>
+    <div class="card"><h3>On-device</h3><p>Phones and PCs now ship with neural processing units (NPUs) and built-in models. Running on the device keeps data local, works offline and costs nothing per call; the trade-offs are smaller models, varied hardware and harder updates.</p></div>
+    <div class="card"><h3>Hybrid routing</h3><p>Try a small model first and escalate to a large one when confidence is low or the task is hard. A router cuts cost without users noticing. See <a href="#optimization">LLM optimization</a>.</p></div>
+    <div class="card"><h3>When self-hosting wins</h3><p>Strict data control, steady high volume, a narrow task worth fine-tuning for, or a need to keep running when an API isn't available. Check the license: some open-weight models restrict use above a user count or in some fields. See <a href="#ai-infrastructure">AI infrastructure</a>.</p></div>
+  </div>
+  <h2>Frontier safety: what to ask a model provider</h2>
+  <p>Frontier labs publish safety frameworks (responsible scaling or preparedness policies) that set dangerous-capability thresholds and the safeguards required before release. Laws now make parts of this mandatory: California's SB 53 and New York's RAISE Act require large frontier developers to publish safety frameworks and report serious incidents, and the EU's GPAI rules require documentation and, for the largest models, systemic-risk assessment. See <a href="#ai-compliance">Responsible AI &amp; regulation</a>.</p>
+  <div class="card tablewrap"><table>
+    <tr><th>Question</th><th>What a good answer looks like</th></tr>
+    <tr><td>Is there a published safety framework?</td><td>Named capability thresholds, the evaluations used and what happens when a threshold is crossed</td></tr>
+    <tr><td>Is there a system card for this model?</td><td>Capabilities, known limits, red-team results, dangerous-capability evals and the safeguards applied</td></tr>
+    <tr><td>Who else tests it?</td><td>Independent or government evaluations before release</td></tr>
+    <tr><td>How is misuse monitored?</td><td>Usage policies, abuse detection, and how enterprise data is handled during that monitoring</td></tr>
+    <tr><td>How are incidents reported?</td><td>A process and timeline for telling customers and regulators</td></tr>
+    <tr><td>What does interpretability tell us?</td><td>Honest limits: research can find some internal features and circuits, but can't yet certify that a model is safe</td></tr>
+  </table></div>

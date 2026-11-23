@@ -11,6 +11,7 @@ const AI = String(env.PUBLIC_AI_ENABLED || '').toLowerCase() === 'true';
 const define = {
   __AI_ENABLED__: JSON.stringify(AI),
   __AI_ENDPOINT__: JSON.stringify(env.PUBLIC_AI_ENDPOINT || '/api/claude'),
+  __TURNSTILE_SITE_KEY__: JSON.stringify(AI ? env.PUBLIC_TURNSTILE_SITE_KEY || '' : ''),
 };
 const common = { bundle: true, format: 'iife' as const, target: 'es2020', minify: true, legalComments: 'none' as const, define };
 await build({ ...common, entryPoints: ['src/scripts/boot.ts'], outfile: 'src/generated/boot.js' });

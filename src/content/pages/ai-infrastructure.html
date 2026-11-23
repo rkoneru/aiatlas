@@ -1,0 +1,44 @@
+
+  <span class="kicker">CAIO · Infrastructure</span>
+  <h1>AI infrastructure, compute &amp; sovereignty</h1>
+  <p class="lead">Every AI strategy rests on compute: who provides it, where it runs, what it costs and what happens when it's scarce. This page helps leaders choose between <b>APIs, cloud platforms and owned infrastructure</b>, plan for capacity and power, and decide how much <b>sovereignty</b> they need. Walk the options from API to owned hardware.</p>
+  <div data-flow="aiinfra" data-theme="soft"></div>
+  <h2>Four ways to get compute</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Option</th><th>Control</th><th>Cost model</th><th>Best for</th><th>Watch for</th></tr>
+    <tr><td><b>Model provider API</b></td><td>Low</td><td>Per token, no commitment</td><td>Most use cases; fastest start; newest models</td><td>Price and terms changes, rate limits, data terms, lock-in</td></tr>
+    <tr><td><b>Cloud AI platform</b> (models served in your cloud account)</td><td>Medium</td><td>Per token or provisioned throughput, on your cloud bill</td><td>Enterprises with cloud commitments and residency needs</td><td>Models and features arriving later in some regions</td></tr>
+    <tr><td><b>Dedicated capacity</b> (reserved or rented GPUs)</td><td>High</td><td>Hourly or reserved contracts</td><td>Steady high volume, open-weight models, fine-tuning</td><td>Paying for idle capacity; operations skills</td></tr>
+    <tr><td><b>Owned infrastructure</b> (on-premises, edge)</td><td>Highest</td><td>Capital cost plus power, cooling and staff</td><td>Strict sovereignty, air-gapped sites, very high steady use, edge latency</td><td>Long lead times, fast hardware ageing, scarce skills</td></tr>
+  </table></div>
+  <h2>What drives the cost</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Tokens, not servers</h3><p>For API use, cost is volume × tokens × price. The price of a given capability level has fallen steeply year after year, while the newest frontier models stay premium. Plan for both. See <a href="#ai-budget">AI budget &amp; TCO</a>.</p></div>
+    <div class="card"><h3>Utilization</h3><p>Owned or reserved GPUs only beat APIs when they're busy most of the time. A cluster running at 20% utilization costs five times as much per token as the same cluster fully used.</p></div>
+    <div class="card"><h3>Memory, not just chips</h3><p>Large models and long contexts are limited by accelerator memory and bandwidth. Quantization, batching and caching change capacity needs by multiples. See <a href="#optimization">LLM optimization &amp; serving</a>.</p></div>
+    <div class="card"><h3>Agents multiply usage</h3><p>An agent can make dozens of model calls per task, and reasoning models spend extra tokens thinking. Forecast from tasks per month × calls per task, not from chat messages. See <a href="#reasoning-models">Reasoning models</a>.</p></div>
+  </div>
+  <h2>Capacity, power &amp; supply</h2>
+  <p>Demand for AI compute has outrun supply. Accelerators have long lead times, new data centers are limited by grid connections and power, and providers ration capacity through rate limits and commitments. For most companies this shows up as rate limits, gaps in regional availability and price changes rather than as a hardware shortage.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Plan for limits</h3><p>Negotiate rate limits and throughput in contracts, use more than one region or provider for critical workloads, and design graceful fallback to a smaller model.</p></div>
+    <div class="card"><h3>Energy &amp; emissions</h3><p>AI workloads raise energy use and may fall inside your emissions reporting. Ask providers for energy and carbon data per region, use efficient models for high-volume tasks, and don't run a frontier model where a small one will do.</p></div>
+  </div>
+  <h2>Sovereign AI</h2>
+  <p>Sovereignty isn't one requirement. Separate the questions:</p>
+  <div class="card tablewrap"><table>
+    <tr><th>Dimension</th><th>Question</th><th>Typical answers</th></tr>
+    <tr><td><b>Data residency</b></td><td>Where are prompts, outputs and logs stored and processed?</td><td>Regional endpoints, no training on your data, retention limits</td></tr>
+    <tr><td><b>Operational</b></td><td>Who can access the systems, and from where?</td><td>Local operations staff, customer-managed keys, access logs</td></tr>
+    <tr><td><b>Legal</b></td><td>Which country's law can compel access?</td><td>Local legal entity, contract terms, choice of provider</td></tr>
+    <tr><td><b>Technological</b></td><td>Could you keep running if a provider cut you off?</td><td>Open-weight fallback models, portable architecture, more than one provider</td></tr>
+    <tr><td><b>Strategic</b></td><td>Does the country or sector need its own capability?</td><td>National or sector models, local compute, local-language data</td></tr>
+  </table></div>
+  <div class="callout">Most organizations need data residency and contractual controls, not their own data center. Decide per use case: assistants over public data can use global APIs; regulated or classified workloads may need regional, dedicated or on-premises options.</div>
+  <h2>Questions for the board</h2>
+  <div class="card"><ul style="margin:0;padding-left:18px">
+    <li>Which AI workloads would stop if our main model provider had an outage or changed its terms?</li>
+    <li>What share of AI spend is committed versus pay-as-you-go, and how well used is committed capacity?</li>
+    <li>Which workloads have residency or sovereignty requirements, and how are they met today?</li>
+    <li>How are AI energy use and emissions measured and reported?</li>
+  </ul><p class="muted" style="margin:10px 0 0">See <a href="#ai-board">Board &amp; risk reporting</a> and <a href="#vendors">Vendor comparison</a>.</p></div>

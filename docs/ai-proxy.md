@@ -24,7 +24,11 @@ The Atlas's AI features (Ask the Atlas, "Describe it" and "Improve with Claude",
 - **Origin check (CORS):** only origins listed in `SITE_ORIGIN` (comma-separated) may call it. Requests without an `Origin`, or from any other origin, get a 403.
 - **Per-IP limits:** 20 per hour and 100 per day by default (`RATE_LIMIT_PER_HOUR`, `RATE_LIMIT_PER_DAY`). They're kept in the KV namespace `RATE_KV`. IPs are hashed (SHA-256 with `IP_HASH_SALT`) before they become keys, and counters expire after an hour or a day. KV is eventually consistent, so the limits are approximate.
 - **Global daily cap:** `DAILY_REQUEST_CAP` (default 500) is a spend guard. Once it's reached, every request gets `rate_limited` until midnight UTC.
-- **Turnstile (optional):** set `TURNSTILE_SECRET` and the proxy requires a valid token in `body.turnstile`. The site must render the Turnstile widget and set `window.atlasTurnstileToken = async () => token`; the shim sends it. That widget isn't added yet (TODO, if you want it).
+- **Turnstile (optional):** set `TURNSTILE_SECRET` on the proxy and the build variable `PUBLIC_TURNSTILE_SITE_KEY` (the public site key from the same Turnstile widget). The proxy then requires a valid token in `body.turnstile`, and the platform shim gets a fresh one for every AI request:
+  - Cloudflare's script loads only on the first AI request, so readers who never use AI never contact Cloudflare.
+  - The widget is invisible unless Cloudflare asks for an interaction; then it appears in the bottom-right corner, labelled "Security check".
+  - Without the site key nothing loads, and a page can still provide `window.atlasTurnstileToken = async () => token` itself.
+  - Tested in `tests/e2e/ai.spec.ts` with a stand-in widget.
 - **Logging:** one JSON line per request, with time, tier, model, character count, message and image counts, the JSON flag, stop reason, token counts, status, error code and duration. **No prompt, reply or IP is ever logged.**
 
 ## Cost
@@ -55,7 +59,7 @@ Set a monthly spend limit on the Anthropic Console as well, because that's the h
 
 1. **API key:** create one in the Anthropic Console for a dedicated workspace with a spend limit.
 2. **KV:** in Cloudflare, go to Workers & Pages → KV, create a namespace (for example `atlas-ai-rate`), then bind it to the Pages project as **`RATE_KV`** (Settings → Functions → KV namespace bindings).
-3. **Secrets** (Settings → Variables and secrets, type Secret): `ANTHROPIC_API_KEY`, `IP_HASH_SALT` (any random string), and optionally `TURNSTILE_SECRET`.
+3. **Secrets** (Settings → Variables and secrets, type Secret): `ANTHROPIC_API_KEY`, `IP_HASH_SALT` (any random string), and optionally `TURNSTILE_SECRET` (with `PUBLIC_TURNSTILE_SITE_KEY` as a plain variable).
 4. **Variables:**
 
    | Variable | Value |

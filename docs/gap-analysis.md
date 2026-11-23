@@ -2,6 +2,34 @@
 
 *As of 23 Nov 2026.* This compares the Atlas's 98 pages against where AI stands now. It lists what's missing, what's thin, and what needs a factual update.
 
+## Status: v23 update (23 Nov 2026)
+
+Everything below is closed except where noted. Changes are in `source/atlas.html`, applied by `scripts/content/2026-11-trends.py`, and listed in the site's changelog as v23.
+
+| Item | Where it went |
+|---|---|
+| 1.1 A2A version and governance | `a2a`: new "Version & governance" section |
+| 1.2 MCP's home in AAIF | `mcp`: new "Governance" section |
+| 1.3 UCP, AP2 governance, multi-protocol gateways | `agent-payments`: UCP row, "What moved in 2026" |
+| 1.4 Agent identity standards | `agent-runtime`: "Agent identity: emerging standards" table |
+| 1.5 GPAI Code of Practice, Article 50 dates | `ai-compliance`: three timeline rows (10 Jul 2025, 2 Aug 2026, 2 Dec 2026) |
+| 2.1 Agentic coding | New page `agentic-coding` (Build & ship) |
+| 2.2 Computer-use and browser agents | New page `computer-use` (Agents) |
+| 2.3 Reasoning models | New page `reasoning-models` (Models & ML) |
+| 2.4 Infrastructure economics and sovereignty | New page `ai-infrastructure` (CAIO) |
+| 2.5 Agent evaluation | New page `agent-evals` (Build & ship) |
+| 2.6 Speech-to-speech voice | `voice`: "Cascaded vs speech-to-speech" |
+| 2.7 Agent supply-chain security, shadow AI | `ai-security`: "Attacks on agent tools & MCP", "Shadow AI & agent sprawl" |
+| 2.8 Small and on-device models | `model-selection`: "Small & on-device models" |
+| 2.9 Frontier safety | `model-selection`: "Frontier safety: what to ask a model provider" |
+| 2.10 AI search visibility | `applied-ml`: "AI search & answer engines" |
+| 2.11 Generative UI | `agent-runtime`: "Agent front-ends & generative UI" |
+| Watch list: new architectures, video and world models | `nn-arch`: "Beyond the Transformer"; `gen-media`: "Video, world models & physical AI" |
+| Watch list: workforce and adoption statistics | **Not added.** The figures found came from single vendor or VC surveys; worth adding once there's a source you trust. |
+| Section 3: keeping it current | Review tracker entries for the new pages and refreshed topics; 12 new glossary terms; the new pages added to the learning paths |
+
+Also fixed while doing this: the "Sources & review" box on every page showed "Concept page" even for time-sensitive pages, because it couldn't see the review dates. That bug was in the original file too.
+
 ## How this was done
 
 - **Coverage scan.** The rendered text of all 98 pages (`public/search-index.json`, about 535,000 characters) was searched for about 80 trend terms. Mentions were counted per page.

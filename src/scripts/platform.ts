@@ -14,6 +14,7 @@
  */
 declare const __AI_ENABLED__: boolean;
 declare const __AI_ENDPOINT__: string;
+declare const __TURNSTILE_SITE_KEY__: string;
 
 type Code = 'cancelled' | 'rate_limited' | 'invalid_json' | 'unavailable' | 'prompt_too_large' | 'refused' | 'empty_completion' | 'image_rejected' | 'declined' | 'no_gesture' | 'busy' | 'upstream_error' | string;
 class CapError extends Error {
@@ -122,12 +123,61 @@ async function imageOf(b: Blob) {
   return { media_type: b.type, data: btoa(bin) };
 }
 
+/* ---------------- Turnstile (optional bot check for the AI proxy) ----------------
+ * Loaded only when AI is on and PUBLIC_TURNSTILE_SITE_KEY is set, and only on the first AI
+ * request, so pages without AI use never contact Cloudflare. The widget stays invisible unless
+ * Cloudflare wants an interaction. Tokens are single-use, so each request gets a new one. */
+const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+let turnstileReady: Promise<any> | null = null;
+function loadTurnstile(): Promise<any> {
+  if (!turnstileReady) {
+    turnstileReady = new Promise((resolve, reject) => {
+      const w = window as any;
+      if (w.turnstile) return resolve(w.turnstile);
+      const el = document.createElement('script');
+      el.src = TURNSTILE_SRC; el.async = true;
+      el.onload = () => (w.turnstile ? resolve(w.turnstile) : reject(new Error('turnstile missing')));
+      el.onerror = () => { turnstileReady = null; reject(new Error('turnstile failed to load')); };
+      document.head.appendChild(el);
+    });
+  }
+  return turnstileReady;
+}
+async function turnstileToken(): Promise<string> {
+  const ts = await loadTurnstile();
+  let box = document.getElementById('atlas-turnstile');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'atlas-turnstile';
+    box.setAttribute('role', 'region');
+    box.setAttribute('aria-label', 'Security check');
+    box.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:1000';
+    document.body.appendChild(box);
+  }
+  return new Promise((resolve, reject) => {
+    let id: string | undefined;
+    const done = (fn: () => void) => { fn(); if (id !== undefined) setTimeout(() => { try { ts.remove(id); } catch { /* already gone */ } }, 0); };
+    id = ts.render(box, {
+      sitekey: __TURNSTILE_SITE_KEY__,
+      appearance: 'interaction-only',
+      callback: (token: string) => done(() => resolve(token)),
+      'error-callback': () => done(() => reject(new Error('turnstile error'))),
+      'expired-callback': () => done(() => reject(new Error('turnstile expired'))),
+      'timeout-callback': () => done(() => reject(new Error('turnstile timeout'))),
+    });
+  });
+}
+if (__AI_ENABLED__ && __TURNSTILE_SITE_KEY__ && typeof (window as any).atlasTurnstileToken !== 'function') {
+  (window as any).atlasTurnstileToken = turnstileToken;
+}
+
 async function call(input: unknown, opts: SampleOpts, json: boolean): Promise<{ text: string; truncated: boolean }> {
   const body: Record<string, unknown> = { json, tier: opts.modelTier === 'quick' ? 'quick' : 'default' };
   if (Array.isArray(input)) body.messages = input; else body.prompt = String(input ?? '');
   if (opts.images && opts.images.length) body.images = await Promise.all(opts.images.map(imageOf));
-  // Optional Cloudflare Turnstile (docs/ai-proxy.md): a page that renders the widget can set
-  // window.atlasTurnstileToken = async () => token, and the proxy verifies it when TURNSTILE_SECRET is set.
+  // Optional Cloudflare Turnstile (docs/ai-proxy.md): with PUBLIC_TURNSTILE_SITE_KEY set, the shim
+  // gets a fresh token per request (see turnstileToken below); the proxy verifies it when
+  // TURNSTILE_SECRET is set. A page can also provide window.atlasTurnstileToken itself.
   const ts = (window as any).atlasTurnstileToken;
   if (typeof ts === 'function') { try { body.turnstile = await ts(); } catch { /* proxy will refuse if required */ } }
   let res: Response;
