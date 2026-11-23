@@ -76,3 +76,47 @@ input[type=checkbox],input[type=radio]{flex-shrink:0}
 .draft-note{display:inline-block;font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:3px 10px;margin:0 0 10px}
 .legal h2{margin-top:26px}
 .legal p,.legal li{max-width:72ch}
+
+/* ---------- Phone layout (≤ 640px): diagrams first, text folded (src/scripts/mobile.ts) ---------- */
+@media (max-width: 640px) {
+  /* Diagrams: re-laid-out top to bottom, so they fit the screen instead of scrolling sideways. */
+  .fsvg.mob { min-width: 0 !important; }
+  /* Height reserved by the build-time snapshot, so drawing the phone layout doesn't shift the page. */
+  [data-flow][style*="--mar"] .flowbox { aspect-ratio: var(--mar); }
+  [data-flow][style*="--mar"] .flowbox > svg:not(.mob) { visibility: hidden; }
+  main [data-flow] { margin-left: -6px; margin-right: -6px; }
+  .fwrap { border-radius: 12px; }
+
+  /* Diagram controls: one compact block instead of four rows of buttons. */
+  .fctl { gap: 6px; padding: 8px 10px; }
+  .fctl .b, .fctl .vt button { padding: 6px 10px; font-size: 13px; }
+  .fctl .chips { order: 10; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }
+  .fctl .chips::-webkit-scrollbar { display: none; }
+  .fctl .chips .chip { flex: none; }
+  .fwrap .cap { font-size: 14px; padding: 10px 12px; }
+  .fwrap .info { font-size: 14px; padding: 12px; }
+
+  /* Type: smaller headings and lead so the first diagram is on the first screen. */
+  main h1 { font-size: 24px; line-height: 1.15; }
+  main .lead { font-size: 15px; line-height: 1.5; }
+  main h2 { font-size: 18px; margin-top: 24px; }
+  .card { padding: 14px; }
+
+  /* Folded text sections: the h2 is a toggle, its text blocks are hidden until opened. */
+  .mc-b:not(.mc-show) { display: none !important; }
+  h2.mc-h { margin: 6px 0 0; border-top: 1px solid var(--line); }
+  .mc-t {
+    all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; width: 100%; min-height: 48px; padding: 10px 2px; cursor: pointer; color: inherit;
+  }
+  .mc-t::after {
+    content: ''; flex: none; width: 8px; height: 8px; margin-right: 6px;
+    border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s;
+  }
+  .mc-t[aria-expanded="true"]::after { transform: rotate(-135deg) translate(-2px, -2px); }
+  .mc-t:focus-visible { outline: 2px solid var(--accent, var(--blue)); outline-offset: 2px; border-radius: 6px; }
+  .mc-b.mc-show { animation: mc-in .15s ease-out; }
+}
+@keyframes mc-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .mc-b.mc-show, .mc-t::after { animation: none; transition: none; } }

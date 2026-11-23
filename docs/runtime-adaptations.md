@@ -41,6 +41,7 @@ Each patch has an expected match count. Extraction fails if the source no longer
 | `search-index`, `search-go`, `search-expose-highlight` | Search uses `/search-index.json` | The index holds the same text, extracted from the rendered original by `scripts/build-search-index.mjs`. A result on another page is highlighted after navigating. |
 | `practice-stub`, `practice-expose` | "Practice this page" works from every page | Off the practice page the module was a no-op. It now opens `/practice/` filtered to the page. |
 | `no-auto-resume` | `/` no longer jumps to the last page (decision Q2) | The home page shows a "Continue where you left off" link instead. |
+| `flow-hook` | Calls `window.__atlasFlowHook(Flow)` just before the first diagram is drawn | Lets `src/scripts/mobile.ts` lay diagrams out top to bottom on phones. Does nothing above 640 px. |
 
 ### Wording changes (`scripts/copy-patches.json`, decisions Q3 and Q4)
 

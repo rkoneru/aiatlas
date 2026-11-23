@@ -14,6 +14,7 @@
  */
 import './platform';
 import { enhanceA11y } from './a11y';
+import { flowHook, mobileText } from './mobile';
 import pages from '../generated/boot-pages.json';
 import merged from '../data/redirects.json';
 
@@ -115,6 +116,7 @@ const ATLAS = {
   /** Runs after the runtime: replay handoffs, add the home-page resume link, honour ?q=. */
   after() {
     try { enhanceA11y(); } catch (e) { console.warn('[atlas] a11y', e); }
+    try { mobileText(); } catch (e) { console.warn('[atlas] mobile', e); }
     const q = new URLSearchParams(location.search).get('q');
     if (q && exposed.srOpen) setTimeout(() => exposed.srOpen(q), 0);
     const raw = ss.get(HANDOFF);
@@ -146,6 +148,8 @@ const ATLAS = {
 };
 (window as any).ATLAS = ATLAS;
 // Deferred scripts (boot, then the page runtime) all run before DOMContentLoaded.
+// The runtime calls this right before drawing its first diagram (runtime patch `flow-hook`).
+(window as any).__atlasFlowHook = flowHook;
 document.addEventListener('DOMContentLoaded', () => ATLAS.after());
 
 /* Old shared links (#rag, #rag-math) and hash changes made by the runtime go to the real page. */

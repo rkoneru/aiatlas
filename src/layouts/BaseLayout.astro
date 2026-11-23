@@ -9,6 +9,7 @@ import '@fontsource/jetbrains-mono/600.css';
 import '../styles/site.css';
 import atlasCss from '../styles/atlas.css?raw';
 import nav from '../data/nav.json';
+import { COLLAPSE_INLINE } from '../lib/collapse-inline';
 import bootUrl from '../generated/boot.js?url';
 import { BASE, pageContent, companionHTML, type PageMeta } from '../lib/site';
 import Sidebar from '../components/Sidebar.astro';
@@ -33,6 +34,7 @@ const companions = companionHTML(page.id);
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script is:inline set:html={COLLAPSE_INLINE}></script>
 <title>{title}</title>
 <meta name="description" content={meta.description}>
 <link rel="canonical" href={meta.url}>
@@ -71,6 +73,7 @@ const companions = companionHTML(page.id);
 <main id="main" tabindex="-1">
 <Fragment set:html={nav.shell.coursebar} />
 <section id={page.id} style={`--accent:var(--${page.accent})`}><Fragment set:html={content} /></section>
+<script is:inline>window.__atlasMC&&__atlasMC(document.querySelector('main>section'))</script>
 <Footer />
 </main>
 </div>

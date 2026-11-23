@@ -2016,6 +2016,7 @@ const PDE=[['Relevance','Does it answer the actual request?'],['Grounding','Are 
 const PDC=['Is the goal clear?','Did I give relevant context?','Did I define the task?','Did I set useful constraints?','Did I specify the output format?','Would an example remove ambiguity?','Can the task be broken into steps?','Should I ask for alternatives, or for questions first?','Do any important parts need verifying?'];
 
 /* ---------- INIT FLOWS ---------- */
+if(typeof window.__atlasFlowHook==='function')window.__atlasFlowHook(Flow);
 const stateOrder=['submitted','working','input-required','completed','failed','canceled'];
 document.querySelectorAll('[data-flow]').forEach(h=>{
   const k=h.dataset.flow;let def=DEFS[k],opts={};

@@ -42,7 +42,7 @@ const finalState = async (ctx, id) => {
 
 const srv = await serve(PORT, DIST, BASE);
 const browser = await chromium.launch();
-let done = 0, skipped = 0, kept = 0;
+let done = 0, skipped = 0, kept = 0, mobileReserved = 0;
 const fallbacks = [];
 const unstable = [];
 const queue = PAGES.slice();
@@ -65,6 +65,26 @@ async function worker() {
     }, p.id);
     await page.close();
     if (rendered == null) throw new Error(`no section on ${p.id}`);
+    // Phones get a vertical diagram layout (src/scripts/mobile.ts). Record each diagram's
+    // height-to-width ratio at phone width, so the page reserves that space before the runtime
+    // draws it (no layout shift). Applied with CSS only below 641px.
+    const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await mctx.addInitScript(INIT);
+    const mp = await mctx.newPage();
+    await mp.goto(`http://localhost:${PORT}${url(p.id)}`, { waitUntil: 'load' });
+    await mp.waitForTimeout(800);
+    const ratios = await mp.evaluate((id) => [...document.querySelectorAll(`main>section#${CSS.escape(id)} [data-flow]`)].map((h) => {
+      const b = h.querySelector('.flowbox');
+      return b && b.querySelector('svg.mob') && b.offsetWidth && b.offsetHeight ? `${b.offsetWidth}/${b.offsetHeight}` : null;
+    }), p.id);
+    await mctx.close();
+    const hosts = rendered.match(/<div data-flow="[^"]*"/g) || [];
+    let withRatios = rendered;
+    if (hosts.length === ratios.length) {
+      let i = 0;
+      withRatios = rendered.replace(/<div data-flow="[^"]*"/g, (m) => { const r = ratios[i++]; return r ? `${m} style="--mar:${r}"` : m; });
+      mobileReserved += ratios.filter(Boolean).length;
+    }
     const before = await finalState(ctx, p.id);
     // pages with timed animations can end differently from load to load: no data-keep, no strict check
     const stable = (await finalState(ctx, p.id)) === before;
@@ -77,7 +97,7 @@ async function worker() {
     // containers with an id that are empty in the original but filled in the snapshot
     const empty = [...original.matchAll(/<(\w+)[^>]*\sid="([^"]+)"[^>]*><\/\1>/g)].map((m) => m[2]);
     const keepIds = empty.filter((id) => new RegExp(`id="${id}"[^>]*>(?!</)`).test(rendered));
-    const write = (ids) => fs.writeFileSync(f, html.slice(0, start) + rewrite(rendered) + '</section>' +
+    const write = (ids) => fs.writeFileSync(f, html.slice(0, start) + rewrite(withRatios) + '</section>' +
       `<template id="atlas-src"${ids.length ? ` data-keep="${ids.join(' ')}"` : ''}>${original}</template>` + html.slice(end + '</section>'.length));
     if (!stable) { write([]); unstable.push(p.id); await ctx.close(); done++; continue; }
     write(keepIds);
@@ -92,4 +112,4 @@ async function worker() {
 await Promise.all([worker(), worker(), worker(), worker()]);
 await browser.close();
 srv.close();
-console.log(`snapshot: ${done} pages rendered into ${path.relative(process.cwd(), DIST)}/${skipped ? ` (${skipped} already done)` : ''}; ${kept} containers keep their snapshot until redrawn${fallbacks.length ? `; plain restore on ${fallbacks.join(', ')}` : ''}${unstable.length ? `; timing-dependent, plain restore: ${unstable.join(', ')}` : ''}`);
+console.log(`snapshot: ${done} pages rendered into ${path.relative(process.cwd(), DIST)}/${skipped ? ` (${skipped} already done)` : ''}; ${kept} containers keep their snapshot until redrawn; ${mobileReserved} diagrams reserve their phone height${fallbacks.length ? `; plain restore on ${fallbacks.join(', ')}` : ''}${unstable.length ? `; timing-dependent, plain restore: ${unstable.join(', ')}` : ''}`);

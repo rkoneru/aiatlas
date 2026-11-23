@@ -145,4 +145,10 @@ export const PATCHES: Patch[] = [
     find: "if(!location.hash){try{const l=localStorage.getItem('atlas-last');if(l)history.replaceState(null,'','#'+l);}catch(e){}}",
     replace: '/* resume: see ATLAS.resumeLink() (decision Q2) */',
   },
+  {
+    id: 'flow-hook',
+    why: 'Lets src/scripts/mobile.ts wrap Flow.prototype.load before the first diagram is drawn, so phones get a vertical layout on first paint. Does nothing at desktop widths.',
+    find: "const stateOrder=['submitted',",
+    replace: "if(typeof window.__atlasFlowHook==='function')window.__atlasFlowHook(Flow);\nconst stateOrder=['submitted',",
+  },
 ];
