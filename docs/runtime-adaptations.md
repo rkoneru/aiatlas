@@ -34,7 +34,7 @@ Each patch has an expected match count. Extraction fails if the source no longer
 | Patch | What changes | Why |
 |---|---|---|
 | `nav-selector`, `nav-active`, `nav-mypages-*` | Nav lookups by `a[href="#id"]` now use `a[data-href="#id"]` | Nav links point to `/id/`. They keep the old `#id` in `data-href`. |
-| `page-count` | `main>section` count → `ATLAS.pageCount()` | "Search across all 98 pages" and Team progress counted sections in the DOM. |
+| `page-count` | `main>section` count → `ATLAS.pageCount()` | "Search across all N pages" and Team progress counted sections in the DOM. |
 | `exists-*` | `$(id)` existence checks → `ATLAS.exists(id)` | Glossary links, wizard links, the changelog review table and the practice page filter listed only pages present in the DOM. |
 | `navlabel-fallback` | `<h1>` lookup → `ATLAS.title(id)` | Labels for pages outside the nav came from that page's `<h1>`. |
 | `group-fallback` | nav group → `ATLAS.group(id)` | The sources box picks references by nav group, and Team mode left the nav (decision 4). |

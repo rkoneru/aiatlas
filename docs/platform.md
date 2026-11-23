@@ -59,5 +59,5 @@ Errors are `Error` objects with `.code` (and `.text` where there is partial outp
 | What | File |
 |---|---|
 | Flag off: capability contract, downloads, voice-over (with a fake `speechSynthesis`), neutral wording | `tests/e2e/platform.spec.ts` |
-| Flag off: no AI controls | Also in `platform.spec.ts`. On all 98 pages the visible buttons must equal the original's with no Claude capabilities at all. Voice-over is the only exception. |
+| Flag off: no AI controls | Also in `platform.spec.ts`. On all 103 pages the visible buttons must equal the original's with no Claude capabilities at all. Voice-over is the only exception. |
 | Flag on (`npm run build:ai-test` → `dist-ai/`), against a mocked `/api/claude` | `tests/e2e/ai.spec.ts`: Ask the Atlas, "Generate with Claude", "Improve with Claude", and the `rate_limited`, `invalid_json`, `cancelled` and `unavailable` paths |

@@ -485,6 +485,12 @@ append_to_section('agent-kit', '''
 rep('<div class="ov-dh"><b>Choose your path</b>', '<div class="ov-dh"><h2 class="ov-dh-t">Choose your path</h2>')
 rep('.ov-dh .muted{font-size:13px}', '.ov-dh .muted{font-size:13px}\n.ov-dh .ov-dh-t{font-size:inherit;margin:0;padding:0;border:0;letter-spacing:0;font-weight:700;color:inherit}')
 
+# Proposal preview: title h3 + section h4 followed the page h1 directly (heading order).
+# Make them h2 + h3 and keep the look with CSS.
+rep("""$('ppPrev').innerHTML=`<h3 style="margin:0 0 8px">${H(d.title)}</h3>`+d.sections.map(([h,ls])=>`<h4>${H(h)}</h4>`""",
+    """$('ppPrev').innerHTML=`<h2 class="pp-t">${H(d.title)}</h2>`+d.sections.map(([h,ls])=>`<h3 class="pp-h">${H(h)}</h3>`""")
+rep('.pp-prev h4{margin:14px 0 4px}', '.pp-prev h4{margin:14px 0 4px}\n.pp-prev h2.pp-t{margin:0 0 8px;padding:0;border:0;font-size:16px;line-height:1.55;letter-spacing:normal}\n.pp-prev h3.pp-h{margin:14px 0 4px;font:700 11.5px Inter;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}')
+
 # ---------------------------------------------------------------- data
 # References for the "Sources & review" box
 rep(" dun:['Dunlosky et al.", " swe:['SWE-bench','https://www.swebench.com/'],agentsmd:['AGENTS.md','https://agents.md/'],osworld:['OSWorld benchmark','https://os-world.github.io/'],tau:['Yao et al., τ-bench (2024)','https://arxiv.org/abs/2406.12045'],metr:['METR, Measuring AI ability to complete long tasks (2025)','https://arxiv.org/abs/2503.14499'],tts:['Snell et al., Scaling LLM test-time compute (2024)','https://arxiv.org/abs/2408.03314'],r1:['DeepSeek-R1: reasoning via reinforcement learning (2025)','https://arxiv.org/abs/2501.12948'],iea:['IEA, Energy and AI (2025)','https://www.iea.org/reports/energy-and-ai'],wimse:['IETF WIMSE AI agent identity draft','https://datatracker.ietf.org/doc/html/draft-ietf-wimse-aims'],\n dun:['Dunlosky et al.")

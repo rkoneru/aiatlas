@@ -42,5 +42,5 @@ Set `PUBLIC_SITE_URL` (for example `https://atlas.example.com`) when building. O
 
 | What | File |
 |---|---|
-| Titles, descriptions (40–155 characters), canonical, OG/Twitter, noindex, JSON-LD and `dateModified` on all 98 pages; image size; sitemap; robots; `?q=`; the 404 page | `tests/e2e/seo.spec.ts` |
+| Titles, descriptions (40–155 characters), canonical, OG/Twitter, noindex, JSON-LD and `dateModified` on all 103 pages; image size; sitemap; robots; `?q=`; the 404 page | `tests/e2e/seo.spec.ts` |
 | The same with the `/aiatlas/` base path | `tests/e2e/gh-pages.spec.ts` |

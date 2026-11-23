@@ -454,6 +454,8 @@ mark.srch-flash{background:color-mix(in srgb,var(--amber) 45%,transparent);color
 @media(max-width:700px){.ask-fab{right:12px;bottom:12px}.ask-panel{right:6px;bottom:6px;height:calc(100vh - 20px)}.sl-bar .b{padding:5px 8px;font-size:12px}}
 /* release 14 */
 .pp-grid{grid-template-columns:minmax(300px,1fr) minmax(360px,1.3fr);align-items:start}.pp-prev{max-height:900px;overflow:auto}.pp-prev ul{padding-left:18px;margin:4px 0}.pp-prev h4{margin:14px 0 4px}
+.pp-prev h2.pp-t{margin:0 0 8px;padding:0;border:0;font-size:16px;line-height:1.55;letter-spacing:normal}
+.pp-prev h3.pp-h{margin:14px 0 4px;font:700 11.5px Inter;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 .fde-f select{width:100%;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--panel);color:var(--ink)}
 .pp-arch{margin-top:8px}
 .ev-gen{display:flex;gap:8px;margin-top:10px;align-items:flex-end}.ev-gen textarea,.pb-d textarea,#pbTxt,.fde-ai textarea{flex:1;width:100%;box-sizing:border-box;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--panel);color:var(--ink);resize:vertical}
@@ -9525,7 +9527,7 @@ MY.forEach(p=>{try{injectPage(p,true);}catch(e){}});
    ...(P.price?[['Commercials',[P.price]]]:[]),
    ['Next steps',['Confirm scope and sponsor','Schedule discovery workshops','Grant data and system access','Agree the success plan and pass bar']]]};}
  const fmt=s=>H(s).replace(/_(.+?)_/g,'<i>$1</i>');
- function render(){sv(K,P);const d=doc();$('ppPrev').innerHTML=`<h3 style="margin:0 0 8px">${H(d.title)}</h3>`+d.sections.map(([h,ls])=>`<h4>${H(h)}</h4>`+(ls.length>1?`<ul>${ls.map(l=>`<li>${fmt(l)}</li>`).join('')}</ul>`:`<p>${fmt(ls[0]||'')}</p>`)).join('');}
+ function render(){sv(K,P);const d=doc();$('ppPrev').innerHTML=`<h2 class="pp-t">${H(d.title)}</h2>`+d.sections.map(([h,ls])=>`<h3 class="pp-h">${H(h)}</h3>`+(ls.length>1?`<ul>${ls.map(l=>`<li>${fmt(l)}</li>`).join('')}</ul>`:`<p>${fmt(ls[0]||'')}</p>`)).join('');}
  $('ppForm').addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;P[k]=e.target.value;if(k==='ind'||k==='arch'){if(k==='ind')P.sum='';drawArch();}if(k==='uc'||k==='cust')P.sum='';render();});
  $('ppForm').addEventListener('change',e=>{const k=e.target.dataset.k;if(k==='ind'||k==='arch'){P[k]=e.target.value;drawArch();render();}});
  const md=()=>{const d=doc();return `# ${d.title}\n\n_Prepared ${new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'})}_\n\n`+d.sections.map(([h,ls])=>`## ${h}\n\n${ls.length>1?ls.map(l=>'- '+l).join('\n'):ls[0]}`).join('\n\n')+'\n';};

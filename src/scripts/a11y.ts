@@ -62,7 +62,8 @@ function nameControls(root: ParentNode) {
 const FOCUSABLE = 'a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"]),summary';
 function scrollRegions(root: ParentNode) {
   root.querySelectorAll<HTMLElement>('*').forEach((el) => {
-    if (el.hasAttribute('tabindex') || el.closest('svg')) return;
+    // Form controls scroll on their own and are already focusable; they can't take role=region.
+    if (el.hasAttribute('tabindex') || el.closest('svg') || el.matches('textarea,select,input,button')) return;
     const cs = getComputedStyle(el);
     const sx = /auto|scroll/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 1;
     const sy = /auto|scroll/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1;

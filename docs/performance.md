@@ -26,20 +26,22 @@ Gzipped. See `src/generated/runtime/report.json` after a build.
 
 | | Before | After |
 |---|---|---|
-| Runtime | 403 KB on every page (the whole Atlas) | 107–145 KB (median 109 KB), only that page's code |
-| Boot + platform shim | — | 6.5 KB, every page |
+| Runtime | 400 KB on every page (the whole Atlas) | 88–127 KB (median 90 KB), only that page's code |
+| Boot + platform shim + accessibility enhancer | — | 8.4 KB, every page |
 | Infographic studio | (in the runtime) | 11 KB, loaded on first click of an Infographic button |
 
-Totals, boot included:
+Totals, boot included (103 pages, after the v23 update):
 
 | Page | Total JS (gzipped) | Budget (150 KB) |
 |---|---|---|
-| Content pages (`/rag/`, `/cx-metrics/`, …) | 113–120 KB | Under |
-| `/proposal/` | about 151.5 KB (145 KB runtime) | **Over by about 1.5 KB** |
-| `/industry/` | 144.5 KB (138 KB runtime) | Under |
-| `/ai-board/` | 139.5 KB (133 KB runtime) | Under |
+| Content pages (`/`, `/rag/`, `/cx-metrics/`, …) | 96–102 KB | Under |
+| `/proposal/` | 135 KB (126.5 KB runtime) | Under |
+| `/industry/` | 127 KB (118.7 KB runtime) | Under |
+| `/ai-board/` | 122 KB (113.7 KB runtime) | Under |
 
-`/proposal/` is over because it carries the CAIO tools and the decision wizard as companions. Moving those to data modules would bring it under.
+Every page is now under budget. `/proposal/` was about 1.5 KB over until two pruning steps were added in v23:
+- the release log ships only on `/changes/`;
+- data built with the `Q()` diagram helper is tree-shaken when nothing reads it.
 
 ## How
 
@@ -47,11 +49,12 @@ Totals, boot included:
 
 Each page's runtime is the full runtime minus code that the original would skip on that page, then tree-shaken. Statements keep their original order. Removed:
 
+- **The release log:** `CHANGES` is emptied on every page except `/changes/`, the only place it's rendered.
 - **Other pages' code:** code guarded by another page's element (`if(document.getElementById('x'))…`, or `if(!$('x')…)return` at the top of an IIFE, after side-effect-free declarations).
 - **Off-page fallbacks:** `const X=(()=>{if(!$('x'))return {stub};…})()` becomes `const X={stub}` when `#x` is absent.
 - **Unused diagrams:** `DEFS.key=…` definitions not used by the page's `data-flow` hosts or remaining code, plus per-page formula entries (`FM`) for absent pages.
 - **Other pages' branches:** checks on the current page (`ATLAS.page==='x'`, `ATLAS.hash()==='#x'`) are folded, and the dead branches dropped.
-- **Unreferenced declarations:** at top level and inside IIFEs, when their initializer has no side effects.
+- **Unreferenced declarations:** at top level and inside IIFEs, when their initializer has no side effects. Calls to the diagram builders `N()`, `E()` and `Q()` count as side-effect free; `Q()` only while the runtime still defines it as the one-line wrapper around `N()`.
 
 Minification is whitespace plus syntax only. Identifiers are not renamed, because the diagram exporter serializes `Flow`, `sv`, `esc` and others with `toString()`.
 

@@ -49,7 +49,7 @@ test('JS-built #links navigate to real pages (paths "Start")', async ({ page }) 
   await expect(page).toHaveURL(/\/ml-basics\/$/);
   await expect(page.locator('.pa-top')).toContainText('2 of');
   await page.goto('/paths/');
-  await expect(page.locator('.pa-door').filter({ hasText: 'Learner' })).toContainText('2/11 done');
+  await expect(page.locator('.pa-door').filter({ hasText: 'Learner' })).toContainText('2/12 done');
   expect(errors).toEqual([]);
 });
 

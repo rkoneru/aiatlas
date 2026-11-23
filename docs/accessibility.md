@@ -2,7 +2,7 @@
 
 ## Result
 
-axe-core (WCAG 2.0/2.1/2.2 A and AA rules) on all 98 pages and the 404 page, in light and dark mode: **0 violations of any impact**.
+axe-core (WCAG 2.0/2.1/2.2 A and AA rules) on all 103 pages and the 404 page, in light and dark mode: **0 violations of any impact**.
 
 - **How it's run:** with the page as first loaded. `tests/e2e/a11y.spec.ts` fails on any serious or critical violation.
 - **Starting point (light mode):** 1,418 colour-contrast nodes, 617 diagram boxes whose accessible name missed their visible text, 325 unlabelled inputs and selects, 101 focusable diagram boxes inside an `img`, plus a handful of scroll-region, tab-role and target-size issues.
@@ -57,6 +57,14 @@ It runs after the runtime, and again when the runtime redraws. It only adds thin
 ### Layout
 
 There's a "Skip to content" link on every page, and `<main id="main" tabindex="-1">`.
+
+### Heading order (v23)
+
+Lighthouse also flags heading levels that skip (a best-practice rule outside axe's WCAG set). Two pages did, and both are fixed in `source/atlas.html`:
+- **Home:** "Choose your path" is now an h2, so the path cards' h3 headings follow it. It's styled to look as before.
+- **Proposal builder:** the preview's title is an h2 and its section headings are h3, instead of h3 and h4. The computed styles are unchanged.
+
+The scroll-region enhancer no longer adds `role="region"` to form controls such as a scrolling `<textarea>`, which Lighthouse reported as a disallowed role.
 
 ## Not covered by automated checks
 
