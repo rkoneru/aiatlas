@@ -50,3 +50,20 @@ test('JS-built links, search index and handoffs work under the base path', async
   await expect(page.locator('.atlas-resume a')).toHaveAttribute('href', `${B}practice/`);
   expect(errors).toEqual([]);
 });
+
+test('SEO URLs, sitemap, robots and 404 include the base path', async ({ page, request }) => {
+  const html = await (await request.get('rag/')).text();
+  expect(html).toContain(`<link rel="canonical" href="https://example.com${B}rag/">`);
+  expect(html).toContain(`<meta property="og:image" content="https://example.com${B}og/rag.jpg">`);
+  expect((await request.get('og/rag.jpg')).status()).toBe(200);
+  const xml = await (await request.get('sitemap.xml')).text();
+  expect(xml).toContain(`<loc>https://example.com${B}cx-metrics/</loc>`);
+  expect(await (await request.get('robots.txt')).text()).toContain(`Sitemap: https://example.com${B}sitemap.xml`);
+  const res = await page.goto('no-such-page/');
+  expect(res!.status()).toBe(404);
+  await expect(page.locator('h1')).toHaveText('Page not found');
+  await page.locator('#nf-q').fill('owasp');
+  await page.locator('.nf-form button').click();
+  await expect(page).toHaveURL(new RegExp(`${B}\\?q=owasp$`));
+  await expect(page.locator('.srch-hit').first()).toBeVisible();
+});

@@ -104,9 +104,9 @@ export const PATCHES: Patch[] = [
   },
   {
     id: 'search-expose-highlight',
-    why: 'Lets the target page run the search highlight handed over by search-go.',
+    why: 'Lets the target page run the search highlight handed over by search-go, and lets /?q=term open the search (the site\'s SearchAction and the 404 page use it).',
     find: " function open(q){m.hidden=false;IDX=null;",
-    replace: " ATLAS.expose('srHighlight',(id,q)=>setTimeout(()=>highlight(id,q),120));\n function open(q){m.hidden=false;IDX=null;",
+    replace: " ATLAS.expose('srHighlight',(id,q)=>setTimeout(()=>highlight(id,q),120));ATLAS.expose('srOpen',q=>open(q));\n function open(q){m.hidden=false;IDX=null;",
   },
 
   /* ---- "Practice this page" from any page ---- */

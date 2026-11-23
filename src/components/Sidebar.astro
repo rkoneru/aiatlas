@@ -1,0 +1,29 @@
+---
+// Sidebar: brand, page filter, nav (pins + groups). Shared by every page and the 404 page.
+import nav from '../data/nav.json';
+import { BASE, pageUrl } from '../lib/site';
+// Sidebar logo: the AI Atlas tile (scripts/build-brand.mjs) in place of the source's "A".
+const LOGO_SRC = '<div class="logo">A</div>';
+if (!nav.shell.brand.includes(LOGO_SRC)) throw new Error('sidebar logo markup changed in the source');
+const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo"><img src="${BASE}logo-tile.png" width="34" height="34" alt="" decoding="async"></div>`);
+---
+<aside>
+  <Fragment set:html={brand} />
+  <Fragment set:html={nav.shell.navtools} />
+  <nav id="nav">
+  <div class="navpins">
+    {nav.pins.map((p) => (
+      <a href={pageUrl(p.id)} data-href={`#${p.id}`} class="pin" style={`--c:var(--${p.color})`} title={p.title} data-label={p.dataLabel}><Fragment set:html={p.label} /></a>
+    ))}
+  </div>
+  <ul class="tree">
+    {nav.groups.map((g) => (
+      <li class="grp"><details><summary><span class="gname"><Fragment set:html={g.name} /></span><span class="cnt"></span><span class="chev">›</span></summary><ul>
+        {g.items.filter((it: any) => !it.hidden).map((it) => (
+          <li><a href={pageUrl(it.id)} data-href={`#${it.id}`} style={`--c:var(--${it.color})`} title={it.title}><i></i><Fragment set:html={it.label} /></a></li>
+        ))}
+      </ul></details></li>
+    ))}
+  </ul></nav>
+  <Fragment set:html={nav.shell.navfoot} />
+</aside>

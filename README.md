@@ -48,5 +48,6 @@ Differences from Cloudflare Pages:
 | [`docs/inventory-findings.md`](docs/inventory-findings.md) | What blocked a clean split, and how each blocker is handled. |
 | [`docs/decisions.md`](docs/decisions.md) | Decisions made so far. |
 | [`docs/runtime-adaptations.md`](docs/runtime-adaptations.md) | How the original runtime works on one URL per page. |
+| [`docs/seo.md`](docs/seo.md) | Titles, descriptions, share images, JSON-LD, sitemap, 404. |
 | [`docs/performance.md`](docs/performance.md) | Per-page runtimes, snapshot, Lighthouse results. |
 | [`docs/platform.md`](docs/platform.md) | The `window.claude.use()` shim: downloads, voice-over, AI, Team mode. |

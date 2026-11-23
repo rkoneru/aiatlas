@@ -111,8 +111,10 @@ const ATLAS = {
     return live.map(mapLive);
   },
 
-  /** Runs after the runtime: replay handoffs, add the home-page resume link. */
+  /** Runs after the runtime: replay handoffs, add the home-page resume link, honour ?q=. */
   after() {
+    const q = new URLSearchParams(location.search).get('q');
+    if (q && exposed.srOpen) setTimeout(() => exposed.srOpen(q), 0);
     const raw = ss.get(HANDOFF);
     if (raw) {
       ss.del(HANDOFF);

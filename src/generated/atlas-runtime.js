@@ -5758,7 +5758,7 @@ const SR_UI=(()=>{const m=document.createElement('div');m.className='srch';m.hid
  function highlight(id,q){const s=$(id);if(!s||!q)return;const ql=q.toLowerCase();const w=document.createTreeWalker(s,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('svg,script,style,.ptools,[hidden]:not(section),select,option')?NodeFilter.FILTER_REJECT:n.nodeValue.toLowerCase().includes(ql)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP});
    const n=w.nextNode();if(!n)return;const i=n.nodeValue.toLowerCase().indexOf(ql);const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+q.length);const mk=document.createElement('mark');mk.className='srch-flash';try{r.surroundContents(mk);}catch(e){return;}
    mk.scrollIntoView({block:'center',behavior:'smooth'});setTimeout(()=>{const p=mk.parentNode;if(!p)return;while(mk.firstChild)p.insertBefore(mk.firstChild,mk);p.removeChild(mk);p.normalize();},4000);}
- ATLAS.expose('srHighlight',(id,q)=>setTimeout(()=>highlight(id,q),120));
+ ATLAS.expose('srHighlight',(id,q)=>setTimeout(()=>highlight(id,q),120));ATLAS.expose('srOpen',q=>open(q));
  function open(q){m.hidden=false;IDX=null;inp.value=q||'';run();inp.focus();inp.select();}
  function close(){m.hidden=true;}
  inp.addEventListener('input',run);inp.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!hits.length)return;sel=(sel+(e.key==='ArrowDown'?1:hits.length-1))%hits.length;res.querySelectorAll('.srch-hit').forEach((b,i)=>b.classList.toggle('on',i===sel));res.children[sel].scrollIntoView({block:'nearest'});}else if(e.key==='Enter'){e.preventDefault();go(sel);}else if(e.key==='Escape'){close();}});

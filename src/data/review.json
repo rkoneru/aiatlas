@@ -1,0 +1,120 @@
+{
+ "fde-observability": {
+  "date": "2026-11-21",
+  "items": [
+   "OpenTelemetry GenAI conventions: repository, status and attribute names"
+  ]
+ },
+ "cx-arch": {
+  "date": "2026-11-21",
+  "items": [
+   "Channel compliance rules (TCPA, PCI DSS, AI disclosure)"
+  ]
+ },
+ "build-agent": {
+  "date": "2026-11-21",
+  "items": [
+   "Claude app features and menu paths"
+  ]
+ },
+ "mcp-protocol": {
+  "date": "2026-11-21",
+  "items": [
+   "MCP spec revision, transports, deprecations",
+   "MCP transport and auth spec"
+  ]
+ },
+ "agent-swarms": {
+  "date": "2026-11-21",
+  "items": [
+   "Multi-agent frameworks and their status"
+  ]
+ },
+ "ai-compliance": {
+  "date": "2026-11-20",
+  "items": [
+   "EU AI Act dates, US state AI laws, NIST/ISO standards",
+   "Regulatory references"
+  ]
+ },
+ "industry": {
+  "date": "2026-11-20",
+  "items": [
+   "Industry regulations (GLBA, NAIC bulletin, HIPAA, TCPA, PCI DSS)"
+  ]
+ },
+ "mcp": {
+  "date": "2026-11-21",
+  "items": [
+   "MCP spec version and primitives"
+  ]
+ },
+ "a2a": {
+  "date": "2026-11-20",
+  "items": [
+   "A2A protocol version and task states"
+  ]
+ },
+ "agent-payments": {
+  "date": "2026-11-20",
+  "items": [
+   "Agent payment protocols (AP2, ACP and others)"
+  ]
+ },
+ "model-selection": {
+  "date": "2026-11-20",
+  "items": [
+   "Model tiers and named models",
+   "Vendors and pricing patterns"
+  ]
+ },
+ "llm-types": {
+  "date": "2026-11-20",
+  "items": [
+   "Model families"
+  ]
+ },
+ "optimization": {
+  "date": "2026-11-20",
+  "items": [
+   "Inference servers and hardware"
+  ]
+ },
+ "roadmaps": {
+  "date": "2026-11-20",
+  "items": [
+   "Roles and market",
+   "Learning resources"
+  ]
+ },
+ "ai-landscape": {
+  "date": "2026-11-20",
+  "items": [
+   "Landscape and named products"
+  ]
+ },
+ "agent-kit": {
+  "date": "2026-11-20",
+  "items": [
+   "Agent frameworks and SDKs"
+  ]
+ },
+ "ai-security": {
+  "date": "2026-11-20",
+  "items": [
+   "OWASP LLM Top 10, threat frameworks"
+  ]
+ },
+ "caio": {
+  "date": "2026-11-20",
+  "items": [
+   "CAIO mandates and federal guidance"
+  ]
+ },
+ "voice": {
+  "date": "2026-11-20",
+  "items": [
+   "Voice models and latency figures"
+  ]
+ }
+}

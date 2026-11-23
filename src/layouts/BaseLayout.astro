@@ -10,22 +10,21 @@ import '../styles/site.css';
 import atlasCss from '../styles/atlas.css?raw';
 import nav from '../data/nav.json';
 import bootUrl from '../generated/boot.js?url';
-import { BASE, pageUrl, pageContent, companionHTML, type PageMeta } from '../lib/site';
+import { BASE, pageContent, companionHTML, type PageMeta } from '../lib/site';
+import Sidebar from '../components/Sidebar.astro';
+import { seo, SITE_NAME } from '../lib/seo';
 // Per-page runtimes built by scripts/build-runtime.ts (Phase 3); the infographic studio loads on demand.
 const RUNTIMES = import.meta.glob('../generated/runtime/*.js', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 
 interface Props { page: PageMeta }
 const { page } = Astro.props;
-const title = page.id === 'overview' ? 'AI Architecture Atlas' : `${page.navLabel || page.title} · AI Architecture Atlas`;
+const meta = seo(page);
+const title = meta.title;
 const runtimeUrl = RUNTIMES[`../generated/runtime/${page.id}.js`];
 const infographicUrl = RUNTIMES['../generated/runtime/infographic.js'];
 if (!runtimeUrl || !infographicUrl) throw new Error(`no runtime for ${page.id}: run scripts/build-runtime.ts`);
 const content = pageContent(page.id);
 const companions = companionHTML(page.id);
-// Sidebar logo: the AI Atlas tile (scripts/build-brand.mjs) in place of the source's "A".
-const LOGO_SRC = '<div class="logo">A</div>';
-if (!nav.shell.brand.includes(LOGO_SRC)) throw new Error('sidebar logo markup changed in the source');
-const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo"><img src="${BASE}logo-tile.png" width="34" height="34" alt="" decoding="async"></div>`);
 ---
 <!DOCTYPE html>
 <html lang="en" data-page={page.id} data-base={BASE} data-ig={infographicUrl}>
@@ -33,6 +32,25 @@ const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo"><img src="${B
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title>
+<meta name="description" content={meta.description}>
+<link rel="canonical" href={meta.url}>
+{meta.noindex && <meta name="robots" content="noindex">}
+<meta property="og:type" content={meta.ogType}>
+<meta property="og:site_name" content={SITE_NAME}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={meta.description}>
+<meta property="og:url" content={meta.url}>
+<meta property="og:image" content={meta.image}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content={`${title}`}>
+<meta property="og:locale" content="en">
+{meta.modified && <meta property="article:modified_time" content={meta.modified}>}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={meta.description}>
+<meta name="twitter:image" content={meta.image}>
+{meta.jsonLd.map((j) => <script is:inline type="application/ld+json" set:html={JSON.stringify(j).replace(/</g, '\\u003c')} />)}
 <link rel="icon" href={`${BASE}favicon.ico`} sizes="48x48">
 <link rel="icon" href={`${BASE}favicon-32.png`} type="image/png" sizes="32x32">
 <link rel="icon" href={`${BASE}favicon-128.png`} type="image/png" sizes="128x128">
@@ -44,26 +62,7 @@ const brand = nav.shell.brand.replace(LOGO_SRC, `<div class="logo"><img src="${B
 </head>
 <body>
 <div class="app">
-<aside>
-  <Fragment set:html={brand} />
-  <Fragment set:html={nav.shell.navtools} />
-  <nav id="nav">
-  <div class="navpins">
-    {nav.pins.map((p) => (
-      <a href={pageUrl(p.id)} data-href={`#${p.id}`} class="pin" style={`--c:var(--${p.color})`} title={p.title} data-label={p.dataLabel}><Fragment set:html={p.label} /></a>
-    ))}
-  </div>
-  <ul class="tree">
-    {nav.groups.map((g) => (
-      <li class="grp"><details><summary><span class="gname"><Fragment set:html={g.name} /></span><span class="cnt"></span><span class="chev">›</span></summary><ul>
-        {g.items.filter((it: any) => !it.hidden).map((it) => (
-          <li><a href={pageUrl(it.id)} data-href={`#${it.id}`} style={`--c:var(--${it.color})`} title={it.title}><i></i><Fragment set:html={it.label} /></a></li>
-        ))}
-      </ul></details></li>
-    ))}
-  </ul></nav>
-  <Fragment set:html={nav.shell.navfoot} />
-</aside>
+<Sidebar />
 
 <main>
 <Fragment set:html={nav.shell.coursebar} />
