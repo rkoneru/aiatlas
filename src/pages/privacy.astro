@@ -1,0 +1,42 @@
+---
+// DRAFT for review — TODO(Rakesh): review every section; set the contact address in src/data/site.json;
+// confirm the hosting provider and whether analytics and AI features are on; then remove "privacy"
+// from draftPages in src/data/site.json (this un-hides the page from search engines and adds it to the sitemap).
+import SimpleLayout from '../layouts/SimpleLayout.astro';
+import { BASE, CONTACT_EMAIL, SITE_CONFIG } from '../lib/site';
+const draft = SITE_CONFIG.draftPages.includes('privacy');
+const analytics = !!import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const ai = String(import.meta.env.PUBLIC_AI_ENABLED || '').toLowerCase() === 'true';
+---
+<SimpleLayout id="privacy" title="Privacy" description="What the AI Architecture Atlas stores, where, and what it never collects." noindex={draft} canonicalPath={`${BASE}privacy/`}>
+  <div class="legal">
+  {draft && <p class="draft-note">Draft, under review</p>}
+  <span class="kicker">Site</span>
+  <h1>Privacy</h1>
+  <p class="lead">The Atlas is a learning site. It has no accounts, sets no cookies and does not sell or share data. This page explains what little is processed and where.</p>
+
+  <h2>Analytics</h2>
+  <p>{analytics ? 'The site counts visits with Plausible Analytics.' : 'If analytics are turned on, the site counts visits with Plausible Analytics.'} Plausible sets no cookies and collects no personal data: it records the page, the referring site, the browser, the device type and the country, without storing IP addresses or identifying you across sites or days. See <a href="https://plausible.io/data-policy" rel="noopener" target="_blank">Plausible's data policy</a>.</p>
+
+  <h2>Your progress stays in your browser</h2>
+  <p>Course progress, quiz and flashcard history, bookmarks, the last page you visited, your inputs in calculators and builders, saved custom pages and voice-over settings are kept in your browser's <code>localStorage</code> under keys that start with <code>atlas-</code>. They never leave your device. To remove them, clear this site's data in your browser settings.</p>
+
+  <h2>Hosting</h2>
+  <p>The site is static files served by a hosting provider. Like any web server, the provider may keep short-lived technical logs (such as IP address and requested page) for security and reliability. {/* TODO(Rakesh): name the host (GitHub Pages / Cloudflare Pages) and link its privacy statement. */}The site itself does not read or keep these logs.</p>
+
+  <h2>Fonts, scripts and exports</h2>
+  <p>Fonts and scripts are served from this site; no third-party font or CDN requests are made. Downloads you create (diagrams, slides, proposals, infographics) are generated in your browser and saved directly to your device.</p>
+
+  <h2>Voice-over</h2>
+  <p>Diagram voice-over uses your browser's built-in speech synthesis. Some browsers use online voices that send the text being read to the browser vendor's speech service. The text is the diagram's own step descriptions, not anything you type.</p>
+
+  <h2>AI features</h2>
+  {ai
+    ? <p>When you use an AI feature (for example, Ask the Atlas), your prompt and the relevant page text are sent through this site's server to Anthropic's API to generate the answer. The site does not store prompts or answers; it keeps only request counts for rate limiting. Anthropic processes the request under its <a href="https://www.anthropic.com/legal/commercial-terms" rel="noopener" target="_blank">commercial terms</a> and <a href="https://www.anthropic.com/legal/privacy" rel="noopener" target="_blank">privacy policy</a>.</p>
+    : <p>AI features are turned off on this site. If they are turned on later, prompts will be sent through this site's server to Anthropic's API to generate answers; the site will not store prompts or answers, only request counts for rate limiting. This page will say so when that happens.</p>}
+
+  <h2>Contact</h2>
+  <p>Questions about this page: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+  <p class="muted">Last updated: {/* TODO(Rakesh): date of approval */}draft.</p>
+  </div>
+</SimpleLayout>

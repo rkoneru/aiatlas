@@ -1,43 +1,16 @@
 ---
 // 404: suggests a search and the pages closest to the requested path. No Atlas runtime here;
 // "Search" hands the query to the site search on the home page (/?q=…).
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/600.css';
-import '@fontsource/inter/700.css';
-import '@fontsource/inter/800.css';
-import '../styles/site.css';
-import atlasCss from '../styles/atlas.css?raw';
-import Sidebar from '../components/Sidebar.astro';
+import SimpleLayout from '../layouts/SimpleLayout.astro';
 import { BASE, PAGES, MERGED, pageUrl } from '../lib/site';
-import { SITE_NAME } from '../lib/seo';
 
 const list = PAGES.filter((p) => p.inNav || p.id === 'overview').map((p) => ({ id: p.id, t: p.navLabel || p.title, u: pageUrl(p.id) }));
 const merged = Object.fromEntries(Object.entries(MERGED).map(([o, n]) => [o, `${pageUrl(n)}#${o}`]));
 const quick = ['overview', 'paths', 'glossary', 'course'].map((id) => PAGES.find((p) => p.id === id)!).map((p) => ({ u: pageUrl(p.id), t: p.navLabel || p.title }));
 ---
-<!DOCTYPE html>
-<html lang="en" data-base={BASE}>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Page not found · {SITE_NAME}</title>
-<meta name="robots" content="noindex">
-<link rel="icon" href={`${BASE}favicon.ico`} sizes="48x48">
-<link rel="icon" href={`${BASE}favicon-32.png`} type="image/png" sizes="32x32">
-<style is:inline data-atlas set:html={atlasCss}></style>
-<style>
-  .nf-form{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 8px}
-  .nf-form input{flex:1;min-width:220px;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line,#ccd);background:var(--card,#fff);color:inherit}
-  .nf-list{margin:6px 0 0;padding-left:20px}
-  .nf-list li{margin:4px 0}
-</style>
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
-<div class="app">
-<Sidebar />
-<main id="main" tabindex="-1">
-<section id="notfound" style="--accent:var(--blue)">
+<SimpleLayout id="notfound" title="Page not found" description="There is no page at this address in the AI Architecture Atlas." noindex>
+
+
   <span class="kicker">404</span>
   <h1>Page not found</h1>
   <p class="lead">There's no page at this address. Pages may have moved when the Atlas became one page per address. Search for what you were looking for, or try one of the pages below.</p>
@@ -48,10 +21,8 @@ const quick = ['overview', 'paths', 'glossary', 'course'].map((id) => PAGES.find
   </form>
   <div class="card" id="nf-sugg" hidden><h3>Closest pages to this address</h3><ul class="nf-list"></ul></div>
   <div class="card"><h3>Start here</h3><ul class="nf-list">{quick.map((q) => <li><a href={q.u}>{q.t}</a></li>)}</ul></div>
-</section>
-</main>
-</div>
-<script is:inline define:vars={{ list, merged, base: BASE }}>
+
+<script slot="scripts" is:inline define:vars={{ list, merged, base: BASE }}>
 (function () {
   var path = decodeURIComponent(location.pathname.slice(base.length)).toLowerCase();
   var words = path.split(/[^a-z0-9]+/).filter(Boolean);
@@ -74,5 +45,4 @@ const quick = ['overview', 'paths', 'glossary', 'course'].map((id) => PAGES.find
   box.hidden = false;
 })();
 </script>
-</body>
-</html>
+</SimpleLayout>

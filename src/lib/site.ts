@@ -4,6 +4,11 @@ import { parse } from 'node-html-parser';
 import pagesData from '../data/pages.json';
 import merged from '../data/redirects.json';
 import companions from '../data/companions.json';
+import siteConfig from '../data/site.json';
+
+/** Contact address: PUBLIC_CONTACT_EMAIL, else src/data/site.json (placeholder CONTACT_EMAIL until set). */
+export const CONTACT_EMAIL: string = import.meta.env.PUBLIC_CONTACT_EMAIL || siteConfig.contactEmail;
+export const SITE_CONFIG = siteConfig;
 
 export type PageMeta = (typeof pagesData)[number];
 export const PAGES: PageMeta[] = pagesData;
@@ -31,7 +36,7 @@ export function rewriteLinks(html: string): string {
 }
 
 export function pageContent(id: string): string {
-  return rewriteLinks(rawContent(id));
+  return rewriteLinks(rawContent(id)).replaceAll('mailto:CONTACT_EMAIL', `mailto:${CONTACT_EMAIL}`);
 }
 
 /** Hidden, inert fragments a page's runtime needs from other pages (src/data/companions.json). */

@@ -1,0 +1,56 @@
+---
+// Layout for site pages that are not Atlas pages (404, privacy, terms): sidebar, one section,
+// footer. No Atlas runtime.
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/800.css';
+import '../styles/site.css';
+import atlasCss from '../styles/atlas.css?raw';
+import Sidebar from '../components/Sidebar.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import { BASE } from '../lib/site';
+import { SITE_NAME, absolute } from '../lib/seo';
+
+interface Props { id: string; title: string; description: string; noindex?: boolean; canonicalPath?: string }
+const { id, title, description, noindex = false, canonicalPath } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en" data-base={BASE}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{title} · {SITE_NAME}</title>
+<meta name="description" content={description}>
+{canonicalPath && <link rel="canonical" href={absolute(canonicalPath)}>}
+{noindex && <meta name="robots" content="noindex">}
+<link rel="icon" href={`${BASE}favicon.ico`} sizes="48x48">
+<link rel="icon" href={`${BASE}favicon-32.png`} type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href={`${BASE}apple-touch-icon.png`}>
+<meta name="theme-color" content="#0b1f4d">
+<style is:inline data-atlas set:html={atlasCss}></style>
+<slot name="head" />
+<Analytics />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+<Sidebar />
+<main id="main" tabindex="-1">
+<section id={id} style="--accent:var(--blue)"><slot /></section>
+<Footer />
+</main>
+</div>
+<script is:inline>
+// Skip link and mobile menu without the Atlas runtime.
+document.addEventListener('click', function (e) {
+  var s = e.target.closest && e.target.closest('a.skip-link');
+  if (s) { e.preventDefault(); var m = document.getElementById('main'); m.focus(); m.scrollIntoView(); }
+  var b = e.target.closest && e.target.closest('#menubtn');
+  if (b) { var a = document.querySelector('aside'); a.classList.toggle('open'); b.setAttribute('aria-expanded', a.classList.contains('open')); }
+});
+</script>
+<slot name="scripts" />
+</body>
+</html>

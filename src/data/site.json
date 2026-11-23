@@ -1,0 +1,8 @@
+{
+  "_doc": "Site owner settings. TODO(Rakesh): set contactEmail. PUBLIC_CONTACT_EMAIL overrides it at build time.",
+  "owner": "Rakesh",
+  "contactEmail": "CONTACT_EMAIL",
+  "contentLicence": { "name": "CC BY-NC 4.0", "url": "https://creativecommons.org/licenses/by-nc/4.0/" },
+  "codeLicence": { "name": "MIT", "url": "https://opensource.org/license/mit" },
+  "draftPages": ["privacy", "terms"]
+}

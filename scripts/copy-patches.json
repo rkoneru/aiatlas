@@ -145,6 +145,15 @@
       "why": "Phase 5: glossary tooltips mark each term once per page; they must skip the text versions the site adds under diagrams (.atlas-a11y), or they mark the term there instead of in the page body.",
       "find": ".srch,.ask-panel,[contenteditable]';",
       "replace": ".srch,.ask-panel,[contenteditable],.atlas-a11y';"
+    },
+    {
+      "id": "about-contact-link",
+      "in": "content",
+      "page": "about",
+      "count": 1,
+      "why": "Phase 7: the About page's existing 'tell Rakesh directly' becomes the contact link (wording unchanged). The address comes from src/data/site.json at build time.",
+      "find": "or tell Rakesh directly.",
+      "replace": "or <a href=\"mailto:CONTACT_EMAIL\" id=\"contact\">tell Rakesh directly</a>."
     }
   ]
 }

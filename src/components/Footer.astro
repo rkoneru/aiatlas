@@ -1,0 +1,10 @@
+---
+// Site footer (Phase 7): owner, licences, views disclaimer, links.
+import { BASE, CONTACT_EMAIL, SITE_CONFIG } from '../lib/site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer" role="contentinfo">
+  <p>© {year} {SITE_CONFIG.owner} · Content licensed <a href={SITE_CONFIG.contentLicence.url} rel="license noopener" target="_blank">{SITE_CONFIG.contentLicence.name}</a> · Code <a href={SITE_CONFIG.codeLicence.url} rel="noopener" target="_blank">{SITE_CONFIG.codeLicence.name}</a></p>
+  <p>Views are my own and not those of any employer or vendor.</p>
+  <nav aria-label="Site"><a href={`${BASE}about/`}>About</a> · <a href={`${BASE}privacy/`}>Privacy</a> · <a href={`${BASE}terms/`}>Terms</a> · <a href={`mailto:${CONTACT_EMAIL}`}>Contact</a></nav>
+</footer>

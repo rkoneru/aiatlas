@@ -31,6 +31,7 @@ export async function snapshot(page, id) {
       let h = a.getAttribute('href');
       const m = h.match(/^\/([\w-]*)\/?(#.*)?$/);
       if (m && !h.startsWith('//')) h = m[2] || '#' + (m[1] || 'overview');
+      if (h.startsWith('mailto:')) h = 'mailto:'; // the contact address is configured at build time
       a.setAttribute('href', h);
     });
     return c.outerHTML

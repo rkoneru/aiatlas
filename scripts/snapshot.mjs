@@ -34,7 +34,7 @@ const INIT = `(() => { let s = 1234567; Math.random = () => { s = (s * 16807) % 
 const finalState = async (ctx, id) => {
   const page = await ctx.newPage();
   await page.goto(`http://localhost:${PORT}${url(id)}`, { waitUntil: 'load' });
-  await page.waitForTimeout(1500);
+  await page.waitForTimeout(2200);
   const h = await page.evaluate((id) => document.querySelector(`main>section#${CSS.escape(id)}`).outerHTML.replace(/\bfl\d+/g, 'fl#'), id);
   await page.close();
   return h;
@@ -44,6 +44,7 @@ const srv = await serve(PORT, DIST, BASE);
 const browser = await chromium.launch();
 let done = 0, skipped = 0, kept = 0;
 const fallbacks = [];
+const unstable = [];
 const queue = PAGES.slice();
 async function worker() {
   for (let p; (p = queue.shift());) {
@@ -65,6 +66,8 @@ async function worker() {
     await page.close();
     if (rendered == null) throw new Error(`no section on ${p.id}`);
     const before = await finalState(ctx, p.id);
+    // pages with timed animations can end differently from load to load: no data-keep, no strict check
+    const stable = (await finalState(ctx, p.id)) === before;
     // Replace the section's inner HTML; keep the original in a template right after it.
     const open = html.indexOf(`<section id="${p.id}"`);
     const start = html.indexOf('>', open) + 1;
@@ -76,6 +79,7 @@ async function worker() {
     const keepIds = empty.filter((id) => new RegExp(`id="${id}"[^>]*>(?!</)`).test(rendered));
     const write = (ids) => fs.writeFileSync(f, html.slice(0, start) + rewrite(rendered) + '</section>' +
       `<template id="atlas-src"${ids.length ? ` data-keep="${ids.join(' ')}"` : ''}>${original}</template>` + html.slice(end + '</section>'.length));
+    if (!stable) { write([]); unstable.push(p.id); await ctx.close(); done++; continue; }
     write(keepIds);
     // The page must end in the same state as without the snapshot; otherwise drop data-keep.
     if (keepIds.length && (await finalState(ctx, p.id)) !== before) { write([]); fallbacks.push(p.id); }
@@ -88,4 +92,4 @@ async function worker() {
 await Promise.all([worker(), worker(), worker(), worker()]);
 await browser.close();
 srv.close();
-console.log(`snapshot: ${done} pages rendered into ${path.relative(process.cwd(), DIST)}/${skipped ? ` (${skipped} already done)` : ''}; ${kept} containers keep their snapshot until redrawn${fallbacks.length ? `; plain restore on ${fallbacks.join(', ')}` : ''}`);
+console.log(`snapshot: ${done} pages rendered into ${path.relative(process.cwd(), DIST)}/${skipped ? ` (${skipped} already done)` : ''}; ${kept} containers keep their snapshot until redrawn${fallbacks.length ? `; plain restore on ${fallbacks.join(', ')}` : ''}${unstable.length ? `; timing-dependent, plain restore: ${unstable.join(', ')}` : ''}`);

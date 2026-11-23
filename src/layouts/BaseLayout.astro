@@ -12,6 +12,8 @@ import nav from '../data/nav.json';
 import bootUrl from '../generated/boot.js?url';
 import { BASE, pageContent, companionHTML, type PageMeta } from '../lib/site';
 import Sidebar from '../components/Sidebar.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 import { seo, SITE_NAME } from '../lib/seo';
 // Per-page runtimes built by scripts/build-runtime.ts (Phase 3); the infographic studio loads on demand.
 const RUNTIMES = import.meta.glob('../generated/runtime/*.js', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
@@ -59,6 +61,7 @@ const companions = companionHTML(page.id);
 <meta name="theme-color" content="#0b1f4d">
 <!-- The Atlas stylesheet stays in a <style> element: the diagram, slide and proposal exporters copy it from there. -->
 <style is:inline data-atlas set:html={atlasCss}></style>
+<Analytics />
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -68,6 +71,7 @@ const companions = companionHTML(page.id);
 <main id="main" tabindex="-1">
 <Fragment set:html={nav.shell.coursebar} />
 <section id={page.id} style={`--accent:var(--${page.accent})`}><Fragment set:html={content} /></section>
+<Footer />
 </main>
 </div>
 <div id="atlas-companions" hidden inert aria-hidden="true"></div>

@@ -1,0 +1,7 @@
+---
+// Plausible analytics (decision 7): only when PUBLIC_PLAUSIBLE_DOMAIN is set. No cookies.
+// PUBLIC_PLAUSIBLE_SRC can point at a self-hosted or proxied script.
+const domain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const src = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.io/js/script.js';
+---
+{domain && <script is:inline defer data-domain={domain} src={src}></script>}
