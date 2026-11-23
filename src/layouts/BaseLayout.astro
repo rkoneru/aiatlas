@@ -61,10 +61,11 @@ const companions = companionHTML(page.id);
 <style is:inline data-atlas set:html={atlasCss}></style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <div class="app">
 <Sidebar />
 
-<main>
+<main id="main" tabindex="-1">
 <Fragment set:html={nav.shell.coursebar} />
 <section id={page.id} style={`--accent:var(--${page.accent})`}><Fragment set:html={content} /></section>
 </main>

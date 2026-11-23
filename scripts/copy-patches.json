@@ -1,5 +1,5 @@
 {
-  "_doc": "Wording and export changes agreed after Phase 0 (Q3, Q4). Applied by scripts/extract.ts to the runtime ('runtime') or to page content ('content'), and by the parity test to the original file, so both sides compare like for like. 'count' is the number of matches expected in source/atlas.html.",
+  "_doc": "Declared changes applied by scripts/extract.ts to the runtime ('runtime') or page content ('content'), and by the parity test to the original file, so both sides compare like for like: wording and export changes (decisions Q3, Q4) and accessibility fixes (Phase 5). 'count' is the number of matches expected in source/atlas.html.",
   "patches": [
     {
       "id": "q3-export-fonts",
@@ -65,6 +65,86 @@
       "why": "Q4: Ask the Atlas footer (visible only when AI is on). Requests go through this site's proxy, not the visitor's own account.",
       "find": "Answers come from Claude on your own account, grounded in the page you",
       "replace": "Answers come from Claude through this site, grounded in the page you"
+    },
+    {
+      "id": "a11y-diagram-group",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: the diagram SVG contains focusable boxes, so it is a labelled group rather than an image (axe nested-interactive).",
+      "find": "role:'img','aria-label':def.title||'Architecture flow'}",
+      "replace": "role:'group','aria-label':def.title||'Architecture flow'}"
+    },
+    {
+      "id": "a11y-sequence-group",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: same for the sequence view.",
+      "find": "role:'img','aria-label':(def.title||'Flow')+' sequence diagram'}",
+      "replace": "role:'group','aria-label':(def.title||'Flow')+' sequence diagram'}"
+    },
+    {
+      "id": "a11y-node-name",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: a diagram box's accessible name now includes its visible subtitle (axe label-content-name-mismatch).",
+      "find": "tabindex:0,role:'button','aria-label':n.t}",
+      "replace": "tabindex:0,role:'button','aria-label':n.t+(n.s?' '+n.s:'')}"
+    },
+    {
+      "id": "a11y-badge-hidden",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: the small ✓ + ↑ badge on a diagram box is decorative; hide it from assistive technology so the box's name matches its visible text.",
+      "find": "sv('text',{x:x+w-4,y:y+8.5,'text-anchor':'middle',class:'bdgt'},g)",
+      "replace": "sv('text',{x:x+w-4,y:y+8.5,'text-anchor':'middle',class:'bdgt','aria-hidden':'true'},g)"
+    },
+    {
+      "id": "a11y-landscape-group",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: the AI landscape rings are focusable buttons, so their SVG is a labelled group, not an image.",
+      "find": "role=\"img\" aria-label=\"Nested AI hierarchy\"",
+      "replace": "role=\"group\" aria-label=\"Nested AI hierarchy\""
+    },
+    {
+      "id": "a11y-node-text-space",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: a space between a diagram box's title and subtitle (they sit on separate lines), so its visible text reads as two words and matches its accessible name.",
+      "find": "<b>${esc(n.t)}</b>${showS?`",
+      "replace": "<b>${esc(n.t)}</b> ${showS?`"
+    },
+    {
+      "id": "a11y-node-text-space-classic",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: same for classic-theme diagram boxes.",
+      "find": "<b>${esc(n.t)}</b>${n.s?`<span>${esc(n.s)}</span>`:''}",
+      "replace": "<b>${esc(n.t)}</b> ${n.s?`<span>${esc(n.s)}</span>`:''}"
+    },
+    {
+      "id": "a11y-pyramid-label",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: maturity pyramid bars encode the score in their tint; white text on light tints failed contrast. The label now sits on a solid chip (class lbl-chip).",
+      "find": "var(--soft))\">${t} · ${a.toFixed(1)}</div>",
+      "replace": "var(--soft))\"><span class=\"lbl-chip\">${t} · ${a.toFixed(1)}</span></div>"
+    },
+    {
+      "id": "a11y-landscape-ring-name",
+      "in": "runtime",
+      "count": 2,
+      "why": "Phase 5: landscape rings show an abbreviation (AI, ML, DL…) but were named only by the full term; the name now starts with what is shown.",
+      "find": "aria-label=\"${l.t}\"",
+      "replace": "aria-label=\"${l.k}: ${l.t}\""
+    },
+    {
+      "id": "a11y-glossary-skip",
+      "in": "runtime",
+      "count": 1,
+      "why": "Phase 5: glossary tooltips mark each term once per page; they must skip the text versions the site adds under diagrams (.atlas-a11y), or they mark the term there instead of in the page body.",
+      "find": ".srch,.ask-panel,[contenteditable]';",
+      "replace": ".srch,.ask-panel,[contenteditable],.atlas-a11y';"
     }
   ]
 }

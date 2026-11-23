@@ -20,6 +20,7 @@
     "inventory:coverage": "node scripts/render-coverage.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.63.0",
     "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^22.20.5",

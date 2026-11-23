@@ -13,6 +13,7 @@
  * See docs/runtime-adaptations.md.
  */
 import './platform';
+import { enhanceA11y } from './a11y';
 import pages from '../generated/boot-pages.json';
 import merged from '../data/redirects.json';
 
@@ -113,6 +114,7 @@ const ATLAS = {
 
   /** Runs after the runtime: replay handoffs, add the home-page resume link, honour ?q=. */
   after() {
+    try { enhanceA11y(); } catch (e) { console.warn('[atlas] a11y', e); }
     const q = new URLSearchParams(location.search).get('q');
     if (q && exposed.srOpen) setTimeout(() => exposed.srOpen(q), 0);
     const raw = ss.get(HANDOFF);
