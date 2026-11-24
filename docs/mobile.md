@@ -46,19 +46,25 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 
 ### App layout (trial on `/agentic-coding/`)
 
-**Code:** `src/lib/collapse-inline.ts` (`APP` lists the pages using it) and `src/styles/site.css` ("App layout on phones").
+**Code:**
+- `src/lib/collapse-inline.ts`: builds the tiles before first paint; `APP` lists the pages that use the layout.
+- `src/scripts/mobile.ts`: the bottom sheet.
+- `src/styles/site.css`: "App layout on phones" and "Bottom sheet".
 
-On these pages nothing is hidden at section level, and only the detail is collapsible:
+The page reads like an app screen: short, scannable, with detail one tap away.
 
-- **Section tabs:** a sticky bar under the app bar, one tab per section. The section in view is highlighted, and the bar ends with **Expand all / Collapse all**.
-- **Section headings:** grouped-list style headers.
-- **Tiles (cards):** each tile shows its tag, title and a two-line preview. Tapping anywhere on it opens the full text, and the title is a button with `aria-expanded`.
-- **Tables:** each row becomes its own card. The first column is the title, the next column shows as a one-line preview with its column name, and tapping opens all columns, each labelled with its column name.
-- **Tools and diagrams:** cards holding tools, forms or runtime-filled content are left as they are.
-- **Timing:** all of this happens before first paint and again after the runtime restores the page, so there's no layout shift.
-- **Accessibility:** axe reports 0 violations at 390 px, light and dark, collapsed and expanded.
+- **Icon tiles:** every group of text cards and every table becomes a two-column grid of small tiles (about 60 px tall). Each tile has an icon chosen from its title (code, test, shield, people, metrics and so on), its label if it has one, and a two-line title.
+- **Bottom sheet:** tapping a tile opens its full content in a sheet. Cards show their text; table rows show every column with its column name.
+  - **Previous / Next** step through the tiles of that section, with a position counter ("2 of 6").
+  - **Closing:** ×, the backdrop, Esc, or swiping down on the sheet header all close it.
+  - **Built on `<dialog>`:** the sheet is a native `<dialog>` opened with `showModal()`, so focus is trapped inside and returns to the tile.
+- **Long text:** the intro, notes and callouts are clipped to two or three lines. "Read more" opens the full text in the same sheet.
+- **Section tabs:** a sticky bar under the app bar jumps between sections and highlights the one in view.
+- **Hidden originals:** the original cards and tables stay in the page, hidden on phones, so search, crawlers and the sheet all use the same content. A search match inside one opens its sheet.
+- **Length:** the page is about 3,000 px tall on an iPhone 13, against 4,900 px with expandable cards.
+- **Checks:** axe reports 0 violations at 390 px, light and dark, with the sheet closed and open.
 
-Other pages keep the section folding below until the trial is approved. To switch a page over, add its id to `APP`.
+Other pages keep the section folding above until the trial is approved. To switch a page over, add its id to `APP`.
 
 ### Compact type and controls
 

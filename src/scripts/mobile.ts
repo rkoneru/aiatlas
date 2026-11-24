@@ -166,15 +166,124 @@ export function flowHook(Flow: any) {
 
 /* ---------- collapsed text: reopen when something points inside ---------- */
 function openFor(el: Element | null) {
-  // app layout: a closed tile or table row
-  const tile = el && (el.closest('.card.tc:not(.open), tr.tt-row:not(.open)') as HTMLElement | null);
-  if (tile) { (tile.querySelector('.tc-t, .tt-t') as HTMLElement | null)?.click(); return; }
+  // app layout: content that is only shown in the sheet
+  const src = el && (el.closest('.m-src [data-mk], .m-src[data-mk], .m-clamp[data-mk]') as HTMLElement | null);
+  if (src) { openSheet(src.getAttribute('data-mk')!); return; }
   const b = el && (el.closest('.mc-b') as HTMLElement | null);
   if (!b || b.classList.contains('mc-show')) return;
   let h = b.previousElementSibling;
   while (h && !h.classList.contains('mc-h')) h = h.previousElementSibling;
   const t = h && (h.querySelector('.mc-t') as HTMLElement | null);
   if (t && t.getAttribute('aria-expanded') !== 'true') t.click();
+}
+
+/* ---------- App layout: bottom sheet for a tile's content ---------- */
+let sheet: HTMLDialogElement | null = null;
+let opener: HTMLElement | null = null;
+const H = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+function sheetEl(): HTMLDialogElement {
+  if (sheet) return sheet;
+  sheet = document.createElement('dialog');
+  sheet.className = 'msheet';
+  sheet.setAttribute('aria-labelledby', 'msheet-title');
+  sheet.innerHTML = '<div class="ms-grab" aria-hidden="true"></div><header class="ms-head"><span class="mi" aria-hidden="true"></span><div class="ms-ttl"><small></small><h2 id="msheet-title"></h2></div><button type="button" class="ms-x" aria-label="Close">×</button></header><div class="ms-body"></div><footer class="ms-foot"><button type="button" class="ms-prev">‹ Previous</button><span class="ms-pos"></span><button type="button" class="ms-next">Next ›</button></footer>';
+  const sec = document.querySelector('main>section') as HTMLElement | null;
+  if (sec) sheet.setAttribute('style', sec.getAttribute('style') || '');
+  document.body.appendChild(sheet);
+  sheet.querySelector('.ms-x')!.addEventListener('click', () => sheet!.close());
+  sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet!.close(); }); // tap on the backdrop
+  sheet.addEventListener('close', () => { document.documentElement.classList.remove('ms-open'); opener?.focus({ preventScroll: true }); });
+  const step = (d: number) => {
+    const k = sheet!.dataset.mk!;
+    const tiles = siblingsOf(k);
+    const i = tiles.indexOf(k);
+    if (tiles[i + d]) openSheet(tiles[i + d]);
+  };
+  sheet.querySelector('.ms-prev')!.addEventListener('click', () => step(-1));
+  sheet.querySelector('.ms-next')!.addEventListener('click', () => step(1));
+  // swipe down on the handle or header to close
+  let y0 = 0;
+  const head = sheet.querySelector('.ms-head') as HTMLElement, grab = sheet.querySelector('.ms-grab') as HTMLElement;
+  [head, grab].forEach((h) => {
+    h.addEventListener('touchstart', (e) => { y0 = e.touches[0].clientY; }, { passive: true });
+    h.addEventListener('touchend', (e) => { if (e.changedTouches[0].clientY - y0 > 70) sheet!.close(); }, { passive: true });
+  });
+  return sheet;
+}
+
+/** Tile keys in the same grid as `k` (for Previous / Next). */
+function siblingsOf(k: string): string[] {
+  const t = document.querySelector(`.mtile[data-mk="${k}"]`);
+  const g = t && t.closest('.mgrid');
+  return g ? [...g.querySelectorAll<HTMLElement>('.mtile')].map((x) => x.dataset.mk!) : [k];
+}
+
+function sheetContent(src: HTMLElement): { tag: string; title: string; body: Node[] } {
+  const clean = (n: Node) => { const c = n.cloneNode(true) as Element; if (c.removeAttribute) { c.removeAttribute('data-mk'); c.classList?.remove('m-clamp'); } return c; };
+  if (src.tagName === 'TR') {
+    const table = src.closest('table')!;
+    const head = table.rows[0] && table.rows[0].querySelector('th') ? table.rows[0] : null;
+    const labels = head ? [...head.cells].map((c) => c.textContent!.trim()) : [];
+    const cells = [...(src as HTMLTableRowElement).cells];
+    const body = cells.slice(1).map((c, i) => {
+      const d = document.createElement('div');
+      d.className = 'ms-field';
+      d.innerHTML = labels[i + 1] ? `<small>${H(labels[i + 1])}</small>` : '';
+      const v = document.createElement('div');
+      [...c.childNodes].forEach((n) => v.appendChild(clean(n)));
+      d.appendChild(v);
+      return d;
+    });
+    // tag: the section heading above the table
+    let h: Element | null = (table.closest('.m-src') || table).previousElementSibling;
+    while (h && h.tagName !== 'H2') h = h.previousElementSibling;
+    return { tag: (h?.textContent || labels[0] || '').trim(), title: cells[0].textContent!.trim(), body };
+  }
+  if (src.classList.contains('card')) {
+    const tag = src.querySelector(':scope>.tag')?.textContent?.trim() || '';
+    const title = src.querySelector(':scope>h3')?.textContent?.trim() || '';
+    const body = [...src.children].filter((c) => !c.matches('h3,.tag')).map(clean);
+    return { tag, title, body };
+  }
+  // a long paragraph or callout: titled by its section heading
+  let h: Element | null = src.previousElementSibling;
+  while (h && !/^H[12]$/.test(h.tagName)) h = h.previousElementSibling;
+  return { tag: '', title: (h?.textContent || document.querySelector('main h1')?.textContent || '').trim(), body: [clean(src)] };
+}
+
+function openSheet(k: string) {
+  const src = document.querySelector<HTMLElement>(`main>section [data-mk="${k}"]:not(.mtile):not(.mmore)`);
+  if (!src) return;
+  const d = sheetEl();
+  const { tag, title, body } = sheetContent(src);
+  const tile = document.querySelector<HTMLElement>(`.mtile[data-mk="${k}"]`);
+  d.dataset.mk = k;
+  (d.querySelector('.ms-head .mi') as HTMLElement).innerHTML = tile?.querySelector('.mi')?.innerHTML || '';
+  d.querySelector('.ms-head')!.setAttribute('style', tile?.getAttribute('style') || '');
+  d.querySelector('.ms-ttl small')!.textContent = tag;
+  d.querySelector('#msheet-title')!.textContent = title;
+  const b = d.querySelector('.ms-body') as HTMLElement;
+  b.replaceChildren(...body);
+  b.scrollTop = 0;
+  const sib = siblingsOf(k), i = sib.indexOf(k);
+  const foot = d.querySelector('.ms-foot') as HTMLElement;
+  foot.hidden = !tile || sib.length < 2;
+  (d.querySelector('.ms-prev') as HTMLButtonElement).disabled = i <= 0;
+  (d.querySelector('.ms-next') as HTMLButtonElement).disabled = i >= sib.length - 1;
+  d.querySelector('.ms-pos')!.textContent = `${i + 1} of ${sib.length}`;
+  if (!d.open) {
+    opener = document.activeElement as HTMLElement | null;
+    document.documentElement.classList.add('ms-open');
+    d.showModal();
+  }
+}
+
+function appSheet() {
+  document.addEventListener('click', (e) => {
+    const t = (e.target as Element)?.closest?.('.mtile, .mmore') as HTMLElement | null;
+    if (t && t.dataset.mk) openSheet(t.dataset.mk);
+  });
 }
 
 /** App layout: keep the tab bar under the app bar and highlight the section in view. */
@@ -206,7 +315,7 @@ function appTabs() {
 export function mobileText() {
   const main = document.querySelector('main');
   if (!main) return;
-  if (document.documentElement.classList.contains('m-app')) appTabs();
+  if (document.documentElement.classList.contains('m-app')) { appTabs(); appSheet(); }
   const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if (id) openFor(document.getElementById(id)); };
   fromHash();
   window.addEventListener('hashchange', fromHash);

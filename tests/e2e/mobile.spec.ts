@@ -133,35 +133,43 @@ test('desktop: nothing folds and diagrams keep their drawn layout', async ({ bro
   await ctx.close();
 });
 
-test('phone app layout (trial page): every title shows, tiles and table rows open on tap', async ({ browser }) => {
+test('phone app layout (trial page): icon tiles open their content in a bottom sheet', async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const page = await ctx.newPage();
   const errors = watchErrors(page);
   await page.goto(url('agentic-coding'));
   await expect(page.locator('html')).toHaveClass(/m-app/);
-  expect(await page.locator('main h2.mc-h').count()).toBe(0); // nothing folds at section level
-  // tabs: one per section plus "Expand all"; tapping one scrolls to its section
+  expect(await page.locator('main h2.mc-h').count()).toBe(0); // no section folding on app pages
+  // every card and table row is a tile; the original blocks are hidden on screen
+  expect(await page.locator('.mtile').count()).toBeGreaterThanOrEqual(20);
+  await expect(page.locator('main table').first()).toBeHidden();
+  await expect(page.locator('.mtile').filter({ hasText: 'Spec-driven development' })).toBeVisible();
+  // section tabs jump to their section
   const tabs = page.locator('nav.mtabs button');
-  await expect(tabs.last()).toHaveText('Expand all');
   await expect(tabs.filter({ hasText: 'Risks & controls' })).toHaveCount(1);
   await tabs.filter({ hasText: 'Measuring it' }).tap();
   await expect.poll(() => page.locator('main h2', { hasText: 'Measuring it' }).evaluate((h) => Math.round(h.getBoundingClientRect().top))).toBeLessThan(260);
-  // tiles: title and a preview visible, body opens on tap anywhere on the tile
-  const tile = page.locator('.card.tc').filter({ hasText: 'Spec-driven development' });
-  await expect(tile.locator('h3')).toBeVisible();
-  await expect(tile.locator('p').first()).toBeVisible();
-  await expect(tile.locator('.tc-t')).toHaveAttribute('aria-expanded', 'false');
-  await tile.locator('p').first().tap();
-  await expect(tile.locator('.tc-t')).toHaveAttribute('aria-expanded', 'true');
-  // table rows: a card per row, other columns open with their column name
-  const row = page.locator('tr.tt-row').filter({ hasText: 'Background agent' });
-  await expect(row.locator('td').nth(2)).toBeHidden();
-  await row.locator('.tt-t').tap();
-  await expect(row.locator('td').nth(2)).toBeVisible();
-  await expect(row.locator('td').nth(2)).toHaveAttribute('data-label', 'Human role');
-  // expand all
-  await tabs.last().tap();
-  expect(await page.locator('.tc-t[aria-expanded="false"], .tt-t[aria-expanded="false"]').count()).toBe(0);
+  // a card tile opens its full text; Previous / Next step through the section
+  const sheet = page.locator('dialog.msheet');
+  await page.locator('.mtile').filter({ hasText: 'Spec-driven development' }).tap();
+  await expect(sheet).toBeVisible();
+  await expect(sheet.locator('#msheet-title')).toHaveText('Spec-driven development');
+  await expect(sheet.locator('.ms-body')).toContainText('write the spec first');
+  await expect(sheet.locator('.ms-pos')).toHaveText('2 of 6');
+  await sheet.locator('.ms-next').tap();
+  await expect(sheet.locator('#msheet-title')).toHaveText("Tests are the agent's eyes");
+  await sheet.locator('.ms-x').tap();
+  await expect(sheet).toBeHidden();
+  // a table-row tile shows every column with its name
+  await page.locator('.mtile').filter({ hasText: 'Background agent' }).tap();
+  await expect(sheet.locator('.ms-field small').nth(1)).toHaveText('Human role');
+  await expect(sheet.locator('.ms-body')).toContainText('Reviews the pull request');
+  await page.keyboard.press('Escape');
+  await expect(sheet).toBeHidden();
+  // long text is clipped; "Read more" opens all of it
+  await page.locator('.mmore').first().tap();
+  await expect(sheet.locator('.ms-body')).toContainText('Walk one change from ticket to merge');
+  await page.keyboard.press('Escape');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   expect(errors).toEqual([]);
   await ctx.close();
