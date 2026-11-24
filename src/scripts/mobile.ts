@@ -17,9 +17,9 @@
  */
 export const NARROW = '(max-width: 640px)';
 
-type Node = { id: string; x: number; y: number; w: number; h: number; sh?: string; lblTop?: boolean; pt?: unknown; g?: unknown; [k: string]: unknown };
+type FNode = { id: string; x: number; y: number; w: number; h: number; sh?: string; lblTop?: boolean; pt?: unknown; g?: unknown; [k: string]: unknown };
 type Group = { x: number; y: number; w: number; h: number; [k: string]: unknown };
-type Def = { vb: [number, number]; nodes: Node[]; edges: unknown[]; groups?: Group[]; _sp?: unknown; [k: string]: unknown };
+type Def = { vb: [number, number]; nodes: FNode[]; edges: unknown[]; groups?: Group[]; _sp?: unknown; [k: string]: unknown };
 
 /** Widest canvas we aim for, in viewBox units: about 0.78 scale on a 390px-wide phone. */
 const MAX_W = 460;
@@ -29,12 +29,12 @@ const GAP_Y = 58;
 const MIN_NODE_W = 118;
 const HUB_LABEL = 34;
 
-const cx = (n: Node) => n.x + n.w / 2;
-const cy = (n: Node) => n.y + n.h / 2;
+const cx = (n: FNode) => n.x + n.w / 2;
+const cy = (n: FNode) => n.y + n.h / 2;
 
 /** Group nodes whose centres are close along one axis (columns or rows of the drawing). */
-function clusters(nodes: Node[], center: (n: Node) => number, size: (n: Node) => number): Node[][] {
-  const out: Node[][] = [];
+function clusters(nodes: FNode[], center: (n: FNode) => number, size: (n: FNode) => number): FNode[][] {
+  const out: FNode[][] = [];
   for (const n of [...nodes].sort((a, b) => center(a) - center(b))) {
     const cur = out[out.length - 1];
     const last = cur && cur[cur.length - 1];
@@ -54,7 +54,7 @@ export function mobileDef(def: Def): Def {
   const hit = cache.get(def);
   if (hit) return hit;
 
-  const nodes: Node[] = def.nodes.map((n) => { const c = { ...n }; delete c.g; return c; });
+  const nodes: FNode[] = def.nodes.map((n) => { const c = { ...n }; delete c.g; return c; });
   const byId = new Map(def.nodes.map((n, i) => [n, nodes[i]]));
   const cols = clusters(nodes, cx, (n) => n.w);
   const rows = clusters(nodes, cy, (n) => n.h);
@@ -65,15 +65,15 @@ export function mobileDef(def: Def): Def {
   const across = horizontal ? cy : cx; // order inside a layer
   layers.forEach((l) => l.sort((a, b) => across(a) - across(b)));
 
-  const placed: Node[][] = []; // visual rows, top to bottom
+  const placed: FNode[][] = []; // visual rows, top to bottom
   if (slots.length <= 3) {
     // Grid transpose: each slot (a row of the original, or a column) keeps its own lane.
-    const slotOf = new Map<Node, number>();
+    const slotOf = new Map<FNode, number>();
     slots.forEach((s, i) => s.forEach((n) => slotOf.set(n, i)));
     const k = slots.length;
     const lane = Math.max(MIN_NODE_W, Math.min(Math.max(...nodes.map((n) => n.w)), (MAX_W - 2 * PAD - (k - 1) * GAP_X) / k));
     for (const layer of layers) {
-      const row: Node[] = [];
+      const row: FNode[] = [];
       for (const n of layer) {
         const i = slotOf.get(n)!;
         n.w = Math.min(n.w, lane);
@@ -81,7 +81,7 @@ export function mobileDef(def: Def): Def {
         row.push(n);
       }
       // two boxes of one layer in the same lane: stack them
-      const lanes = new Map<number, Node[]>();
+      const lanes = new Map<number, FNode[]>();
       row.forEach((n) => { const i = slotOf.get(n)!; lanes.set(i, [...(lanes.get(i) || []), n]); });
       const depth = Math.max(...[...lanes.values()].map((v) => v.length));
       for (let d = 0; d < depth; d++) placed.push([...lanes.values()].map((v) => v[d]).filter(Boolean));
@@ -90,7 +90,7 @@ export function mobileDef(def: Def): Def {
     // Packed rows: boxes of a layer side by side, wrapping, centred.
     const inner = MAX_W - 2 * PAD;
     for (const layer of layers) {
-      let row: Node[] = [];
+      let row: FNode[] = [];
       let w = 0;
       for (const n of layer) {
         n.w = Math.min(n.w, inner);
