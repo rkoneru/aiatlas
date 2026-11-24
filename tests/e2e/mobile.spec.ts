@@ -91,7 +91,7 @@ test('phone: text-only sections fold under their heading; diagrams stay open', a
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const page = await ctx.newPage();
   const errors = watchErrors(page);
-  await page.goto(url('agentic-coding'));
+  await page.goto(url('agent-evals'));
   const toggles = page.locator('main h2.mc-h .mc-t');
   expect(await toggles.count()).toBeGreaterThanOrEqual(4);
   await expect(page.locator('main [data-flow] svg.fsvg.mob')).toBeVisible();
@@ -105,7 +105,7 @@ test('phone: text-only sections fold under their heading; diagrams stay open', a
   await first.tap();
   await expect(table).toBeHidden();
   // Something pointing inside a folded section (a search highlight) opens it.
-  const card = page.locator('main .mc-b .card h3').first();
+  const card = page.locator('main .mc-b.grid .card h3').first();
   await expect(card).toBeHidden();
   await card.evaluate((h) => { const m = document.createElement('mark'); m.textContent = 'x'; h.appendChild(m); });
   await expect(card).toBeVisible();
@@ -130,5 +130,39 @@ test('desktop: nothing folds and diagrams keep their drawn layout', async ({ bro
   await page.waitForTimeout(300);
   expect(await page.locator('main .mc-h, main .mc-b, main svg.mob').count()).toBe(0);
   await expect(page.locator('main table').first()).toBeVisible();
+  await ctx.close();
+});
+
+test('phone app layout (trial page): every title shows, tiles and table rows open on tap', async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
+  const page = await ctx.newPage();
+  const errors = watchErrors(page);
+  await page.goto(url('agentic-coding'));
+  await expect(page.locator('html')).toHaveClass(/m-app/);
+  expect(await page.locator('main h2.mc-h').count()).toBe(0); // nothing folds at section level
+  // tabs: one per section plus "Expand all"; tapping one scrolls to its section
+  const tabs = page.locator('nav.mtabs button');
+  await expect(tabs.last()).toHaveText('Expand all');
+  await expect(tabs.filter({ hasText: 'Risks & controls' })).toHaveCount(1);
+  await tabs.filter({ hasText: 'Measuring it' }).tap();
+  await expect.poll(() => page.locator('main h2', { hasText: 'Measuring it' }).evaluate((h) => Math.round(h.getBoundingClientRect().top))).toBeLessThan(260);
+  // tiles: title and a preview visible, body opens on tap anywhere on the tile
+  const tile = page.locator('.card.tc').filter({ hasText: 'Spec-driven development' });
+  await expect(tile.locator('h3')).toBeVisible();
+  await expect(tile.locator('p').first()).toBeVisible();
+  await expect(tile.locator('.tc-t')).toHaveAttribute('aria-expanded', 'false');
+  await tile.locator('p').first().tap();
+  await expect(tile.locator('.tc-t')).toHaveAttribute('aria-expanded', 'true');
+  // table rows: a card per row, other columns open with their column name
+  const row = page.locator('tr.tt-row').filter({ hasText: 'Background agent' });
+  await expect(row.locator('td').nth(2)).toBeHidden();
+  await row.locator('.tt-t').tap();
+  await expect(row.locator('td').nth(2)).toBeVisible();
+  await expect(row.locator('td').nth(2)).toHaveAttribute('data-label', 'Human role');
+  // expand all
+  await tabs.last().tap();
+  expect(await page.locator('.tc-t[aria-expanded="false"], .tt-t[aria-expanded="false"]').count()).toBe(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  expect(errors).toEqual([]);
   await ctx.close();
 });

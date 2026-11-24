@@ -166,6 +166,9 @@ export function flowHook(Flow: any) {
 
 /* ---------- collapsed text: reopen when something points inside ---------- */
 function openFor(el: Element | null) {
+  // app layout: a closed tile or table row
+  const tile = el && (el.closest('.card.tc:not(.open), tr.tt-row:not(.open)') as HTMLElement | null);
+  if (tile) { (tile.querySelector('.tc-t, .tt-t') as HTMLElement | null)?.click(); return; }
   const b = el && (el.closest('.mc-b') as HTMLElement | null);
   if (!b || b.classList.contains('mc-show')) return;
   let h = b.previousElementSibling;
@@ -174,9 +177,36 @@ function openFor(el: Element | null) {
   if (t && t.getAttribute('aria-expanded') !== 'true') t.click();
 }
 
+/** App layout: keep the tab bar under the app bar and highlight the section in view. */
+function appTabs() {
+  const root = document.documentElement;
+  const aside = document.querySelector('aside');
+  const setBar = () => root.style.setProperty('--mbar', `${Math.round(aside?.getBoundingClientRect().height || 0)}px`);
+  setBar();
+  addEventListener('resize', setBar);
+  const bar = document.querySelector('nav.mtabs');
+  const sec = document.querySelector('main>section');
+  if (!bar || !sec) return;
+  const hs = [...sec.querySelectorAll('h2')].filter((h) => !h.closest('[data-flow],.src-box,.atlas-a11y'));
+  const btns = [...bar.querySelectorAll<HTMLElement>('button[data-i]')];
+  let cur = -1;
+  const onScroll = () => {
+    const y = bar.getBoundingClientRect().bottom + 16;
+    let i = -1;
+    hs.forEach((h, k) => { if (h.getBoundingClientRect().top <= y) i = k; });
+    if (i === cur) return;
+    cur = i;
+    btns.forEach((b, k) => { b.classList.toggle('on', k === i); if (k === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    if (i >= 0) btns[i].scrollIntoView({ block: 'nearest', inline: 'center' });
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
 export function mobileText() {
   const main = document.querySelector('main');
   if (!main) return;
+  if (document.documentElement.classList.contains('m-app')) appTabs();
   const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if (id) openFor(document.getElementById(id)); };
   fromHash();
   window.addEventListener('hashchange', fromHash);

@@ -44,6 +44,22 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 - **Timing:** the script runs before first paint on the server-rendered page. It runs again when the runtime restores the original markup, so folding causes no layout shift.
 - **Reopening:** a search highlight or a link that points inside a folded section opens it.
 
+### App layout (trial on `/agentic-coding/`)
+
+**Code:** `src/lib/collapse-inline.ts` (`APP` lists the pages using it) and `src/styles/site.css` ("App layout on phones").
+
+On these pages nothing is hidden at section level, and only the detail is collapsible:
+
+- **Section tabs:** a sticky bar under the app bar, one tab per section. The section in view is highlighted, and the bar ends with **Expand all / Collapse all**.
+- **Section headings:** grouped-list style headers.
+- **Tiles (cards):** each tile shows its tag, title and a two-line preview. Tapping anywhere on it opens the full text, and the title is a button with `aria-expanded`.
+- **Tables:** each row becomes its own card. The first column is the title, the next column shows as a one-line preview with its column name, and tapping opens all columns, each labelled with its column name.
+- **Tools and diagrams:** cards holding tools, forms or runtime-filled content are left as they are.
+- **Timing:** all of this happens before first paint and again after the runtime restores the page, so there's no layout shift.
+- **Accessibility:** axe reports 0 violations at 390 px, light and dark, collapsed and expanded.
+
+Other pages keep the section folding below until the trial is approved. To switch a page over, add its id to `APP`.
+
 ### Compact type and controls
 
 - **Type:** headings and the lead paragraph are smaller, so the first diagram is on the first screen.

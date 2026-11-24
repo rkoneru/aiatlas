@@ -120,3 +120,89 @@ input[type=checkbox],input[type=radio]{flex-shrink:0}
 }
 @keyframes mc-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .mc-b.mc-show, .mc-t::after { animation: none; transition: none; } }
+
+/* ---------- App layout on phones (trial pages, src/lib/collapse-inline.ts APP) ---------- */
+@media (max-width: 640px) {
+  /* `overflow-x: hidden` on main (atlas.css) makes it a scroll container, which breaks sticky
+     children; `clip` hides overflow the same way without that. */
+  main { overflow-x: clip; }
+  /* Section tabs: sticky under the app bar, scroll sideways, the current section highlighted. */
+  nav.mtabs {
+    position: sticky; top: var(--mbar, 66px); z-index: 4;
+    display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+    margin: 0 -16px 16px; padding: 10px 16px;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.mtabs::-webkit-scrollbar { display: none; }
+  nav.mtabs button {
+    flex: none; min-height: 34px; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: 600 13px Inter;
+  }
+  nav.mtabs button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  nav.mtabs .mtabs-all { color: var(--accent); background: transparent; border-style: dashed; }
+
+  /* Headings: grouped-list style section headers. */
+  html.m-app main > section h2 {
+    margin: 28px 4px 10px; padding: 0; border: 0;
+    font: 700 12.5px Inter; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+    scroll-margin-top: calc(var(--mbar, 66px) + 64px);
+  }
+  html.m-app main > section h1 { font-size: 25px; letter-spacing: -.01em; }
+  html.m-app main .lead { font-size: 15.5px; color: var(--ink); opacity: .85; }
+  html.m-app main > section > p.muted { margin: 0 4px 12px; font-size: 13.5px; }
+  html.m-app .grid { gap: 10px; }
+  html.m-app .callout { border-radius: 14px; border-left-width: 0; padding: 14px 16px; font-size: 14.5px; line-height: 1.5;
+    background: color-mix(in srgb, var(--accent) 10%, var(--panel)); }
+
+  /* Tiles: title row always visible, body opens on tap. */
+  html.m-app .card.tc { padding: 0; border-radius: 16px; overflow: hidden; margin: 0; }
+  html.m-app .card.tc > .tag { display: block; padding: 13px 16px 0; font: 700 10.5px Inter; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  html.m-app .card.tc > h3 { margin: 0; font-size: 15.5px; line-height: 1.3; }
+  html.m-app .card.tc > .tag + h3 .tc-t { padding-top: 3px; min-height: 0; }
+  html.m-app .card.tc:not(.open) > :not(h3):not(.tag) { display: none; }
+  /* Closed tiles and rows still show a short preview of their text. */
+  html.m-app .card.tc:not(.open) > p:first-of-type {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    color: var(--muted); margin-top: -4px; padding: 0;
+  }
+  html.m-app .card.tc, html.m-app table.tt tr.tt-row { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  html.m-app .card.tc > :not(h3):not(.tag) { margin: 0 16px 14px; font-size: 14.5px; line-height: 1.55; }
+  html.m-app .card.tc.open { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+  /* Tables: each row is a card; first cell is its title, the rest open on tap with their column names. */
+  html.m-app .card.tablewrap:has(> table.tt) { background: none; border: 0; box-shadow: none; padding: 0; overflow: visible; }
+  html.m-app table.tt, html.m-app table.tt tbody { display: block; width: 100%; border: 0; }
+  html.m-app table.tt tr.tt-head { display: none; }
+  html.m-app table.tt tr { display: block; margin: 0 0 10px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); box-shadow: var(--shadow); overflow: hidden; }
+  html.m-app table.tt td { display: block; border: 0; background: none; padding: 0 16px 12px; font-size: 14.5px; line-height: 1.5; }
+  html.m-app table.tt td.tt-h { padding: 0; font-size: 15.5px; font-weight: 600; }
+  html.m-app table.tt td[data-label]::before {
+    content: attr(data-label); display: block; margin-bottom: 2px;
+    font: 700 10.5px Inter; letter-spacing: .06em; text-transform: uppercase; color: var(--accent);
+  }
+  html.m-app table.tt tr.tt-row:not(.open) td:not(.tt-h) { display: none; }
+  html.m-app table.tt tr.tt-row:not(.open) td.tt-h + td {
+    display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    color: var(--muted); margin: -6px 16px 12px; padding: 0;
+  }
+  html.m-app table.tt tr.tt-row:not(.open) td.tt-h + td::before { display: inline; margin-right: 6px; }
+  html.m-app table.tt tr.tt-row:not(.open) td.tt-h + td * { display: inline; }
+  html.m-app table.tt tr.open { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+
+  /* Tap rows for tiles and table rows. */
+  .tc-t, .tt-t {
+    all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    width: 100%; min-height: 50px; padding: 13px 16px; cursor: pointer; color: inherit; font: inherit; line-height: 1.3;
+  }
+  .tc-t::after, .tt-t::after {
+    content: ''; flex: none; width: 8px; height: 8px;
+    border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s;
+  }
+  .tc-t[aria-expanded="true"]::after, .tt-t[aria-expanded="true"]::after { transform: rotate(-135deg) translate(-2px, -2px); }
+  .tc-t:focus-visible, .tt-t:focus-visible, nav.mtabs button:focus-visible { outline: 2px solid var(--accent, var(--blue)); outline-offset: -2px; border-radius: 12px; }
+  html.m-app .card.tc.open > :not(h3):not(.tag), html.m-app table.tt tr.open td:not(.tt-h) { animation: mc-in .15s ease-out; }
+}
+@media (prefers-reduced-motion: reduce) { .tc-t::after, .tt-t::after { transition: none; } html.m-app .card.tc.open > *, html.m-app table.tt tr.open td { animation: none !important; } }
