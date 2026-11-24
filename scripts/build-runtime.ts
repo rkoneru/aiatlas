@@ -323,6 +323,7 @@ const gz = (s: string) => zlib.gzipSync(s, { level: 9 }).length;
 // Containers listed in data-keep are empty in the original and filled a moment later by a timer
 // (e.g. the path cards on /): they keep their snapshot content until the runtime redraws them,
 // so nothing below them jumps. scripts/snapshot.mjs verifies each page's final state either way.
+const AFTER = "\n;if(window.__atlasDyn)window.__atlasDyn(document.querySelector('main>section'));\n";
 const RESTORE = "(function(){var t=document.getElementById('atlas-src'),s=document.querySelector('main>section');if(!t||!s)return;var keep={};(t.dataset.keep||'').split(' ').forEach(function(id){var e=id&&document.getElementById(id);if(e&&s.contains(e))keep[id]=[].slice.call(e.childNodes);});s.replaceChildren(t.content.cloneNode(true));t.remove();if(window.__atlasMC)window.__atlasMC(s);Object.keys(keep).forEach(function(id){var e=document.getElementById(id);if(e&&!e.firstChild)e.append.apply(e,keep[id]);});})();\n";
 
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -336,7 +337,9 @@ report.full = { raw: full.length, gzip: gz(full) };
 for (const p of PAGES) {
   const { code, stats } = prune(p.id, presentPages(p.id), p.id === 'playground');
   // First statement: swap the build-time snapshot (scripts/snapshot.mjs) back to the original markup.
-  const min = RESTORE + await minify(code);
+  // Last statement: phones tile the cards the runtime has just drawn, before the first paint
+  // (src/lib/collapse-inline.ts __atlasDyn).
+  const min = RESTORE + await minify(code) + AFTER;
   acorn.parse(min, { ecmaVersion: 'latest', sourceType: 'script' });
   fs.writeFileSync(path.join(OUT, `${p.id}.js`), min);
   report[p.id] = { raw: min.length, gzip: gz(min), ...stats };

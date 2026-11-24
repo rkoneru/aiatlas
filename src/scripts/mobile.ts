@@ -241,9 +241,18 @@ function sheetContent(src: HTMLElement): { tag: string; title: string; body: Nod
     return { tag: (h?.textContent || labels[0] || '').trim(), title: cells[0].textContent!.trim(), body };
   }
   if (src.classList.contains('card')) {
-    const tag = src.querySelector(':scope>.tag')?.textContent?.trim() || '';
-    const title = src.querySelector(':scope>h3')?.textContent?.trim() || '';
-    const body = [...src.children].filter((c) => !c.matches('h3,.tag')).map(clean);
+    // title and tag as shown on the tile; the body is the card without them
+    const tile = document.querySelector(`.mtile[data-mk="${src.getAttribute('data-mk')}"]`);
+    const title = tile?.querySelector('.mt b')?.textContent?.trim() || src.querySelector(':scope>h3')?.textContent?.trim() || '';
+    const tag = tile?.querySelector('.mt small')?.textContent?.trim() || '';
+    const copy = clean(src) as HTMLElement;
+    copy.querySelectorAll('[data-mti]').forEach((e) => e.remove());
+    let parts: Element[] = [...copy.children];
+    if (copy.tagName === 'DETAILS') {
+      const sum = copy.querySelector(':scope>summary');
+      parts = [...(sum ? [...sum.children] : []), ...parts.filter((e) => e !== sum)];
+    }
+    const body = parts.filter((e) => (e.textContent || '').trim() || e.querySelector('img,svg,table'));
     return { tag, title, body };
   }
   // a long paragraph or callout: titled by its section heading

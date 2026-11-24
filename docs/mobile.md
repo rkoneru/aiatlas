@@ -34,7 +34,7 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 - `spar` on `/agents/`
 - `mcpseq` on `/mcp-protocol/`
 
-### Text folds under its heading
+### Text folds under its heading (course, playground, Team mode)
 
 **Code:** `src/lib/collapse-inline.ts`, an inline script in `BaseLayout`.
 
@@ -44,27 +44,40 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 - **Timing:** the script runs before first paint on the server-rendered page. It runs again when the runtime restores the original markup, so folding causes no layout shift.
 - **Reopening:** a search highlight or a link that points inside a folded section opens it.
 
-### App layout (trial on `/agentic-coding/`)
+### App layout (every page)
 
 **Code:**
-- `src/lib/collapse-inline.ts`: builds the tiles before first paint; `APP` lists the pages that use the layout.
-- `src/scripts/mobile.ts`: the bottom sheet.
+- `src/lib/collapse-inline.ts`: builds the tiles before first paint.
+- `src/scripts/mobile.ts`: the bottom sheet and the section tabs.
 - `src/styles/site.css`: "App layout on phones" and "Bottom sheet".
 
-The page reads like an app screen: short, scannable, with detail one tap away.
+Every page except the course, the playground and Team mode (`NOT_APP`) reads like an app screen: short and scannable, with detail one tap away.
 
-- **Icon tiles:** every group of text cards and every table becomes a two-column grid of small tiles (about 60 px tall). Each tile has an icon chosen from its title (code, test, shield, people, metrics and so on), its label if it has one, and a two-line title.
-- **Bottom sheet:** tapping a tile opens its full content in a sheet. Cards show their text; table rows show every column with its column name.
-  - **Previous / Next** step through the tiles of that section, with a position counter ("2 of 6").
-  - **Closing:** ×, the backdrop, Esc, or swiping down on the sheet header all close it.
-  - **Built on `<dialog>`:** the sheet is a native `<dialog>` opened with `showModal()`, so focus is trapped inside and returns to the tile.
-- **Long text:** the intro, notes and callouts are clipped to two or three lines. "Read more" opens the full text in the same sheet.
+- **Icon tiles:** text cards and table rows become a two-column grid of small tiles (about 60 px tall). Each tile has an icon chosen from its title (code, test, shield, people, metrics and so on), its label if it has one, and a two-line title.
+- **Lists the runtime draws** (glossary, agent catalogue, release log, roadmaps…) become tiles too:
+  - **When:** on the first render, and again as the runtime's last statement (`AFTER` in `scripts/build-runtime.ts`), before paint.
+  - **Filters:** a search or filter that redraws the list rebuilds its tiles, so the glossary search works the same.
+- **Bottom sheet:** tapping a tile opens its full content. Cards show their text; table rows show every column with its name.
+  - **Previous / Next** step through the tiles of that group, with a counter ("2 of 6").
+  - **Closing:** ×, the backdrop, Esc, or a swipe down on the sheet header.
+  - **Built on `<dialog>`:** the sheet is a native `<dialog>` opened with `showModal()`, so focus is trapped and returns to the tile.
+- **Long text:** paragraphs and callouts over about 140 characters are clipped to two or three lines, and "Read more" opens them in the sheet.
 - **Section tabs:** a sticky bar under the app bar jumps between sections and highlights the one in view.
-- **Hidden originals:** the original cards and tables stay in the page, hidden on phones, so search, crawlers and the sheet all use the same content. A search match inside one opens its sheet.
-- **Length:** the page is about 3,000 px tall on an iPhone 13, against 4,900 px with expandable cards.
-- **Checks:** axe reports 0 violations at 390 px, light and dark, with the sheet closed and open.
+- **What stays as it is:**
+  - anything with form controls or buttons (calculators, quizzes, rating cards such as AI Acumen's);
+  - diagrams;
+  - stat boxes (numeric titles);
+  - containers the runtime fills with a single result.
+- **Hidden originals:** the original cards and tables stay in the page, hidden on phones, so search, crawlers and the sheet use the same content. A search match inside one opens its sheet.
 
-Other pages keep the section folding above until the trial is approved. To switch a page over, add its id to `APP`.
+**Page heights at 390 px:**
+
+| Page | Before | After |
+|---|---|---|
+| `/glossary/` | 54,800 px | 16,800 px |
+| `/changes/` | 11,000 px | 4,700 px |
+| `/agent-catalog/` | 10,300 px | 4,500 px |
+| `/agentic-coding/` | 4,900 px | 3,000 px |
 
 ### Compact type and controls
 

@@ -87,28 +87,22 @@ test('phone: diagrams are laid out top to bottom and fit the screen', async ({ b
   await ctx.close();
 });
 
-test('phone: text-only sections fold under their heading; diagrams stay open', async ({ browser }) => {
+test('phone: lists the runtime draws become tiles and follow its filters (glossary)', async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const page = await ctx.newPage();
   const errors = watchErrors(page);
-  await page.goto(url('agent-evals'));
-  const toggles = page.locator('main h2.mc-h .mc-t');
-  expect(await toggles.count()).toBeGreaterThanOrEqual(4);
-  await expect(page.locator('main [data-flow] svg.fsvg.mob')).toBeVisible();
-  const table = page.locator('main table').first();
-  await expect(table).toBeHidden();
-  const first = toggles.first();
-  await expect(first).toHaveAttribute('aria-expanded', 'false');
-  await first.tap();
-  await expect(first).toHaveAttribute('aria-expanded', 'true');
-  await expect(table).toBeVisible();
-  await first.tap();
-  await expect(table).toBeHidden();
-  // Something pointing inside a folded section (a search highlight) opens it.
-  const card = page.locator('main .mc-b.grid .card h3').first();
-  await expect(card).toBeHidden();
-  await card.evaluate((h) => { const m = document.createElement('mark'); m.textContent = 'x'; h.appendChild(m); });
-  await expect(card).toBeVisible();
+  await page.goto(url('glossary'));
+  const tiles = page.locator('.mtile:visible');
+  await expect.poll(() => tiles.count()).toBeGreaterThan(250);
+  await expect(page.locator('#glList .card').first()).toBeHidden();
+  await page.locator('#glQ').fill('rerank');
+  await expect(tiles).toHaveCount(1);
+  await expect(tiles.first()).toContainText('Reranking');
+  await tiles.first().tap();
+  await expect(page.locator('dialog.msheet .ms-body')).toContainText('cross-encoder');
+  await page.keyboard.press('Escape');
+  await page.locator('#glQ').fill('');
+  await expect.poll(() => tiles.count()).toBeGreaterThan(250);
   expect(errors).toEqual([]);
   await ctx.close();
 });

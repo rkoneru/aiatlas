@@ -6,7 +6,7 @@
  * form control, a canvas or SVG, a button, or an element with an id (something the runtime
  * fills in). src/scripts/mobile.ts reopens a section when a link or search points inside it.
  *
- * App layout (pages in APP, trial): each group of text cards and each table becomes a grid of
+ * App layout (every page except NOT_APP): each group of text cards and each table becomes a grid of
  * small icon tiles; tapping a tile opens its full content in a bottom sheet (src/scripts/mobile.ts).
  * Long paragraphs are clipped with "Read more", which opens the same sheet. Sticky section tabs
  * sit above the content. The original markup stays in the page, hidden on phones (.m-src).
@@ -34,7 +34,8 @@ function walk(s){
  flush();
 }
 /* ---- App layout (trial pages): icon tiles; content opens in a sheet (src/scripts/mobile.ts) ---- */
-var APP={'agentic-coding':1};
+// Every page uses the app layout except full-screen tools.
+var NOT_APP={'course':1,'playground':1,'team':1};
 var FIXED='input,select,textarea,button,canvas,svg,[id],[data-flow]';
 // 24px stroke icons, chosen by keywords in a tile's title and tag
 var IC={
@@ -56,31 +57,32 @@ var IC={
  check:'M5 12l5 5 9-10',
  layers:'M12 3l9 5-9 5-9-5zM3 13l9 5 9-5'
 };
-var RULES=[[/pull request|merge/,'git'],[/inject|secur|attack|supply chain|threat|destruct/,'shield'],[/test|eval|benchmark/,'flask'],[/sandbox|isolat|container/,'box'],[/review|watch|observ|explor/,'eye'],[/human|people|role|junior|atroph/,'user'],[/tool|skill|mcp|integrat/,'wrench'],[/metric|measur|rate|kpi|throughput|defect/,'chart'],[/cost|price|budget/,'coin'],[/time|cycle|schedul|background/,'clock'],[/agent|bot|autonom|fleet/,'bot'],[/spec|doc|instruction|context|file/,'file'],[/code|repo|refactor|migrat|bug|completion|edit/,'code'],[/risk|fail|danger|vague|poor/,'alert'],[/fast|speed|latency/,'bolt'],[/good|fit/,'check']];
+var RULES=[[/pull request|merge/,'git'],[/inject|secur|attack|supply chain|threat|destruct/,'shield'],[/test|\\beval|benchmark/,'flask'],[/sandbox|isolat|container/,'box'],[/review|watch|observ|explor/,'eye'],[/human|people|role|junior|atroph/,'user'],[/tool|skill|mcp|integrat/,'wrench'],[/metric|measur|rate|kpi|throughput|defect/,'chart'],[/cost|price|budget/,'coin'],[/time|cycle|schedul|background/,'clock'],[/agent|bot|autonom|fleet/,'bot'],[/spec|doc|instruction|context|file/,'file'],[/code|repo|refactor|migrat|bug|completion|edit/,'code'],[/risk|fail|danger|vague|poor/,'alert'],[/fast|speed|latency/,'bolt'],[/good|fit/,'check']];
 var COLORS=['blue','purple','green','orange','pink','teal'];
 function icon(t){t=t.toLowerCase();for(var i=0;i<RULES.length;i++)if(RULES[i][0].test(t))return IC[RULES[i][1]];return IC.layers;}
 function esc(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
 var mk=0;
-function tile(src,title,tag,color,i){
- src.setAttribute('data-mk',++mk);
+function tile(src,title,tag,color,i,tEl){
+ src.setAttribute('data-mk',++mk);if(tEl)tEl.setAttribute('data-mti','');
  return '<button type="button" class="mtile" data-mk="'+mk+'" style="--c:var(--'+(color||COLORS[i%COLORS.length])+')">'+
   '<span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="'+icon(title+' '+(tag||''))+'"/></svg></span>'+
   '<span class="mt">'+(tag?'<small>'+esc(tag)+'</small>':'')+'<b>'+esc(title)+'</b></span></button>';
 }
 function grid(before,html){var g=document.createElement('div');g.className='mgrid';g.innerHTML=html;before.parentNode.insertBefore(g,before);}
-function tagColor(t){var m=/var\(--(\w+)\)/.exec(t&&t.getAttribute('style')||'');return m&&m[1];}
+function live(el,s){for(var x=el.parentElement;x&&x!==s;x=x.parentElement)if(x.id&&!x.classList.contains('merged'))return true;return false;}
+function tagColor(t){var m=/var\\(--(\\w+)\\)/.exec(t&&t.getAttribute('style')||'');return m&&m[1];}
 function cards(s){
  [].slice.call(s.querySelectorAll('.grid')).forEach(function(g){
-  if(g.closest('[data-flow],.fwrap,.src-box,.ptools,.atlas-a11y,.m-src'))return;
+  if(g.closest('[data-flow],.fwrap,.src-box,.ptools,.atlas-a11y,.m-src')||g.id||live(g,s))return;
   var cs=[].slice.call(g.children).filter(function(c){return c.classList.contains('card')&&!c.querySelector(FIXED)&&c.querySelector(':scope>h3');});
   if(!cs.length||cs.length!==g.children.length)return;
-  grid(g,cs.map(function(c,i){var t=c.querySelector(':scope>.tag');return tile(c,c.querySelector(':scope>h3').textContent.trim(),t&&t.textContent.trim(),tagColor(t),i);}).join(''));
+  grid(g,cs.map(function(c,i){var t=c.querySelector(':scope>.tag'),h=c.querySelector(':scope>h3');if(t)t.setAttribute('data-mti','');return tile(c,h.textContent.trim(),t&&t.textContent.trim(),tagColor(t),i,h);}).join(''));
   g.classList.add('m-src');
  });
 }
 function tables(s){
  [].slice.call(s.querySelectorAll('table')).forEach(function(t){
-  if(t.closest('[data-flow],.src-box,.ptools,.m-src')||t.querySelector('input,select,textarea,button,[id]'))return;
+  if(t.closest('[data-flow],.src-box,.ptools,.m-src')||t.querySelector('input,select,textarea,button,[id]')||t.id||live(t,s))return;
   var rows=[].slice.call(t.rows),head=rows[0]&&rows[0].querySelector('th')?rows[0]:null;
   var body=rows.filter(function(r){return r!==head&&r.cells.length>1;});if(body.length<2)return;
   var wrap=t.closest('.card.tablewrap')||t;
@@ -89,8 +91,8 @@ function tables(s){
  });
 }
 function longText(s){
- [].slice.call(s.querySelectorAll(':scope>p,:scope>.callout,:scope>.lead')).forEach(function(p){
-  if(p.querySelector(FIXED)||p.textContent.length<140||p.nextElementSibling&&p.nextElementSibling.classList.contains('mmore'))return;
+ [].slice.call(s.querySelectorAll(':scope>p,:scope>.callout,:scope>.merged>p,:scope>.merged>.callout')).forEach(function(p){
+  if(p.id||p.querySelector(FIXED)||live(p,s)||p.textContent.length<140||p.nextElementSibling&&p.nextElementSibling.classList.contains('mmore'))return;
   p.classList.add('m-clamp');p.setAttribute('data-mk',++mk);
   var b=document.createElement('button');b.type='button';b.className='mmore';b.setAttribute('data-mk',mk);b.textContent='Read more';
   p.parentNode.insertBefore(b,p.nextSibling);
@@ -98,15 +100,76 @@ function longText(s){
 }
 function tabs(s){
  var hs=[].slice.call(s.querySelectorAll('h2')).filter(function(h){return !h.closest('[data-flow],.src-box,.atlas-a11y');});
- if(hs.length<2||document.querySelector('nav.mtabs'))return;
+ var old=document.querySelector('nav.mtabs');if(old)old.remove(); // rebuilt after the runtime restores the page
+ if(hs.length<2)return;
  var n=document.createElement('nav');n.className='mtabs';n.setAttribute('aria-label','Sections on this page');n.setAttribute('style',s.getAttribute('style')||'');
  var h='';hs.forEach(function(x,i){h+='<button type="button" data-i="'+i+'">'+esc(x.textContent)+'</button>';});
  n.innerHTML=h;s.parentNode.insertBefore(n,s);
 }
-function app(s){mk=0;document.documentElement.classList.add('m-app');cards(s);tables(s);longText(s);tabs(s);}
+/* Cards the runtime draws into a container (glossary, catalogues, release log...). Runs on the
+   first render and again as the runtime's last statement; rebuilds when a filter re-renders. */
+var TSEL=':scope>h3,:scope>summary b,:scope>.gl-th>b,:scope>div>h3,:scope>h4,:scope>b,:scope>div>b,:scope>strong';
+var NOPE='input,select,textarea,button,canvas,svg,[data-flow]';
+function titleOf(c){
+ var t=c.querySelector(TSEL);if(!t)return null;
+ var x=t.cloneNode(true);[].slice.call(x.querySelectorAll('.muted,.pill,small')).forEach(function(e){e.remove();});
+ var txt=x.textContent.replace(/\\s+/g,' ').trim();
+ if(!txt||txt.length>90||/^[\\d.,%$€£+\\-–~×x\\s]+$/.test(txt))return null; // stat boxes ("308") stay as they are
+ return [t,txt];
+}
+function tagOf(c,tEl){var g=c.querySelector('.gl-tag,.pill,.tag,.ch-v');return g&&!tEl.contains(g)&&g.textContent.length<50?g:null;}
+function textCards(E,root){
+ var k=[].slice.call(E.children);
+ // a small group (a glossary letter with one or two terms, or a filtered result) counts when this
+ // container already had groups like it tiled, or has at least three of them
+ var cls=E.classList[0],seen=root&&root.__mcls&&cls&&root.__mcls[cls];
+ var min=cls&&!E.id&&(seen||E.parentElement.querySelectorAll(':scope>.'+cls).length>=3)?1:3;
+ if(k.length<min)return null;
+ return k.every(function(c){return c.classList.contains('card')&&!c.querySelector(NOPE)&&titleOf(c);})?k:null;
+}
+var mbox=0,observers=[];
+function dynList(E,root){
+ var key=E.id||E.getAttribute('data-mbox');if(!key){key='b'+(++mbox);E.setAttribute('data-mbox',key);}
+ var prev=E.previousElementSibling;if(prev&&prev.classList.contains('mgrid')&&prev.getAttribute('data-for')===key)prev.remove();
+ E.classList.remove('m-src');
+ var kids=textCards(E,root);if(!kids)return;
+ if(root&&E.classList[0]){root.__mcls=root.__mcls||{};root.__mcls[E.classList[0]]=1;}
+ var shown=kids.filter(function(c){return !c.hidden&&c.style.display!=='none';});
+ var html=shown.map(function(c,i){var ti=titleOf(c),tg=tagOf(c,ti[0]);if(tg)tg.setAttribute('data-mti','');var col=/var\\(--(\\w+)\\)/.exec(c.getAttribute('style')||'');return tile(c,ti[1],tg&&tg.textContent.trim(),col&&col[1],i,ti[0]);}).join('');
+ var g=document.createElement('div');g.className='mgrid';g.setAttribute('data-for',key);g.innerHTML=html||'<p class="muted">Nothing to show.</p>';
+ E.parentNode.insertBefore(g,E);E.classList.add('m-src');
+}
+/* Lists of text cards the runtime draws (glossary, catalogues, release log...): tiled on the first
+   render, again as the runtime's last statement, and whenever a filter or search re-renders them. */
+function scan(root,s){
+ var list=[root].concat([].slice.call(root.querySelectorAll('div,ul,ol')));
+ list.forEach(function(E){
+  if(E===s||E.closest('[data-flow],.src-box,.ptools,.mgrid,.atlas-a11y')||(E.parentElement&&E.parentElement.closest('.m-src')))return;
+  var mine=E.id||E.hasAttribute('data-mbox');
+  if(E.classList.contains('m-src')&&!mine)return; // a static grid already tiled
+  if(!E.id&&!live(E,s))return;                  // only runtime-filled content
+  if(!mine&&!textCards(E,root))return;
+  dynList(E,root);
+ });
+ observers.forEach(function(o){o.takeRecords();}); // ignore our own changes
+}
+window.__atlasDyn=function(s){
+ if(!s||!document.documentElement.classList.contains('m-app'))return;
+ [].slice.call(s.querySelectorAll('[id]')).forEach(function(root){
+  if(root.classList.contains('merged')||root.closest('[data-flow],.src-box,.ptools,.mgrid')||live(root,s))return; // nested lists are scanned with their outermost container
+  scan(root,s);
+  if(!root.__mwatch&&window.MutationObserver){
+   root.__mwatch=1;var q=0;
+   var o=new MutationObserver(function(){if(q)return;q=1;setTimeout(function(){q=0;scan(root,s);},0);});
+   o.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['style','hidden']});observers.push(o);
+  }
+ });
+ observers.forEach(function(o){o.takeRecords();});
+};
+function app(s){mk=0;document.documentElement.classList.add('m-app');cards(s);tables(s);longText(s);tabs(s);window.__atlasDyn(s);}
 window.__atlasMC=function(s){
  if(!s||!window.matchMedia||!matchMedia(MQ).matches)return;
- if(APP[document.documentElement.getAttribute('data-page')])app(s);else walk(s);
+ if(!NOT_APP[document.documentElement.getAttribute('data-page')])app(s);else walk(s);
 };
 document.addEventListener('click',function(e){
  var t=e.target&&e.target.closest&&e.target.closest('.mtabs button');if(!t)return;
