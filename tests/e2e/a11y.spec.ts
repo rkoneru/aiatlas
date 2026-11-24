@@ -15,6 +15,9 @@ for (const scheme of ['light', 'dark'] as const) {
       const page = await ctx.newPage();
       await page.goto(url(p.id));
       await page.waitForTimeout(700);
+      // Long lists use content-visibility: auto (site.css), so off-screen cards have no layout yet
+      // and axe would read their targets as zero-sized. Render everything before measuring.
+      await page.addStyleTag({ content: '*{content-visibility:visible!important}' });
       const r = await new AxeBuilder({ page }).withTags(TAGS).analyze();
       const bad = r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')
         .map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`);
