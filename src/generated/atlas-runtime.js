@@ -3848,7 +3848,7 @@ function render(){chips(document.getElementById('accov'),[['all','All'],['d','De
  chips(document.getElementById('accat'),[['all','All areas'],...AC_CATS.map(c=>[c[0],c[1]])],()=>fCat,v=>fCat=v);
  chips(document.getElementById('acme'),[['all','Any'],['unrated','Unrated'],['new','New to me'],['learn','Learning'],['know','Confident']],()=>fMe,v=>fMe=v);
  stats();table();grid();}
-document.getElementById('acq').addEventListener('input',grid);
+{let _acT;document.getElementById('acq').addEventListener('input',()=>{clearTimeout(_acT);_acT=setTimeout(grid,120);});}
 document.getElementById('acreset').onclick=()=>{if(!Object.keys(me).length)return;me={};save();render();};
 render();gaps();
 })();
@@ -4456,7 +4456,7 @@ const lbl=id=>{const a=document.querySelector(`#nav a[data-href="#${id}"]`);if(a
   $('glAz').innerHTML='ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('').map(c=>groups[c]?`<a href="javascript:void 0" data-l="${c}">${c}</a>`:`<span>${c}</span>`).join('');
   $('glN').textContent=`${L.length} of ${T.length} terms`;
   $('glList').innerHTML=letters.map(c=>`<h2 class="gl-let" id="gl-${c==='#'?'num':c}">${c}</h2><div class="gl-grid">${groups[c].map(t=>{const ct=CT[t.c]||[t.c,'gray'];return `<div class="card gl-t" style="--c:var(--${ct[1]})"><div class="gl-th"><b>${H(t.n)}</b><span class="gl-tag">${H(ct[0])} · ${LV[t.l]||''}</span></div><p class="muted">${H(t.d)}</p>${t.p&&ATLAS.exists(t.p)?`<a href="#${t.p}">→ ${H(lbl(t.p))}</a>`:''}</div>`;}).join('')}</div>`).join('')||'<p class="muted">No terms match.</p>';};
- $('glQ').oninput=e=>{q=e.target.value.trim();draw();};
+ let _glT;$('glQ').oninput=e=>{q=e.target.value.trim();clearTimeout(_glT);_glT=setTimeout(draw,120);};
  $('glCat').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;cat=b.dataset.c;$('glCat').querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b));draw();};
  $('glAz').onclick=e=>{const a=e.target.closest('[data-l]');if(!a)return;const el=$('gl-'+(a.dataset.l==='#'?'num':a.dataset.l));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
  draw();})();

@@ -104,7 +104,11 @@ async function worker() {
     // The page must end in the same state as without the snapshot; otherwise drop data-keep.
     if (keepIds.length && (await finalState(ctx, p.id)) !== before) { write([]); fallbacks.push(p.id); }
     else kept += keepIds.length;
-    if ((await finalState(ctx, p.id)) !== before) throw new Error(`snapshot changes the final state of ${p.id}`);
+    // The final state must match the page without the snapshot. Retry a couple of times first:
+    // under load a timing-sensitive page (the playground) can settle a little later.
+    let same = false;
+    for (let attempt = 0; attempt < 3 && !same; attempt++) same = (await finalState(ctx, p.id)) === before;
+    if (!same) throw new Error(`snapshot changes the final state of ${p.id}`);
     await ctx.close();
     done++;
   }

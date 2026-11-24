@@ -98,14 +98,27 @@ function longText(s){
   p.parentNode.insertBefore(b,p.nextSibling);
  });
 }
+function tabHeads(root){return [].slice.call(root.querySelectorAll('h2')).filter(function(h){return !h.closest('[data-flow],.src-box,.atlas-a11y')&&!live(h,root);});}
 function tabs(s){
- var hs=[].slice.call(s.querySelectorAll('h2')).filter(function(h){return !h.closest('[data-flow],.src-box,.atlas-a11y');});
- var old=document.querySelector('nav.mtabs');if(old)old.remove(); // rebuilt after the runtime restores the page
+ // Headings from the page's own markup only. Before the runtime runs, that markup waits in the
+ // atlas-src template while the server snapshot (which also has headings the runtime adds, such
+ // as "Key formulas" or glossary letters) is on screen; using the template keeps the bar the same
+ // before and after, so it never shifts the page. (Don't write the template's tag here: the build
+ // looks for it in the page HTML.)
+ var tpl=document.getElementById('atlas-src');
+ var src=tpl&&tpl.content?tpl.content:s;
+ var hs=tabHeads(src.nodeType===11?wrapFrag(src):src);
+ if(src===s)hs.forEach(function(h,i){h.setAttribute('data-mtab',i);});
+ var old=document.querySelector('nav.mtabs');
+ if(old&&old.getAttribute('data-n')===String(hs.length))return; // same bar
+ if(old)old.remove();
  if(hs.length<2)return;
- var n=document.createElement('nav');n.className='mtabs';n.setAttribute('aria-label','Sections on this page');n.setAttribute('style',s.getAttribute('style')||'');
+ var n=document.createElement('nav');n.className='mtabs';n.setAttribute('aria-label','Sections on this page');n.setAttribute('style',s.getAttribute('style')||'');n.setAttribute('data-n',hs.length);
  var h='';hs.forEach(function(x,i){h+='<button type="button" data-i="'+i+'">'+esc(x.textContent)+'</button>';});
  n.innerHTML=h;s.parentNode.insertBefore(n,s);
 }
+// live() walks up to a root element; a template's content is a fragment, so give it one
+function wrapFrag(f){var d=document.createElement('div');d.appendChild(f.cloneNode(true));return d;}
 /* Cards the runtime draws into a container (glossary, catalogues, release log...). Runs on the
    first render and again as the runtime's last statement; rebuilds when a filter re-renders. */
 var TSEL=':scope>h3,:scope>summary b,:scope>.gl-th>b,:scope>div>h3,:scope>h4,:scope>b,:scope>div>b,:scope>strong';
@@ -158,7 +171,8 @@ window.__atlasDyn=function(s){
  [].slice.call(s.querySelectorAll('[id]')).forEach(function(root){
   if(root.classList.contains('merged')||root.closest('[data-flow],.src-box,.ptools,.mgrid')||live(root,s))return; // nested lists are scanned with their outermost container
   scan(root,s);
-  if(!root.__mwatch&&window.MutationObserver){
+  // watch only containers that hold cards or are still empty (filled later); not calculators
+  if(!root.__mwatch&&window.MutationObserver&&(root.querySelector('.card')||!root.children.length)){
    root.__mwatch=1;var q=0;
    var o=new MutationObserver(function(){if(q)return;q=1;setTimeout(function(){q=0;scan(root,s);},0);});
    o.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['style','hidden']});observers.push(o);
@@ -174,8 +188,7 @@ window.__atlasMC=function(s){
 document.addEventListener('click',function(e){
  var t=e.target&&e.target.closest&&e.target.closest('.mtabs button');if(!t)return;
  var s=document.querySelector('main>section');
- var hs=[].slice.call(s.querySelectorAll('h2')).filter(function(h){return !h.closest('[data-flow],.src-box,.atlas-a11y');});
- var h=hs[+t.getAttribute('data-i')];if(!h)return;
+ var h=s.querySelector('h2[data-mtab="'+t.getAttribute('data-i')+'"]');if(!h)return;
  var bar=document.querySelector('nav.mtabs'),off=(bar?bar.getBoundingClientRect().bottom:0)+8;
  window.scrollTo({top:h.getBoundingClientRect().top+window.scrollY-off,behavior:'smooth'});
 });

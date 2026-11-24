@@ -29,6 +29,8 @@ The Atlas's AI features (Ask the Atlas, "Describe it" and "Improve with Claude",
   - The widget is invisible unless Cloudflare asks for an interaction; then it appears in the bottom-right corner, labelled "Security check".
   - Without the site key nothing loads, and a page can still provide `window.atlasTurnstileToken = async () => token` itself.
   - Tested in `tests/e2e/ai.spec.ts` with a stand-in widget.
+- **Client IP:** rate limits key on Cloudflare's `CF-Connecting-IP`, which clients can't set. `X-Real-IP` and `X-Forwarded-For` are ignored unless `TRUST_FORWARDED=on`; set that only behind a proxy that writes those headers itself, otherwise a script could rotate them to dodge the per-IP limit.
+- **Origin check:** this stops other websites from calling the proxy from a browser. It doesn't stop scripts, which can send any `Origin` header. The per-IP limits, the global daily cap and (optionally) Turnstile are what bound abuse.
 - **Logging:** one JSON line per request, with time, tier, model, character count, message and image counts, the JSON flag, stop reason, token counts, status, error code and duration. **No prompt, reply or IP is ever logged.**
 
 ## Cost

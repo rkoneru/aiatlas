@@ -123,9 +123,6 @@ input[type=checkbox],input[type=radio]{flex-shrink:0}
 
 /* ---------- App layout on phones (trial pages: src/lib/collapse-inline.ts APP) ---------- */
 @media (max-width: 640px) {
-  /* `overflow-x: hidden` on main (atlas.css) makes it a scroll container, which breaks sticky
-     children; `clip` hides overflow the same way without that. */
-  main { overflow-x: clip; }
 
   /* Section tabs: sticky under the app bar, scroll sideways, the section in view highlighted. */
   nav.mtabs {
@@ -221,3 +218,18 @@ html.ms-open { overflow: hidden; }
 .ms-foot button:focus-visible, .ms-x:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .ms-pos { font-size: 13px; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { dialog.msheet[open], .mtile { animation: none; transition: none; } }
+
+/* Long lists (glossary, AI Acumen, release log, agent catalogue): the browser skips layout and
+   paint for cards that are off-screen until they scroll near. `auto` remembers each card's real
+   size once it has been rendered. */
+.gl-grid > .card, #acgrid .ac-card, .ch-c, #aclist > .card, #idgrid > .card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 160px;
+}
+
+/* WCAG 2.5.8: the ✕ remove buttons (vendor comparison, playground) need a 24 px target at every width. */
+.pg-x { min-width: 24px; min-height: 24px; }
+
+/* `overflow-x: hidden` on main below 861px (atlas.css) makes it a scroll container, which breaks
+   sticky children (the course bar, the phone section tabs); `clip` hides overflow without that. */
+@media (max-width: 860px) { main { overflow-x: clip; } }

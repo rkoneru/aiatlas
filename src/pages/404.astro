@@ -22,8 +22,10 @@ const quick = ['overview', 'paths', 'glossary', 'course'].map((id) => PAGES.find
   <div class="card" id="nf-sugg" hidden><h3>Closest pages to this address</h3><ul class="nf-list"></ul></div>
   <div class="card"><h3>Start here</h3><ul class="nf-list">{quick.map((q) => <li><a href={q.u}>{q.t}</a></li>)}</ul></div>
 
-<script slot="scripts" is:inline define:vars={{ list, merged, base: BASE }}>
+<script slot="scripts" type="application/json" id="nf-data" set:html={JSON.stringify({ list, merged, base: BASE }).replace(/</g, '\\u003c')}></script>
+<script slot="scripts" is:inline>
 (function () {
+  var D = JSON.parse(document.getElementById('nf-data').textContent), list = D.list, merged = D.merged, base = D.base;
   var path = decodeURIComponent(location.pathname.slice(base.length)).toLowerCase();
   var words = path.split(/[^a-z0-9]+/).filter(Boolean);
   var slug = words.join('-');

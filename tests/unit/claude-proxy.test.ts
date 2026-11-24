@@ -149,3 +149,15 @@ test('non-POST and non-JSON are rejected', async () => {
   r = await handle(req('not json'), env(), { log: () => {} });
   assert.equal(r.status, 400);
 });
+
+test('rate limiting ignores X-Forwarded-For unless TRUST_FORWARDED=on', async () => {
+  const ok = async () => ({ content: [{ type: 'text', text: 'hi' }], stop_reason: 'end_turn', usage: { input_tokens: 1, output_tokens: 1 } }) as any;
+  // no CF-Connecting-IP: a client rotating X-Forwarded-For still lands in one bucket
+  const noCf = (xff: string) => new Request('https://atlas.example.com/api/claude', { method: 'POST', headers: { origin: ORIGIN, 'content-type': 'application/json', 'x-forwarded-for': xff }, body: JSON.stringify({ prompt: 'p' }) });
+  let e = env({ RATE_LIMIT_PER_HOUR: '2' });
+  for (const ip of ['10.0.0.1', '10.0.0.2']) assert.equal((await handle(noCf(ip), e, { createMessage: ok, log: () => {} })).status, 200);
+  assert.equal((await handle(noCf('10.0.0.3'), e, { createMessage: ok, log: () => {} })).status, 429);
+  // trusted behind a proxy that sets the header itself
+  e = env({ RATE_LIMIT_PER_HOUR: '2', TRUST_FORWARDED: 'on' });
+  for (const ip of ['10.0.0.1', '10.0.0.2', '10.0.0.3']) assert.equal((await handle(noCf(ip), e, { createMessage: ok, log: () => {} })).status, 200);
+});

@@ -24,3 +24,8 @@ test('numeric stat titles are rejected, real titles are kept', () => {
   for (const t of ['308', '42%', '~1.5 KB'.replace(' KB', ''), '3 – 5']) assert.ok(stat.test(t), t);
   for (const t of ['Prompt injection', 'v23 release', 'Agent fleets']) assert.ok(!stat.test(t), t);
 });
+
+test('the script never contains the snapshot template tag (scripts/snapshot.mjs searches the HTML for it)', () => {
+  assert.ok(!COLLAPSE_INLINE.includes('id="atlas-src"'));
+  assert.ok(!COLLAPSE_INLINE.includes('<template'));
+});

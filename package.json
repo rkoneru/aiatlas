@@ -28,7 +28,7 @@
     "acorn": "^8.19.0",
     "acorn-walk": "^8.3.5",
     "esbuild": "^0.28.2",
-    "lighthouse": "^12.8.2",
+    "lighthouse": "^13.6.0",
     "node-html-parser": "^6.1.13",
     "playwright": "1.63.0",
     "satori": "^0.12.2",

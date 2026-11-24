@@ -35,6 +35,8 @@ export interface Env {
   DAILY_REQUEST_CAP?: string;
   /** Salt for hashing client IPs before they become KV keys. */
   IP_HASH_SALT?: string;
+  /** 'on' to trust X-Real-IP / X-Forwarded-For for rate limiting (only behind a proxy that sets them). */
+  TRUST_FORWARDED?: string;
   /** Set to require a Cloudflare Turnstile token in the request body. */
   TURNSTILE_SECRET?: string;
   RATE_KV?: KV;
@@ -156,7 +158,10 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
     const { messages, chars, images } = buildMessages(body);
     Object.assign(entry, { tier, model, chars, images, msgs: messages.length, json: !!body.json });
 
-    const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip') || (request.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'unknown';
+    // Cloudflare sets CF-Connecting-IP and clients can't override it. X-Real-IP / X-Forwarded-For are
+    // only trusted when TRUST_FORWARDED=on (another host or proxy that sets them itself).
+    const fwd = env.TRUST_FORWARDED === 'on' ? request.headers.get('x-real-ip') || (request.headers.get('x-forwarded-for') || '').split(',')[0].trim() : '';
+    const ip = request.headers.get('cf-connecting-ip') || fwd || 'unknown';
     await verifyTurnstile(env, body.turnstile, ip, deps.fetch || fetch);
     await checkLimits(env, ip, now);
 

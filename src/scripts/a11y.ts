@@ -23,8 +23,14 @@ function mark(el: Element, attr: string, value: string) {
 /* ---------- names for unlabelled form controls ---------- */
 function hasName(el: HTMLElement) {
   if (el.getAttribute('aria-label') || el.getAttribute('aria-labelledby') || el.title) return true;
-  const labels = (el as HTMLInputElement).labels;
-  return !!(labels && [...labels].some((l) => strip(l.textContent)));
+  // A wrapping <label> or <label for=id>. Cheaper than el.labels, which is slow on pages with many fields.
+  const wrap = el.closest('label');
+  if (wrap && strip(wrap.textContent)) return true;
+  if (el.id) {
+    const l = document.querySelector(`label[for="${CSS.escape(el.id)}"]`);
+    if (l && strip(l.textContent)) return true;
+  }
+  return false;
 }
 function contextText(el: HTMLElement): string {
   const ph = el.getAttribute('placeholder');
@@ -60,23 +66,29 @@ function nameControls(root: ParentNode) {
 
 /* ---------- scrollable regions reachable by keyboard ---------- */
 const FOCUSABLE = 'a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"]),summary';
-function scrollRegions(root: ParentNode) {
-  root.querySelectorAll<HTMLElement>('*').forEach((el) => {
+// Only block containers can scroll here; skipping inline elements and SVG internals (diagrams have
+// thousands of shapes) keeps this pass cheap.
+const BOXES = 'div,pre,ul,ol,dl,table,section,nav,aside,details,figure,form,fieldset,main';
+function scrollRegions(els: Iterable<HTMLElement>) {
+  for (const el of els) {
     // Form controls scroll on their own and are already focusable; they can't take role=region.
-    if (el.hasAttribute('tabindex') || el.closest('svg') || el.matches('textarea,select,input,button')) return;
+    if (!el.isConnected || el.hasAttribute('tabindex') || el.closest('svg')) continue;
     const cs = getComputedStyle(el);
-    const sx = /auto|scroll/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 1;
-    const sy = /auto|scroll/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1;
-    if (!sx && !sy) return;
-    if (el.querySelector(FOCUSABLE)) return;
+    const ox = /auto|scroll/.test(cs.overflowX), oy = /auto|scroll/.test(cs.overflowY);
+    if (!ox && !oy) continue;
+    const sx = ox && el.scrollWidth > el.clientWidth + 1;
+    const sy = oy && el.scrollHeight > el.clientHeight + 1;
+    if (!sx && !sy) continue;
+    if (el.querySelector(FOCUSABLE)) continue;
     mark(el, 'tabindex', '0');
     if (!el.getAttribute('role')) mark(el, 'role', 'region');
     if (!el.getAttribute('aria-label')) {
       const h = el.closest('.card,section')?.querySelector('h2,h3,h4');
       mark(el, 'aria-label', strip(h?.textContent) || 'Scrollable content');
     }
-  });
+  }
 }
+const boxesIn = (root: Element): HTMLElement[] => [...(root.matches(BOXES) ? [root as HTMLElement] : []), ...root.querySelectorAll<HTMLElement>(BOXES)];
 
 /* ---------- tabs ---------- */
 function tabRoles(root: ParentNode) {
@@ -130,22 +142,45 @@ function allDiagrams() {
 }
 
 /* ---------- wiring ---------- */
+// The first pass covers the whole page; after that only what the runtime added or changed is
+// checked (added elements, and a few ancestors whose scroll size may have changed).
+let pending = new Set<Element>();
 let queued = false;
-function run() {
-  queued = false;
+function runAll() {
   const main = document.querySelector('main');
   if (!main) return;
   nameControls(document);
   tabRoles(document);
-  scrollRegions(main);
+  scrollRegions(boxesIn(main));
+}
+function runChanged() {
+  queued = false;
+  const roots = [...pending].filter((r) => r.isConnected);
+  pending = new Set();
+  const boxes = new Set<HTMLElement>();
+  for (const r of roots) {
+    if (r.closest('svg')) continue;
+    nameControls(r.parentElement || r);
+    tabRoles(r.closest('[role=tablist]')?.parentElement || r);
+    boxesIn(r).forEach((b) => boxes.add(b));
+    for (let a = r.parentElement, i = 0; a && i < 4 && a.tagName !== 'MAIN'; a = a.parentElement, i++) if (a.matches(BOXES)) boxes.add(a as HTMLElement);
+  }
+  scrollRegions(boxes);
 }
 export function enhanceA11y() {
   diagrams();
   allDiagrams();
-  run();
+  runAll();
   const main = document.querySelector('main');
-  if (main) new MutationObserver(() => { if (!queued) { queued = true; requestAnimationFrame(run); } }).observe(main, { childList: true, subtree: true });
-  addEventListener('resize', () => { if (!queued) { queued = true; requestAnimationFrame(run); } });
+  if (main) new MutationObserver((ms) => {
+    for (const m of ms) {
+      if (m.target instanceof Element && m.target.closest('svg')) continue; // diagram animation
+      m.addedNodes.forEach((n) => { if (n instanceof Element) pending.add(n); else if (n.parentElement) pending.add(n.parentElement); });
+      if (m.target instanceof Element && m.addedNodes.length) pending.add(m.target);
+    }
+    if (pending.size && !queued) { queued = true; requestAnimationFrame(runChanged); }
+  }).observe(main, { childList: true, subtree: true });
+  addEventListener('resize', () => requestAnimationFrame(runAll));
   // Skip link: focus <main> without a hash change (the runtime routes on hash changes).
   document.addEventListener('click', (e) => {
     const a = (e.target as Element | null)?.closest?.('a.skip-link');

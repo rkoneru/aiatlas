@@ -305,7 +305,8 @@ function appTabs() {
   const bar = document.querySelector('nav.mtabs');
   const sec = document.querySelector('main>section');
   if (!bar || !sec) return;
-  const hs = [...sec.querySelectorAll('h2')].filter((h) => !h.closest('[data-flow],.src-box,.atlas-a11y'));
+  // the headings the tab bar points to (src/lib/collapse-inline.ts tabs marks them data-mtab)
+  const hs = [...sec.querySelectorAll<HTMLElement>('h2[data-mtab]')].sort((a, b) => +a.dataset.mtab! - +b.dataset.mtab!);
   const btns = [...bar.querySelectorAll<HTMLElement>('button[data-i]')];
   let cur = -1;
   const onScroll = () => {
@@ -317,7 +318,8 @@ function appTabs() {
     btns.forEach((b, k) => { b.classList.toggle('on', k === i); if (k === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
     if (i >= 0) btns[i].scrollIntoView({ block: 'nearest', inline: 'center' });
   };
-  addEventListener('scroll', onScroll, { passive: true });
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; onScroll(); }); } }, { passive: true });
   onScroll();
 }
 

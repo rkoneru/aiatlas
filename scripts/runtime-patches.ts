@@ -146,6 +146,18 @@ export const PATCHES: Patch[] = [
     replace: '/* resume: see ATLAS.resumeLink() (decision Q2) */',
   },
   {
+    id: 'search-debounce-glossary',
+    why: 'The glossary redrew all 308 terms on every keystroke (up to ~250 ms per key on a phone). It now redraws 120 ms after typing pauses.',
+    find: "$('glQ').oninput=e=>{q=e.target.value.trim();draw();};",
+    replace: "let _glT;$('glQ').oninput=e=>{q=e.target.value.trim();clearTimeout(_glT);_glT=setTimeout(draw,120);};",
+  },
+  {
+    id: 'search-debounce-acumen',
+    why: 'AI Acumen redrew its 308 cards on every keystroke; it now redraws 120 ms after typing pauses.',
+    find: "document.getElementById('acq').addEventListener('input',grid);",
+    replace: "{let _acT;document.getElementById('acq').addEventListener('input',()=>{clearTimeout(_acT);_acT=setTimeout(grid,120);});}",
+  },
+  {
     id: 'flow-hook',
     why: 'Lets src/scripts/mobile.ts wrap Flow.prototype.load before the first diagram is drawn, so phones get a vertical layout on first paint. Does nothing at desktop widths.',
     find: "const stateOrder=['submitted',",
