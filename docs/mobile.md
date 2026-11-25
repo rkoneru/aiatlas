@@ -44,20 +44,27 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 - **Timing:** the script runs before first paint on the server-rendered page. It runs again when the runtime restores the original markup, so folding causes no layout shift.
 - **Reopening:** a search highlight or a link that points inside a folded section opens it.
 
-### Screen layout (trial on `/agentic-coding/`)
+### Screen layout (every page)
 
-**Code:** `src/lib/collapse-inline.ts` (`SCREEN` lists the pages that use it) and `src/styles/site.css` ("Screen layout on phones").
+**Code:** `src/lib/collapse-inline.ts` (`screen`, `tabHeads`, `flowMore`) and `src/styles/site.css` ("Screen layout on phones").
 
-The aim is a page that's light and fits in one or two scrolls. It builds on the app layout below:
+Every page except the course, the playground and Team mode (`NOT_APP`) is laid out to read like an app screen. It builds on the app layout below:
 
-- **Compact header:** the label, the review date and the Infographic button sit on one line; the title is shorter; the summary is two lines, with "Read more".
-- **The diagram first,** with one row of controls: Play, ‹ Prev, Next › and **⋯**. The ⋯ button reveals the Diagram/Sequence switch, Reset, the step list, voice-over and export.
-- **Sections as tabs:** a segmented bar (`role="tablist"`, arrow keys work) shows one section's icon tiles at a time. Tiles still open their full content in the bottom sheet.
-- **Compact footer:** sources and page tools sit in one compact row.
+- **Compact header:** the label, the review date and the Infographic button sit on one line. The title is shorter, and the summary is two lines with "Read more".
+- **Diagrams:** one row of controls: Play, ‹ Prev, Next › and **⋯**. The ⋯ button reveals the Diagram/Sequence switch, Reset, the step list, voice-over and export.
+- **Sections as tabs:**
+  - **How sections are found:** each top-level `h2`, and each merged sub-page (a wrapper with its own headings), becomes one tab in a segmented bar (`role="tablist"`; arrow keys work).
+  - **One at a time:** only the chosen section shows.
+  - **Pages without tabs:** pages with fewer than two sections show everything, as before.
+- **Links and search into another tab:** a link, an old address (`/rag/#rag-math`) or a search highlight that points into another tab selects that tab first, then scrolls to the target.
+- **Hidden diagrams:** diagrams in tabs that start hidden are drawn up front and appear correctly when their tab opens.
 
-**Length:** about 1,440 px on an iPhone 13 (two screens are 1,688 px), against 3,000 px with the app layout alone.
+**Length on an iPhone 13** (tallest tab; two screens are 1,688 px):
+- **17 pages** fit in two screens, and **38** in three.
+- **Median:** about 3,000 px.
+- **Long pages:** what stays long are interactive tools (calculators, playgrounds, quizzes) and merged sub-pages with their own diagrams and tools. The extreme cases are AI Acumen's rating list (308 cards) and the glossary (308 terms).
 
-**Checks:** axe reports 0 violations, light and dark, with ⋯ open, another tab selected and the sheet open. To use it on another page, add the page id to `SCREEN`.
+**Checks:** axe reports 0 violations, light and dark. The page sweep (`tests/e2e/mobile.spec.ts`) checks that no page scrolls sideways and that the trial page fits in two screens.
 
 ### App layout (every page)
 

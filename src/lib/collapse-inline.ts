@@ -98,7 +98,17 @@ function longText(s){
   p.parentNode.insertBefore(b,p.nextSibling);
  });
 }
-function tabHeads(root){return [].slice.call(root.querySelectorAll('h2')).filter(function(h){return !h.closest('[data-flow],.src-box,.atlas-a11y')&&!live(h,root);});}
+// Top-level sections of a page: each direct <h2>, and each merged sub-page (a wrapper that has
+// its own headings), named by its first heading. Returns [{el, label}].
+function tabHeads(root){
+ var out=[];
+ [].slice.call(root.children).forEach(function(el){
+  if(el.matches('[data-flow],.src-box,.atlas-a11y,.ptools,nav.mtabs'))return;
+  if(el.tagName==='H2')out.push({el:el,label:el.textContent.trim()});
+  else if(el.id&&el.querySelector(':scope>h2')){var h=el.querySelector(':scope>h2');out.push({el:el,label:h.textContent.trim()});}
+ });
+ return out;
+}
 function tabs(s){
  // Headings from the page's own markup only. Before the runtime runs, that markup waits in the
  // atlas-src template while the server snapshot (which also has headings the runtime adds, such
@@ -108,13 +118,13 @@ function tabs(s){
  var tpl=document.getElementById('atlas-src');
  var src=tpl&&tpl.content?tpl.content:s;
  var hs=tabHeads(src.nodeType===11?wrapFrag(src):src);
- if(src===s)hs.forEach(function(h,i){h.setAttribute('data-mtab',i);});
+ if(src===s)hs.forEach(function(h,i){h.el.setAttribute('data-mtab',i);});
  var old=document.querySelector('nav.mtabs');
  if(old&&old.getAttribute('data-n')===String(hs.length))return; // same bar
  if(old)old.remove();
  if(hs.length<2)return;
  var n=document.createElement('nav');n.className='mtabs';n.setAttribute('aria-label','Sections on this page');n.setAttribute('style',s.getAttribute('style')||'');n.setAttribute('data-n',hs.length);
- var h='';hs.forEach(function(x,i){h+='<button type="button" data-i="'+i+'">'+esc(x.textContent)+'</button>';});
+ var h='';hs.forEach(function(x,i){h+='<button type="button" data-i="'+i+'">'+esc(x.label)+'</button>';});
  n.innerHTML=h;s.parentNode.insertBefore(n,s);
 }
 // live() walks up to a root element; a template's content is a fragment, so give it one
@@ -150,6 +160,7 @@ function dynList(E,root){
  var shown=kids.filter(function(c){return !c.hidden&&c.style.display!=='none';});
  var html=shown.map(function(c,i){var ti=titleOf(c),tg=tagOf(c,ti[0]);if(tg)tg.setAttribute('data-mti','');var col=/var\\(--(\\w+)\\)/.exec(c.getAttribute('style')||'');return tile(c,ti[1],tg&&tg.textContent.trim(),col&&col[1],i,ti[0]);}).join('');
  var g=document.createElement('div');g.className='mgrid';g.setAttribute('data-for',key);g.innerHTML=html||'<p class="muted">Nothing to show.</p>';
+ if(E.hasAttribute('data-mg')){g.setAttribute('data-mg',E.getAttribute('data-mg'));if(E.classList.contains('mg-on'))g.classList.add('mg-on');} // same tab as the list
  E.parentNode.insertBefore(g,E);E.classList.add('m-src');
 }
 /* Lists of text cards the runtime draws (glossary, catalogues, release log...): tiled on the first
@@ -182,19 +193,19 @@ window.__atlasDyn=function(s){
   }
  });
 };
-/* ---- Screen layout (trial): sections become tabs, one shown at a time, so a page fits in one
+/* ---- Screen layout (every app page): sections become tabs, one shown at a time, so a page fits in one
    or two scrolls; the diagram's secondary controls fold behind "⋯". ---- */
-var SCREEN={'agentic-coding':1};
 var mgSel=0;
 function screen(s){
  document.documentElement.classList.add('m-screen');
  var nav=document.querySelector('nav.mtabs');if(!nav)return;
  var btns=[].slice.call(nav.querySelectorAll('button[data-i]'));
  var labels=btns.map(function(b){return b.textContent.trim();});
- var g=-1,li=0,first=null;
+ var heads=tabHeads(s),hi=0,li=0,g=-1,first=null;
  [].slice.call(s.children).forEach(function(el){
   if(el===nav)return;
-  if(el.tagName==='H2'&&li<labels.length&&el.textContent.trim()===labels[li]){g=li++;if(!first)first=el;}
+  // a new group starts at the next top-level heading whose name matches the next tab
+  if(hi<heads.length&&heads[hi].el===el){if(li<labels.length&&heads[hi].label===labels[li]){g=li++;if(!first)first=el;}hi++;}
   if(g>=0)el.setAttribute('data-mg',g);
  });
  if(!first)return;
@@ -216,7 +227,7 @@ function flowMore(s){
  });
 }
 function app(s){mk=0;document.documentElement.classList.add('m-app');cards(s);tables(s);longText(s);tabs(s);
- if(SCREEN[document.documentElement.getAttribute('data-page')]){screen(s);flowMore(s);}
+ screen(s);flowMore(s);
  window.__atlasDyn(s);}
 window.__atlasMC=function(s){
  if(!s||!window.matchMedia||!matchMedia(MQ).matches)return;

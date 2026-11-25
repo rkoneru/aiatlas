@@ -270,6 +270,7 @@ html.ms-open { overflow: hidden; }
   html.m-screen nav.mtabs button { min-height: 34px; font-size: 13px; }
   html.m-screen main > section > [data-mg]:not(.mg-on) { display: none !important; }
   html.m-screen main > section > h2[data-mg] { display: none; } /* the tab names the section */
+  html.m-screen main > section > div[data-mg] > h2:first-of-type { display: none; } /* merged sub-page: same */
   html.m-screen main > section > .m-clamp:not(.lead) { -webkit-line-clamp: 2; font-size: 13.5px; margin: 10px 2px 0; }
   html.m-screen main > section > .callout.m-clamp { margin-top: 10px; }
 
@@ -283,3 +284,5 @@ html.ms-open { overflow: hidden; }
 }
 /* In dark mode the accent colours are light, so the selected tab needs dark text (WCAG 1.4.3). */
 @media (prefers-color-scheme: dark) { nav.mtabs button.on { color: #0b1020; } }
+/* WCAG 2.5.8: the "Text version of this diagram" toggle keeps a 24 px target in compact layouts. */
+.atlas-a11y > summary { min-height: 24px; padding: 3px 0; line-height: 18px; box-sizing: border-box; }

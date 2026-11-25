@@ -166,6 +166,12 @@ export function flowHook(Flow: any) {
 
 /* ---------- collapsed text: reopen when something points inside ---------- */
 function openFor(el: Element | null) {
+  // screen layout: a section in another tab — select that tab first
+  const grp = el && (el.closest('main>section>[data-mg]') as HTMLElement | null);
+  if (grp && !grp.classList.contains('mg-on')) {
+    (document.querySelector(`nav.mtabs button[data-i="${grp.dataset.mg}"]`) as HTMLElement | null)?.click();
+    if (!el!.closest('.m-src, .m-clamp')) requestAnimationFrame(() => (el as HTMLElement).scrollIntoView({ block: 'start' }));
+  }
   // app layout: content that is only shown in the sheet
   const src = el && (el.closest('.m-src [data-mk], .m-src[data-mk], .m-clamp[data-mk]') as HTMLElement | null);
   if (src) { openSheet(src.getAttribute('data-mk')!); return; }
