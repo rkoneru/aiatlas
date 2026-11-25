@@ -140,7 +140,7 @@ function textCards(E,root){
  if(k.length<min)return null;
  return k.every(function(c){return c.classList.contains('card')&&!c.querySelector(NOPE)&&titleOf(c);})?k:null;
 }
-var mbox=0,observers=[];
+var mbox=0;
 function dynList(E,root){
  var key=E.id||E.getAttribute('data-mbox');if(!key){key='b'+(++mbox);E.setAttribute('data-mbox',key);}
  var prev=E.previousElementSibling;if(prev&&prev.classList.contains('mgrid')&&prev.getAttribute('data-for')===key)prev.remove();
@@ -164,7 +164,9 @@ function scan(root,s){
   if(!mine&&!textCards(E,root))return;
   dynList(E,root);
  });
- observers.forEach(function(o){o.takeRecords();}); // ignore our own changes
+ // Ignore our own changes to this container only. Dropping other containers' records too would
+ // lose a real redraw that happened meanwhile (seen as a missed glossary rebuild in WebKit).
+ if(root.__mobs)root.__mobs.takeRecords();
 }
 window.__atlasDyn=function(s){
  if(!s||!document.documentElement.classList.contains('m-app'))return;
@@ -176,10 +178,9 @@ window.__atlasDyn=function(s){
   if(!root.__mwatch&&window.MutationObserver&&(root.querySelector('.card')||!root.children.length)){
    root.__mwatch=1;var q=0;
    var o=new MutationObserver(function(){if(q)return;q=1;setTimeout(function(){q=0;scan(root,s);},0);});
-   o.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['style','hidden']});observers.push(o);
+   o.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['style','hidden']});root.__mobs=o;
   }
  });
- observers.forEach(function(o){o.takeRecords();});
 };
 /* ---- Screen layout (trial): sections become tabs, one shown at a time, so a page fits in one
    or two scrolls; the diagram's secondary controls fold behind "⋯". ---- */
