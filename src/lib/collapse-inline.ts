@@ -231,6 +231,7 @@ function app(s){mk=0;document.documentElement.classList.add('m-app');cards(s);ta
  window.__atlasDyn(s);}
 window.__atlasMC=function(s){
  if(!s||!window.matchMedia||!matchMedia(MQ).matches)return;
+ document.documentElement.classList.add('m-nav'); // phone navigation: bottom bar + Explore sheet (src/scripts/mobile.ts)
  if(!NOT_APP[document.documentElement.getAttribute('data-page')])app(s);else walk(s);
 };
 document.addEventListener('click',function(e){

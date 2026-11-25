@@ -7,7 +7,7 @@
 | Pages that scroll sideways | 0 of 103, at every width |
 | Wide tables | 55 at 375 px, all scrolling inside their card |
 | Diagrams | At phone widths (≤ 640 px) every diagram is re-laid-out top to bottom and fits the screen, except two with hand-placed connectors (see "Phone layout" below). Stepping and tapping work. |
-| Sidebar | Below the breakpoint it collapses to a "☰ Menu" button and opens as a drawer (`aria-expanded` updates). Choosing a page closes it. |
+| Navigation | Phones (≤ 640 px): a bottom bar and an Explore sheet (see "Navigation" below). Tablets (641–860 px): the sidebar collapses to a "☰ Menu" drawer. |
 | Content clipped by `overflow: hidden` | None |
 
 The original layout was already responsive, so these needed no changes.
@@ -43,6 +43,26 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 - **Merged sub-pages:** handled separately, so each keeps its own folds.
 - **Timing:** the script runs before first paint on the server-rendered page. It runs again when the runtime restores the original markup, so folding causes no layout shift.
 - **Reopening:** a search highlight or a link that points inside a folded section opens it.
+
+### Navigation (bottom bar + Explore)
+
+**Code:** `src/scripts/mobile.ts` (`appNav`, `openNav`) and `src/styles/site.css` ("Phone navigation").
+
+On phones (≤ 640 px) the sidebar drawer is replaced by app-style navigation. The desktop and tablet sidebar are unchanged.
+
+- **Bottom bar,** always visible, with four 54 px targets:
+  - **Home** and **Course**, which also show which page you're on;
+  - **Explore**, which opens the sheet below;
+  - **Search**, which opens the full-site search.
+- **The Explore sheet** (a native `<dialog>`, 88% of the screen; swipe down, ×, the backdrop or Esc close it):
+  - **Find a page:** filters page titles as you type. If nothing matches, it offers a full-text search for the same words (`ATLAS.search(q)`).
+  - **You're here:** the current page and its topic. Tapping it opens that topic.
+  - **Tools:** the four pinned tools as icon tiles.
+  - **Topics:** the 15 groups as icon tiles with page counts. Tapping one lists its pages, with the current page marked (`aria-current`) and a back button.
+- **Always in step:** the sheet is built from the sidebar's own markup (`#nav`) each time it opens, so it matches the desktop menu, including "My pages".
+- **Slimmer app bar:** the logo and title only.
+
+**Checks:** axe reports 0 violations, light and dark, with the bar, the sheet, a topic and an empty filter. Tested in `tests/e2e/mobile.spec.ts`.
 
 ### Screen layout (every page)
 
@@ -139,7 +159,6 @@ The remaining targets under 24 px are inline links in running text, or controls 
 - `375-agents.png`
 - `375-cx-metrics.png`
 - `375-fde-discovery.png`
-- `375-drawer-open.png`
 
 ## Browsers
 

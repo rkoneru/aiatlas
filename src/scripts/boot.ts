@@ -89,6 +89,8 @@ const ATLAS = {
   /** Queue a call for the next page (used by stand-ins for functions that live on another page). */
   queue(r: Replay) { pending.push(r); },
   expose(name: string, fn: (...a: any[]) => unknown) { exposed[name] = fn; },
+  /** Open the site search, optionally with a query (phone navigation uses this). */
+  search(q?: string) { if (exposed.srOpen) exposed.srOpen(q || ''); else (document.getElementById('navsrch') as HTMLElement | null)?.click(); },
 
   exists(id: string) { return IDS.has(id) || id in MERGED || !!document.getElementById(id); },
   group(id: string) { const p = PAGES.find((x) => x.id === id); return (p && p.group) || ''; },

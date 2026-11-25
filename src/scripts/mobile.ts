@@ -330,9 +330,147 @@ function appTabs() {
   onScroll();
 }
 
+/* ---------- Phone navigation: bottom bar + Explore sheet ----------
+ * Built from the sidebar's own markup (#nav) each time it opens, so it always matches the
+ * desktop menu, including "My pages". The sidebar itself is hidden on phones. */
+const GROUP_ICONS: Record<string, string> = {
+  'Start here': '🚀', 'Models & ML': '🧠', 'RAG & knowledge': '📚', 'Agents': '🤖', 'Protocols': '🔌',
+  'Prompting & AI at work': '✍️', 'Architecture': '🏗️', 'Trust & compliance': '🛡️', 'Build & ship': '🚢',
+  'Applied AI': '🏭', 'Customer service AI': '🎧', 'FDE kit': '🧰', 'Learn & practice': '🎯',
+  'CAIO · Chief AI Officer': '👔', 'My pages': '⭐',
+};
+const SVG = (d: string) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+const NAV_ICONS = {
+  home: SVG('M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10'),
+  explore: SVG('M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'),
+  search: SVG('M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5'),
+  course: SVG('M2 9l10-5 10 5-10 5zM6 11v5c2 2 10 2 12 0v-5'),
+};
+let navSheet: HTMLDialogElement | null = null;
+
+type NavGroup = { name: string; links: HTMLAnchorElement[] };
+function navData() {
+  const nav = document.getElementById('nav');
+  const pins = nav ? [...nav.querySelectorAll<HTMLAnchorElement>('.navpins a')] : [];
+  const groups: NavGroup[] = nav ? [...nav.querySelectorAll('li.grp')].map((g) => ({
+    name: (g.querySelector('.gname')?.textContent || '').trim(),
+    links: [...g.querySelectorAll<HTMLAnchorElement>('ul a')],
+  })).filter((g) => g.name && g.links.length) : [];
+  return { pins, groups };
+}
+const here = () => '#' + (document.documentElement.dataset.page || '');
+const linkHTML = (a: HTMLAnchorElement) => {
+  const cur = a.getAttribute('data-href') === here();
+  return `<a class="mn-link${cur ? ' on' : ''}" href="${a.getAttribute('href')}" style="${a.getAttribute('style') || ''}"${cur ? ' aria-current="page"' : ''}><i aria-hidden="true"></i><span>${H(a.textContent || '')}</span></a>`;
+};
+
+function navHome(d: HTMLDialogElement) {
+  const { pins, groups } = navData();
+  const curGroup = groups.find((g) => g.links.some((a) => a.getAttribute('data-href') === here()));
+  const cur = curGroup?.links.find((a) => a.getAttribute('data-href') === here());
+  const body = d.querySelector('.mn-body') as HTMLElement;
+  body.innerHTML =
+    (cur && curGroup ? `<p class="mn-h">You're here</p><button type="button" class="mn-here" data-g="${groups.indexOf(curGroup)}"><span class="mn-gi" aria-hidden="true">${GROUP_ICONS[curGroup.name] || '•'}</span><span><small>${H(curGroup.name)}</small><b>${H(cur.textContent || '')}</b></span><em aria-hidden="true">›</em></button>` : '') +
+    `<p class="mn-h">Tools</p><div class="mn-pins">${pins.map((a) => `<a href="${a.getAttribute('href')}" style="${a.getAttribute('style') || ''}"><span aria-hidden="true">${H(a.querySelector('span')?.textContent || '')}</span>${H((a.textContent || '').replace(a.querySelector('span')?.textContent || '', '').trim())}</a>`).join('')}</div>` +
+    `<p class="mn-h">Topics</p><div class="mn-groups">${groups.map((g, i) => `<button type="button" class="mn-group${g === curGroup ? ' on' : ''}" data-g="${i}"><span class="mn-gi" aria-hidden="true">${GROUP_ICONS[g.name] || '•'}</span><b>${H(g.name)}</b><small>${g.links.length} page${g.links.length === 1 ? '' : 's'}</small></button>`).join('')}</div>`;
+  d.querySelector('.mn-back')!.setAttribute('hidden', '');
+  d.querySelector('#mn-title')!.textContent = 'Explore';
+  body.scrollTop = 0;
+}
+function navGroup(d: HTMLDialogElement, i: number) {
+  const g = navData().groups[i];
+  if (!g) return;
+  const body = d.querySelector('.mn-body') as HTMLElement;
+  body.innerHTML = `<div class="mn-list">${g.links.map(linkHTML).join('')}</div>`;
+  d.querySelector('.mn-back')!.removeAttribute('hidden');
+  d.querySelector('#mn-title')!.textContent = `${GROUP_ICONS[g.name] || ''} ${g.name}`.trim();
+  body.scrollTop = 0;
+  (d.querySelector('.mn-back') as HTMLElement).focus();
+}
+function navFilter(d: HTMLDialogElement, q: string) {
+  const query = q.trim().toLowerCase();
+  if (!query) { navHome(d); return; }
+  const { groups } = navData();
+  const hits = groups.flatMap((g) => g.links.filter((a) => (a.textContent || '').toLowerCase().includes(query) || g.name.toLowerCase().includes(query)));
+  const body = d.querySelector('.mn-body') as HTMLElement;
+  body.innerHTML = hits.length
+    ? `<p class="mn-h">${hits.length} page${hits.length === 1 ? '' : 's'}</p><div class="mn-list">${hits.map(linkHTML).join('')}</div>`
+    : `<p class="mn-empty">No page titles match. <button type="button" class="mn-deep">Search all content for “${H(q.trim())}”</button></p>`;
+  d.querySelector('.mn-back')!.setAttribute('hidden', '');
+  d.querySelector('#mn-title')!.textContent = 'Explore';
+}
+function openSearch(q?: string) {
+  navSheet?.open && navSheet.close();
+  const ex = (window as any).ATLAS;
+  if (ex?.search) ex.search(q); else (document.getElementById('navsrch') as HTMLElement | null)?.click();
+}
+function openNav() {
+  if (!navSheet) {
+    const d = document.createElement('dialog');
+    d.className = 'mnav';
+    d.setAttribute('aria-labelledby', 'mn-title');
+    d.innerHTML = '<div class="ms-grab" aria-hidden="true"></div><header class="mn-head"><button type="button" class="mn-back" aria-label="Back to topics" hidden>‹</button><h2 id="mn-title">Explore</h2><button type="button" class="ms-x" aria-label="Close">×</button></header><div class="mn-find"><input type="search" placeholder="Find a page" aria-label="Find a page" autocomplete="off"></div><div class="mn-body"></div>';
+    document.body.appendChild(d);
+    d.querySelector('.ms-x')!.addEventListener('click', () => d.close());
+    d.addEventListener('click', (e) => {
+      const t = e.target as Element;
+      if (t === d) { d.close(); return; }
+      const g = t.closest?.('[data-g]') as HTMLElement | null;
+      if (g) { navGroup(d, +g.dataset.g!); return; }
+      if (t.closest?.('.mn-back')) { navHome(d); (d.querySelector('.mn-find input') as HTMLInputElement).value = ''; return; }
+      if (t.closest?.('.mn-deep')) { openSearch((d.querySelector('.mn-find input') as HTMLInputElement).value); return; }
+      if (t.closest?.('a')) d.close();
+    });
+    d.querySelector('.mn-find input')!.addEventListener('input', (e) => navFilter(d, (e.target as HTMLInputElement).value));
+    d.addEventListener('close', () => { document.documentElement.classList.remove('ms-open'); setBar('none'); });
+    let y0 = 0;
+    const grab = d.querySelector('.ms-grab') as HTMLElement, head = d.querySelector('.mn-head') as HTMLElement;
+    [grab, head].forEach((h) => {
+      h.addEventListener('touchstart', (e) => { y0 = e.touches[0].clientY; }, { passive: true });
+      h.addEventListener('touchend', (e) => { if (e.changedTouches[0].clientY - y0 > 70) d.close(); }, { passive: true });
+    });
+    navSheet = d;
+  }
+  (navSheet.querySelector('.mn-find input') as HTMLInputElement).value = '';
+  navHome(navSheet);
+  document.documentElement.classList.add('ms-open');
+  setBar('explore');
+  navSheet.showModal();
+}
+function setBar(active: string) {
+  document.querySelectorAll('.mbar [data-k]').forEach((b) => {
+    const on = (b as HTMLElement).dataset.k === active || (active === 'none' && (b as HTMLElement).dataset.k === (b as HTMLElement).dataset.page);
+    if ((b as HTMLElement).dataset.k === 'explore') b.setAttribute('aria-expanded', String(active === 'explore'));
+    b.classList.toggle('on', on);
+  });
+}
+function appNav() {
+  if (document.querySelector('nav.mbar')) return;
+  const base = document.documentElement.dataset.base || '/';
+  const page = document.documentElement.dataset.page || '';
+  const bar = document.createElement('nav');
+  bar.className = 'mbar';
+  bar.setAttribute('aria-label', 'Main');
+  const cur = page === 'overview' ? 'home' : page === 'course' ? 'course' : '';
+  bar.innerHTML =
+    `<a href="${base}" data-k="home"${cur === 'home' ? ' aria-current="page" class="on"' : ''}>${NAV_ICONS.home}<span>Home</span></a>` +
+    `<button type="button" data-k="explore" aria-haspopup="dialog" aria-expanded="false">${NAV_ICONS.explore}<span>Explore</span></button>` +
+    `<button type="button" data-k="search" aria-haspopup="dialog">${NAV_ICONS.search}<span>Search</span></button>` +
+    `<a href="${base}course/" data-k="course"${cur === 'course' ? ' aria-current="page" class="on"' : ''}>${NAV_ICONS.course}<span>Course</span></a>`;
+  bar.querySelectorAll<HTMLElement>('[data-k]').forEach((b) => { if (b.dataset.k === cur) b.dataset.page = cur; });
+  document.body.appendChild(bar);
+  bar.addEventListener('click', (e) => {
+    const b = (e.target as Element).closest('[data-k]') as HTMLElement | null;
+    if (!b) return;
+    if (b.dataset.k === 'explore') openNav();
+    if (b.dataset.k === 'search') openSearch();
+  });
+}
+
 export function mobileText() {
   const main = document.querySelector('main');
   if (!main) return;
+  if (document.documentElement.classList.contains('m-nav')) appNav();
   if (document.documentElement.classList.contains('m-app')) { appTabs(); appSheet(); }
   const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if (id) openFor(document.getElementById(id)); };
   fromHash();

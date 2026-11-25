@@ -28,20 +28,46 @@ for (const width of [375, 768, 1280]) {
   });
 }
 
-test('375px: sidebar is a drawer behind the Menu button', async ({ browser }) => {
+test('375px: bottom bar and Explore sheet replace the sidebar', async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 800 }, hasTouch: true });
   const page = await ctx.newPage();
   const errors = watchErrors(page);
   await page.goto('agents/');
-  await expect(page.locator('#menubtn')).toBeVisible();
-  await expect(page.locator('#nav')).toBeHidden();
-  await page.locator('#menubtn').click();
-  await expect(page.locator('#menubtn')).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('#nav')).toBeVisible();
-  await page.locator('#nav summary').filter({ hasText: 'RAG' }).click();
-  await page.locator('#nav a[data-href="#rag"]').click();
-  await expect(page).toHaveURL(/\/rag\/$/);
-  await expect(page.locator('#nav')).toBeHidden();
+  await expect(page.locator('#menubtn')).toBeHidden();
+  const bar = page.locator('nav.mbar');
+  await expect(bar).toBeVisible();
+  await expect(bar.locator('[data-k]')).toHaveCount(4);
+  // Explore: you're here, tools, topics; a topic lists its pages with the current one marked
+  await bar.locator('[data-k=explore]').tap();
+  const sheet = page.locator('dialog.mnav');
+  await expect(sheet).toBeVisible();
+  await expect(bar.locator('[data-k=explore]')).toHaveAttribute('aria-expanded', 'true');
+  await expect(sheet.locator('.mn-here')).toContainText('Agents');
+  await expect(sheet.locator('.mn-pins a')).toHaveCount(4);
+  await sheet.locator('.mn-group', { hasText: 'Agents' }).tap();
+  await expect(sheet.locator('#mn-title')).toContainText('Agents');
+  await expect(sheet.locator('.mn-link[aria-current=page]')).toHaveCount(1);
+  await sheet.locator('.mn-back').tap();
+  await expect(sheet.locator('.mn-groups')).toBeVisible();
+  // find a page by title, then go there
+  await sheet.locator('.mn-find input').fill('vector');
+  await expect(sheet.locator('.mn-link')).toHaveCount(1);
+  await sheet.locator('.mn-link').tap();
+  await expect(page).toHaveURL(/\/vector-search\/$/);
+  // no title match: offer a full-text search
+  await page.locator('nav.mbar [data-k=explore]').tap();
+  await page.locator('dialog.mnav .mn-find input').fill('reranking cross-encoder');
+  await page.locator('dialog.mnav .mn-deep').tap();
+  await expect(page.locator('dialog.mnav')).toBeHidden();
+  await expect(page.locator('.srch input[type=search]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  // Search and Home
+  await page.locator('nav.mbar [data-k=search]').tap();
+  await expect(page.locator('.srch input[type=search]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await page.locator('nav.mbar [data-k=home]').tap();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('nav.mbar [data-k=home]')).toHaveAttribute('aria-current', 'page');
   expect(errors).toEqual([]);
   await ctx.close();
 });
