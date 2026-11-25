@@ -44,6 +44,21 @@ Atlas diagrams are drawn on a canvas 1,000 units wide. On a phone that meant sid
 - **Timing:** the script runs before first paint on the server-rendered page. It runs again when the runtime restores the original markup, so folding causes no layout shift.
 - **Reopening:** a search highlight or a link that points inside a folded section opens it.
 
+### Screen layout (trial on `/agentic-coding/`)
+
+**Code:** `src/lib/collapse-inline.ts` (`SCREEN` lists the pages that use it) and `src/styles/site.css` ("Screen layout on phones").
+
+The aim is a page that's light and fits in one or two scrolls. It builds on the app layout below:
+
+- **Compact header:** the label, the review date and the Infographic button sit on one line; the title is shorter; the summary is two lines, with "Read more".
+- **The diagram first,** with one row of controls: Play, ‹ Prev, Next › and **⋯**. The ⋯ button reveals the Diagram/Sequence switch, Reset, the step list, voice-over and export.
+- **Sections as tabs:** a segmented bar (`role="tablist"`, arrow keys work) shows one section's icon tiles at a time. Tiles still open their full content in the bottom sheet.
+- **Compact footer:** sources and page tools sit in one compact row.
+
+**Length:** about 1,440 px on an iPhone 13 (two screens are 1,688 px), against 3,000 px with the app layout alone.
+
+**Checks:** axe reports 0 violations, light and dark, with ⋯ open, another tab selected and the sheet open. To use it on another page, add the page id to `SCREEN`.
+
 ### App layout (every page)
 
 **Code:**

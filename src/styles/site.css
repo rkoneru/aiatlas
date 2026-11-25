@@ -233,3 +233,53 @@ html.ms-open { overflow: hidden; }
 /* `overflow-x: hidden` on main below 861px (atlas.css) makes it a scroll container, which breaks
    sticky children (the course bar, the phone section tabs); `clip` hides overflow without that. */
 @media (max-width: 860px) { main { overflow-x: clip; } }
+
+/* ---------- Screen layout on phones (trial: src/lib/collapse-inline.ts SCREEN) ----------
+   One page in about one and a half screens: compact header, the diagram, then section tabs that
+   show one section's tiles at a time. */
+@media (max-width: 640px) {
+  /* header: badges on one line, short title, two-line summary */
+  html.m-screen main { padding-top: 16px; }
+  html.m-screen main > section > .ig-pbtn,
+  html.m-screen main > section > .kicker,
+  html.m-screen main > section > .rv-badge { display: inline-flex; vertical-align: middle; margin: 0 6px 8px 0; }
+  html.m-screen main > section > .ig-pbtn { padding: 4px 10px; min-height: 28px; font-size: 12.5px; }
+  html.m-screen main > section > .kicker { font-size: 10.5px; padding: 4px 10px; }
+  html.m-screen main > section > h1 { font-size: 21px; line-height: 1.2; margin: 2px 0 6px; }
+  html.m-screen main > section > .lead.m-clamp { -webkit-line-clamp: 2; font-size: 14.5px; margin: 0; }
+  html.m-screen main > section > .mmore { padding: 2px 0 10px; font-size: 13px; }
+
+  /* diagram: one row of controls; steps, reset, voice-over and export behind "⋯" */
+  html.m-screen [data-flow] { margin-top: 6px; }
+  html.m-screen .fctl { flex-wrap: wrap; gap: 6px; padding: 8px; }
+  html.m-screen .fctl .vt .b { padding: 6px 9px; font-size: 12.5px; }
+  html.m-screen .fctl .b { padding: 6px 11px; font-size: 13px; }
+  html.m-screen .fctl:not(.open) > .vt,
+  html.m-screen .fctl:not(.open) > .reset,
+  html.m-screen .fctl:not(.open) > .chips,
+  html.m-screen .fctl:not(.open) > .vo,
+  html.m-screen .fctl:not(.open) > .exp { display: none !important; }
+  html.m-screen .fctl:not(.open) { flex-wrap: nowrap; }
+  html.m-screen .fctl .play { flex: 1; justify-content: center; }
+  html.m-screen .fctl > .fx-more { margin-left: auto; min-width: 40px; font-weight: 800; letter-spacing: .05em; }
+  html.m-screen .fwrap .cap { font-size: 13.5px; padding: 8px 12px; line-height: 1.45; }
+  html.m-screen main > section > .flow-text { margin: 6px 2px 0; font-size: 13px; }
+
+  /* sections as tabs: the bar is a segmented control, only the chosen section shows */
+  html.m-screen main > section > nav.mtabs { margin: 14px -16px 12px; padding: 8px 16px; }
+  html.m-screen nav.mtabs button { min-height: 34px; font-size: 13px; }
+  html.m-screen main > section > [data-mg]:not(.mg-on) { display: none !important; }
+  html.m-screen main > section > h2[data-mg] { display: none; } /* the tab names the section */
+  html.m-screen main > section > .m-clamp:not(.lead) { -webkit-line-clamp: 2; font-size: 13.5px; margin: 10px 2px 0; }
+  html.m-screen main > section > .callout.m-clamp { margin-top: 10px; }
+
+  /* page tools and sources: one compact row */
+  html.m-screen main > section > .src-box { margin-top: 16px; padding: 8px 12px; }
+  html.m-screen main > section > .src-box summary .muted { display: none; }
+  html.m-screen .ptools { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-top: 12px; padding: 8px 0 2px; }
+  html.m-screen .ptools::-webkit-scrollbar { display: none; }
+  html.m-screen .ptools > * { flex: none; margin: 0; }
+  html.m-screen .site-footer { margin-top: 18px; font-size: 12px; }
+}
+/* In dark mode the accent colours are light, so the selected tab needs dark text (WCAG 1.4.3). */
+@media (prefers-color-scheme: dark) { nav.mtabs button.on { color: #0b1020; } }

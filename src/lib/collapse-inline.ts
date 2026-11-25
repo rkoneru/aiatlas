@@ -168,6 +168,7 @@ function scan(root,s){
 }
 window.__atlasDyn=function(s){
  if(!s||!document.documentElement.classList.contains('m-app'))return;
+ if(document.documentElement.classList.contains('m-screen'))flowMore(s);
  [].slice.call(s.querySelectorAll('[id]')).forEach(function(root){
   if(root.classList.contains('merged')||root.closest('[data-flow],.src-box,.ptools,.mgrid')||live(root,s))return; // nested lists are scanned with their outermost container
   scan(root,s);
@@ -180,7 +181,42 @@ window.__atlasDyn=function(s){
  });
  observers.forEach(function(o){o.takeRecords();});
 };
-function app(s){mk=0;document.documentElement.classList.add('m-app');cards(s);tables(s);longText(s);tabs(s);window.__atlasDyn(s);}
+/* ---- Screen layout (trial): sections become tabs, one shown at a time, so a page fits in one
+   or two scrolls; the diagram's secondary controls fold behind "⋯". ---- */
+var SCREEN={'agentic-coding':1};
+var mgSel=0;
+function screen(s){
+ document.documentElement.classList.add('m-screen');
+ var nav=document.querySelector('nav.mtabs');if(!nav)return;
+ var btns=[].slice.call(nav.querySelectorAll('button[data-i]'));
+ var labels=btns.map(function(b){return b.textContent.trim();});
+ var g=-1,li=0,first=null;
+ [].slice.call(s.children).forEach(function(el){
+  if(el===nav)return;
+  if(el.tagName==='H2'&&li<labels.length&&el.textContent.trim()===labels[li]){g=li++;if(!first)first=el;}
+  if(g>=0)el.setAttribute('data-mg',g);
+ });
+ if(!first)return;
+ s.insertBefore(nav,first); // the tabs sit right above the sections
+ nav.setAttribute('role','tablist');
+ btns.forEach(function(b){b.setAttribute('role','tab');});
+ pick(s,mgSel<labels.length?mgSel:0);
+}
+function pick(s,i){
+ mgSel=i;
+ [].slice.call(s.querySelectorAll(':scope>[data-mg]')).forEach(function(el){el.classList.toggle('mg-on',el.getAttribute('data-mg')===String(i));});
+ [].slice.call(document.querySelectorAll('nav.mtabs button[data-i]')).forEach(function(b){var on=b.getAttribute('data-i')===String(i);b.setAttribute('aria-selected',String(on));b.classList.toggle('on',on);b.tabIndex=on?0:-1;});
+}
+function flowMore(s){
+ [].slice.call(s.querySelectorAll('[data-flow] .fctl')).forEach(function(f){
+  if(f.querySelector('.fx-more'))return;
+  var b=document.createElement('button');b.type='button';b.className='b fx-more';b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','More diagram options: view, reset, steps, voice-over, export');b.textContent='⋯';
+  f.appendChild(b);
+ });
+}
+function app(s){mk=0;document.documentElement.classList.add('m-app');cards(s);tables(s);longText(s);tabs(s);
+ if(SCREEN[document.documentElement.getAttribute('data-page')]){screen(s);flowMore(s);}
+ window.__atlasDyn(s);}
 window.__atlasMC=function(s){
  if(!s||!window.matchMedia||!matchMedia(MQ).matches)return;
  if(!NOT_APP[document.documentElement.getAttribute('data-page')])app(s);else walk(s);
@@ -188,9 +224,26 @@ window.__atlasMC=function(s){
 document.addEventListener('click',function(e){
  var t=e.target&&e.target.closest&&e.target.closest('.mtabs button');if(!t)return;
  var s=document.querySelector('main>section');
+ if(document.documentElement.classList.contains('m-screen')){
+  pick(s,+t.getAttribute('data-i'));
+  var nb=t.closest('nav.mtabs'),top=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mbar'))||66;
+  if(nb.getBoundingClientRect().top<top+1)window.scrollTo({top:nb.getBoundingClientRect().top+window.scrollY-top-1});
+  return;
+ }
  var h=s.querySelector('h2[data-mtab="'+t.getAttribute('data-i')+'"]');if(!h)return;
  var bar=document.querySelector('nav.mtabs'),off=(bar?bar.getBoundingClientRect().bottom:0)+8;
  window.scrollTo({top:h.getBoundingClientRect().top+window.scrollY-off,behavior:'smooth'});
+});
+// "⋯" on a diagram shows its secondary controls (steps, reset, voice-over, export)
+document.addEventListener('click',function(e){
+ var b=e.target&&e.target.closest&&e.target.closest('.fx-more');if(!b)return;
+ var f=b.closest('.fctl'),open=!f.classList.contains('open');f.classList.toggle('open',open);b.setAttribute('aria-expanded',String(open));
+});
+// arrow keys move between section tabs
+document.addEventListener('keydown',function(e){
+ var t=e.target&&e.target.closest&&e.target.closest('nav.mtabs[role=tablist] button[data-i]');if(!t||(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'))return;
+ var all=[].slice.call(t.parentNode.querySelectorAll('button[data-i]')),i=all.indexOf(t)+(e.key==='ArrowRight'?1:-1);
+ if(all[i]){e.preventDefault();all[i].focus();all[i].click();}
 });
 document.addEventListener('click',function(e){
  var t=e.target&&e.target.closest&&e.target.closest('.mc-t');if(!t)return;

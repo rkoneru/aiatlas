@@ -305,6 +305,7 @@ function appTabs() {
   const bar = document.querySelector('nav.mtabs');
   const sec = document.querySelector('main>section');
   if (!bar || !sec) return;
+  if (root.classList.contains('m-screen')) return; // tabs switch sections there; nothing to follow
   // the headings the tab bar points to (src/lib/collapse-inline.ts tabs marks them data-mtab)
   const hs = [...sec.querySelectorAll<HTMLElement>('h2[data-mtab]')].sort((a, b) => +a.dataset.mtab! - +b.dataset.mtab!);
   const btns = [...bar.querySelectorAll<HTMLElement>('button[data-i]')];
