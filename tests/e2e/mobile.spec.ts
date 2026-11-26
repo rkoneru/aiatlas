@@ -204,3 +204,47 @@ test('phone screen layout (trial page): sections are tabs, a page fits in two sc
   expect(errors).toEqual([]);
   await ctx.close();
 });
+
+test('phone: back closes a sheet, diagram boxes open in the sheet, the section tab is remembered', async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
+  const page = await ctx.newPage();
+  const errors = watchErrors(page);
+  await page.goto(url('rag'));
+  await page.goto(url('agentic-coding'));
+  const sheet = page.locator('dialog.msheet');
+  // back closes the tile sheet and stays on the page
+  await page.locator('.mg-on .mtile').first().tap();
+  await expect(sheet).toBeVisible();
+  await page.goBack();
+  await expect(sheet).toBeHidden();
+  await expect(page).toHaveURL(/\/agentic-coding\/$/);
+  // … and the Explore sheet
+  await page.locator('nav.mbar [data-k=explore]').tap();
+  await expect(page.locator('dialog.mnav')).toBeVisible();
+  await page.goBack();
+  await expect(page.locator('dialog.mnav')).toBeHidden();
+  await expect(page).toHaveURL(/\/agentic-coding\/$/);
+  // closing a sheet with × leaves no extra history entry: back goes to the previous page
+  await page.locator('.mg-on .mtile').first().tap();
+  await sheet.locator('.ms-x').tap();
+  await expect(sheet).toBeHidden();
+  // the chosen tab is in the address and survives a reload
+  const tabs = page.locator('nav.mtabs [role=tab]');
+  const third = (await tabs.nth(2).textContent())!.trim();
+  await tabs.nth(2).tap();
+  await expect(page).toHaveURL(/\?tab=/);
+  await page.reload();
+  await expect(page.locator('nav.mtabs [aria-selected=true]')).toHaveText(third);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/rag\/$/);
+  // a diagram box's details open in the sheet, on screen, and Next walks the boxes
+  await page.locator('main [data-flow] svg.fsvg g.node').first().tap();
+  await expect(sheet).toBeVisible();
+  await expect(sheet.locator('#msheet-title')).toHaveText('Knowledge base');
+  await expect(sheet.locator('.ms-pos')).toHaveText(/^1 of \d+$/);
+  await sheet.locator('.ms-next').tap();
+  await expect(sheet.locator('.ms-pos')).toHaveText(/^2 of \d+$/);
+  await expect(page.locator('main [data-flow] .info').first()).toBeHidden();
+  expect(errors).toEqual([]);
+  await ctx.close();
+});

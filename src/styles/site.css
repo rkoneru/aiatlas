@@ -357,3 +357,6 @@ dialog.mnav::backdrop { background: rgba(10, 12, 30, .45); }
 .mn-empty { margin: 18px 4px; color: var(--muted); font-size: 14.5px; }
 .mn-deep { all: unset; cursor: pointer; display: block; margin-top: 8px; color: var(--accent, var(--blue)); font-weight: 600; text-decoration: underline; }
 .mn-group:focus-visible, .mn-here:focus-visible, .mn-pins a:focus-visible, .mn-link:focus-visible, .mn-back:focus-visible, .mn-deep:focus-visible { outline: 2px solid var(--accent, var(--blue)); outline-offset: 2px; }
+
+/* Phones: a diagram box's details open in the bottom sheet (src/scripts/mobile.ts), not below the diagram. */
+@media (max-width: 640px) { html.m-app main [data-flow] .info { display: none !important; } }

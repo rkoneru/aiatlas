@@ -212,7 +212,20 @@ function screen(s){
  s.insertBefore(nav,first); // the tabs sit right above the sections
  nav.setAttribute('role','tablist');
  btns.forEach(function(b){b.setAttribute('role','tab');});
+ if(!screen.done){screen.done=1;mgSel=restoreTab(labels);}
  pick(s,mgSel<labels.length?mgSel:0);
+}
+// A tab is named in the address as ?tab=<slug> (shareable) and remembered for the session per page.
+function slug(x){return x.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+function tabKey(){return 'atlas-tab:'+document.documentElement.getAttribute('data-page');}
+function restoreTab(labels){
+ var want='';try{want=new URLSearchParams(location.search).get('tab')||sessionStorage.getItem(tabKey())||'';}catch(e){}
+ for(var i=0;i<labels.length;i++)if(slug(labels[i])===want)return i;
+ return 0;
+}
+function saveTab(label){
+ var sl=slug(label);try{sessionStorage.setItem(tabKey(),sl);}catch(e){}
+ try{var u=new URL(location.href);if(sl&&u.searchParams.get('tab')!==sl){u.searchParams.set('tab',sl);history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
 }
 function pick(s,i){
  mgSel=i;
@@ -238,7 +251,7 @@ document.addEventListener('click',function(e){
  var t=e.target&&e.target.closest&&e.target.closest('.mtabs button');if(!t)return;
  var s=document.querySelector('main>section');
  if(document.documentElement.classList.contains('m-screen')){
-  pick(s,+t.getAttribute('data-i'));
+  pick(s,+t.getAttribute('data-i'));saveTab(t.textContent||'');
   var nb=t.closest('nav.mtabs'),top=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mbar'))||66;
   if(nb.getBoundingClientRect().top<top+1)window.scrollTo({top:nb.getBoundingClientRect().top+window.scrollY-top-1});
   return;

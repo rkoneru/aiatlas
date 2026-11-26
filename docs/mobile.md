@@ -121,6 +121,12 @@ Every page except the course, the playground and Team mode (`NOT_APP`) reads lik
 | `/agent-catalog/` | 10,300 px | 4,500 px |
 | `/agentic-coding/` | 4,900 px | 3,000 px |
 
+### Back button, diagram details and remembered tabs
+
+- **Back closes popups.** Opening a tile's sheet or the Explore sheet adds a history entry, so the phone's back button or gesture closes the sheet and stays on the page. Closing it another way (×, Esc, tapping outside) removes that entry again, so the next back goes to the previous page. A link followed from a sheet steps back first, then navigates, so no extra entries pile up.
+- **Diagram boxes open in the sheet.** Tapping a box (or Enter or Space on it) shows its title, subtitle and description in the bottom sheet. Previous and Next walk the boxes. The panel under the diagram, which was usually off-screen, is hidden on phones.
+- **The section tab is remembered.** The chosen tab goes in the address as `?tab=<name>` (for example `/agentic-coding/?tab=good-and-poor-fits`), so a reload keeps it and the link can be shared. It is also kept in `sessionStorage` (`atlas-tab:<page>`) for the rest of the visit, so going back to a page returns to its tab.
+
 ### Compact type and controls
 
 - **Type:** headings and the lead paragraph are smaller, so the first diagram is on the first screen.

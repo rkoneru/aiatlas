@@ -183,6 +183,36 @@ function openFor(el: Element | null) {
   if (t && t.getAttribute('aria-expanded') !== 'true') t.click();
 }
 
+/* ---------- Sheets and the back button ----------
+ * Opening a sheet adds a history entry, so the phone's back gesture closes the sheet instead of
+ * leaving the page. Closing it another way (×, Esc, backdrop) takes that entry off again. A link
+ * followed from a sheet first steps back, then navigates, so history gets no duplicate entries. */
+type Sheet = HTMLDialogElement & { __pushed?: boolean; __byPop?: boolean; __goto?: string };
+function trackSheet(d: Sheet) {
+  d.addEventListener('close', () => {
+    if (d.__pushed && !d.__byPop) { d.__pushed = false; history.back(); }
+  });
+  d.addEventListener('click', (e) => {
+    const a = (e.target as Element).closest?.('a[href]') as HTMLAnchorElement | null;
+    if (!a || a.target || e.defaultPrevented || (e as MouseEvent).metaKey || (e as MouseEvent).ctrlKey || a.origin !== location.origin) return;
+    if (!d.__pushed) return;
+    e.preventDefault();
+    d.__goto = a.href; d.__byPop = true; d.close(); d.__byPop = false; d.__pushed = false;
+    history.back(); // popstate below follows __goto
+  }, true);
+}
+function pushSheet(d: Sheet) {
+  if (d.__pushed) return;
+  history.pushState({ atlasSheet: true }, '');
+  d.__pushed = true;
+}
+addEventListener('popstate', () => {
+  document.querySelectorAll<Sheet>('dialog.msheet, dialog.mnav').forEach((d) => {
+    if (d.__goto) { const to = d.__goto; d.__goto = undefined; location.assign(to); return; }
+    if (d.open && d.__pushed) { d.__byPop = true; d.__pushed = false; d.close(); d.__byPop = false; }
+  });
+});
+
 /* ---------- App layout: bottom sheet for a tile's content ---------- */
 let sheet: HTMLDialogElement | null = null;
 let opener: HTMLElement | null = null;
@@ -197,10 +227,13 @@ function sheetEl(): HTMLDialogElement {
   const sec = document.querySelector('main>section') as HTMLElement | null;
   if (sec) sheet.setAttribute('style', sec.getAttribute('style') || '');
   document.body.appendChild(sheet);
+  trackSheet(sheet as Sheet);
   sheet.querySelector('.ms-x')!.addEventListener('click', () => sheet!.close());
   sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet!.close(); }); // tap on the backdrop
   sheet.addEventListener('close', () => { document.documentElement.classList.remove('ms-open'); opener?.focus({ preventScroll: true }); });
   const step = (d: number) => {
+    const custom = (sheet as any).__step as ((d: number) => void) | undefined;
+    if (custom) { custom(d); return; }
     const k = sheet!.dataset.mk!;
     const tiles = siblingsOf(k);
     const i = tiles.indexOf(k);
@@ -287,11 +320,51 @@ function openSheet(k: string) {
   (d.querySelector('.ms-prev') as HTMLButtonElement).disabled = i <= 0;
   (d.querySelector('.ms-next') as HTMLButtonElement).disabled = i >= sib.length - 1;
   d.querySelector('.ms-pos')!.textContent = `${i + 1} of ${sib.length}`;
+  (d as any).__step = undefined;
   if (!d.open) {
     opener = document.activeElement as HTMLElement | null;
     document.documentElement.classList.add('ms-open');
     d.showModal();
+    pushSheet(d as Sheet);
   }
+}
+
+/* A diagram box's details (title, subtitle, description) open in the sheet on phones, instead of
+   in the panel under the diagram, which is usually off-screen. Previous / Next walk the boxes. */
+function openDiagramDetail(g: Element) {
+  const host = g.closest('[data-flow]');
+  const info = host?.querySelector('.info') as HTMLElement | null;
+  if (!host || !info || info.hidden) return;
+  const nodes = [...host.querySelectorAll('svg.fsvg:not(.seq) g.node')];
+  const i = nodes.indexOf(g);
+  const d = sheetEl();
+  d.dataset.mk = '';
+  const c = getComputedStyle(g).getPropertyValue('--c').trim();
+  (d.querySelector('.ms-head .mi') as HTMLElement).innerHTML = '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="3"/></svg>';
+  d.querySelector('.ms-head')!.setAttribute('style', c ? `--c:${c}` : '');
+  d.querySelector('.ms-ttl small')!.textContent = (info.querySelector('.muted')?.textContent || '').replace(/^\s*·\s*/, '');
+  d.querySelector('#msheet-title')!.textContent = info.querySelector('b')?.textContent || g.getAttribute('aria-label') || '';
+  const b = d.querySelector('.ms-body') as HTMLElement;
+  b.replaceChildren(...[...info.querySelectorAll('p')].map((p) => p.cloneNode(true)));
+  b.scrollTop = 0;
+  const foot = d.querySelector('.ms-foot') as HTMLElement;
+  foot.hidden = nodes.length < 2;
+  (d.querySelector('.ms-prev') as HTMLButtonElement).disabled = i <= 0;
+  (d.querySelector('.ms-next') as HTMLButtonElement).disabled = i >= nodes.length - 1;
+  d.querySelector('.ms-pos')!.textContent = `${i + 1} of ${nodes.length}`;
+  (d as any).__step = (delta: number) => { const n = nodes[i + delta]; if (n) n.dispatchEvent(new MouseEvent('click', { bubbles: true })); };
+  if (!d.open) {
+    opener = g as HTMLElement;
+    document.documentElement.classList.add('ms-open');
+    d.showModal();
+    pushSheet(d as Sheet);
+  }
+}
+function diagramDetails() {
+  const sel = 'main [data-flow] svg.fsvg:not(.seq) g.node';
+  // the runtime's own handlers on the box run first and fill .info; then show it in the sheet
+  document.addEventListener('click', (e) => { const g = (e.target as Element).closest?.(sel); if (g) openDiagramDetail(g); });
+  document.addEventListener('keydown', (e) => { if (e.key !== 'Enter' && e.key !== ' ') return; const g = (e.target as Element).closest?.(sel); if (g) openDiagramDetail(g); });
 }
 
 function appSheet() {
@@ -411,6 +484,7 @@ function openNav() {
     d.setAttribute('aria-labelledby', 'mn-title');
     d.innerHTML = '<div class="ms-grab" aria-hidden="true"></div><header class="mn-head"><button type="button" class="mn-back" aria-label="Back to topics" hidden>‹</button><h2 id="mn-title">Explore</h2><button type="button" class="ms-x" aria-label="Close">×</button></header><div class="mn-find"><input type="search" placeholder="Find a page" aria-label="Find a page" autocomplete="off"></div><div class="mn-body"></div>';
     document.body.appendChild(d);
+    trackSheet(d as Sheet);
     d.querySelector('.ms-x')!.addEventListener('click', () => d.close());
     d.addEventListener('click', (e) => {
       const t = e.target as Element;
@@ -419,7 +493,6 @@ function openNav() {
       if (g) { navGroup(d, +g.dataset.g!); return; }
       if (t.closest?.('.mn-back')) { navHome(d); (d.querySelector('.mn-find input') as HTMLInputElement).value = ''; return; }
       if (t.closest?.('.mn-deep')) { openSearch((d.querySelector('.mn-find input') as HTMLInputElement).value); return; }
-      if (t.closest?.('a')) d.close();
     });
     d.querySelector('.mn-find input')!.addEventListener('input', (e) => navFilter(d, (e.target as HTMLInputElement).value));
     d.addEventListener('close', () => { document.documentElement.classList.remove('ms-open'); setBar('none'); });
@@ -436,6 +509,7 @@ function openNav() {
   document.documentElement.classList.add('ms-open');
   setBar('explore');
   navSheet.showModal();
+  pushSheet(navSheet as Sheet);
 }
 function setBar(active: string) {
   document.querySelectorAll('.mbar [data-k]').forEach((b) => {
@@ -471,7 +545,7 @@ export function mobileText() {
   const main = document.querySelector('main');
   if (!main) return;
   if (document.documentElement.classList.contains('m-nav')) appNav();
-  if (document.documentElement.classList.contains('m-app')) { appTabs(); appSheet(); }
+  if (document.documentElement.classList.contains('m-app')) { appTabs(); appSheet(); diagramDetails(); }
   const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if (id) openFor(document.getElementById(id)); };
   fromHash();
   window.addEventListener('hashchange', fromHash);
