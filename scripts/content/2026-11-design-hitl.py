@@ -267,7 +267,7 @@ rep("['Human-in-the-loop','agent',1,'Approval gates and escalation for high-stak
     "['Human-in-the-loop','agent',1,'Approval gates and escalation for high-stakes or uncertain actions.','d','hitl-controls']")
 NEW_TERMS = r"""['Confidence routing','agent',2,'Sending only an agent\'s low-confidence outputs to a person and letting the rest run automatically.','d','hitl-controls'],
 ['Kill switch','sec',1,'A monitored limit on cost, errors or drift that pauses an agent and hands its work back to people.','d','hitl-controls'],
-['Sprint contract','agent',3,'An agreement between a generator agent and an evaluator agent on what done means for the next piece of work, written before any code.','d','harness'],
+['Sprint contract','agent',3,'An agreement between a generator agent and an evaluator agent on what done means for the next piece of work, written before any code.','d','patterns'],
 """
 i = s.index('const AC=[')
 j = s.index('\n];', i)
