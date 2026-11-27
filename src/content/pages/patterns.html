@@ -39,6 +39,47 @@
     <div class="card"><h3>LangChain · Terminal Bench 2.0</h3><div class="memrow" style="grid-template-columns:70px 1fr 50px"><span>Before</span><div class="membar" style="width:52.8%;background:var(--gray)"></div><b class="mono">52.8</b></div><div class="memrow" style="grid-template-columns:70px 1fr 50px"><span>After</span><div class="membar" style="width:66.5%;background:var(--blue)"></div><b class="mono">66.5</b></div><p class="muted" style="margin:6px 0 0">Same model; only the system prompt, tools and middleware changed.</p></div>
     <div class="card"><h3>Vercel · internal data agent</h3><p class="muted" style="margin:0">They removed about 80% of the tools. The success rate went from 80% to 100% on a small internal question set, with fewer steps and fewer tokens.</p></div>
   </div>
-  <p class="muted" style="font-size:13px">As reported in the infographic, which rates its own confidence as medium for each case. Use them as directional, not as benchmarks.</p>
+  <p class="muted" style="font-size:13px">As reported in the infographic, which rates its own confidence as medium for each case. Use them as directional, not as benchmarks. The Anthropic case is set out in full below.</p>
+
+  <h2>Three agents around one prompt</h2>
+  <p>Asked to grade their own work, agents confidently praise it, even when the quality is obviously mediocre. Anthropic's Labs team fixed this by separating the jobs: a <b>planner</b> writes the spec, a <b>generator</b> builds it a piece at a time, and an <b>evaluator</b> uses the running app like a user would and fails anything below the bar. Walk the loop.</p>
+  <div data-flow="harn3" data-theme="soft"></div>
+  <div class="grid g3">
+    <div class="card"><span class="tag" style="color:var(--purple)">Agent</span><h3>Planner</h3><p>Expands a 1–4 sentence prompt into a product spec: features, user stories, design. It stays at product level and leaves implementation to the generator. In the game run, one sentence became 16 features across ten sprints.</p></div>
+    <div class="card"><span class="tag" style="color:var(--amber)">File</span><h3>Sprint contract</h3><p>Before any code is written, the generator and the evaluator agree what "done" means for the next piece of work and how it will be tested. The spec stays high level; the contract makes it testable.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Agent</span><h3>Generator</h3><p>Builds one feature at a time against the contract, commits with git, checks its own work, then hands off to QA. It never signs off on its own work.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Agent</span><h3>Evaluator</h3><p>Clicks through the running app with Playwright (through an MCP server), testing the UI, the API and the database. It files every bug against the contract. One sprint alone had 27 criteria.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Rule</span><h3>Hard thresholds</h3><p>Each sprint is graded on product depth, functionality, visual design and code quality. A score below the bar on any one fails the sprint, and detailed feedback goes back to the generator.</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">Lesson</span><h3>Simplify as models improve</h3><p>Every part of a harness encodes an assumption about what the model can't do alone. With a stronger model, the team dropped sprints entirely and the generator built for over two hours in one go. Re-test each part when the model changes.</p></div>
+  </div>
+  <div class="card tablewrap"><table>
+    <tr><th>Run</th><th>Time</th><th>Cost</th><th>Result</th></tr>
+    <tr><td><b>Solo agent</b>, one-sentence prompt for a retro game maker</td><td>20 min</td><td>$9</td><td>Looked plausible; the game didn't respond to input</td></tr>
+    <tr><td><b>Three-agent harness</b>, same prompt (sprints, Opus 4.5)</td><td>6 hr</td><td>$200</td><td>Playable game with far more features; the evaluator still missed some deeper bugs</td></tr>
+    <tr><td><b>Simplified harness</b>, no sprints (Opus 4.6), a different prompt: an audio workstation in the browser</td><td>3 hr 50 min</td><td>$124.70</td><td>Working app; QA still caught real gaps in the first round</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">The harness costs far more than a solo run; it's worth it when a broken result costs more than the tokens. The third run built a different app, so don't read it as the same job done cheaper. Source: <a href="https://www.anthropic.com/research/harness-design-long-running-apps">Anthropic, Harness design for long-running application development</a> (March 2026).</p>
+  <p>A prompt that sets up the same loop in a coding agent such as Claude Code. Fill in the three braces; the rest runs as written.</p>
+  <pre class="code">THREE-AGENT HARNESS
+{APP IN 1-4 SENTENCES} · {STACK} · {QUALITY BAR}
+
+01 PLANNER
+Expand {APP} into a product spec: features, user stories, design.
+Stay at product level, no implementation details. Split into sprints.
+02 CONTRACT
+Before each sprint, write contract.md: what gets built, how it is tested.
+The evaluator reviews it. Iterate until both agree on "done".
+03 GENERATOR
+Build one feature per sprint against the contract. Commit with git.
+Self-check, then hand off to QA. Never sign off on your own work.
+04 EVALUATOR
+Click through the running app with Playwright, like a user would.
+Test the UI, the API and the database. File every bug with file:line.
+05 THRESHOLDS
+Grade product depth, functionality, visual design, code quality.
+Any score under {QUALITY BAR} fails the sprint. Feedback goes back.
+06 LOOP
+Fail, fix, retest. Update progress.md after every sprint.
+Stop when every feature in the spec passes. Report cost and time.</pre>
   <div class="callout">Build the loop first, the evaluator second, orchestration last. Keep state outside the model, keep the action space small, and remove harness components as models improve. Related: <a href="#patterns">harness vs loop vs graph</a>, <a href="#agent-kit">Claude Code dev kit</a>.</div>
 </div>

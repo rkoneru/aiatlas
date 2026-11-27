@@ -1,0 +1,33 @@
+
+  <span class="kicker">Trust &amp; compliance · Human oversight</span>
+  <h1>Human-in-the-loop controls for agents</h1>
+  <p class="lead">Autonomy is earned, not granted. Eight ways to keep people in control as agents take on more work, from approving each action to a switch that stops everything. <b>Match the control to the risk, not to the technology.</b> Walk one agent action through the controls.</p>
+  <div data-flow="hitl" data-theme="soft"></div>
+  <h2>Eight controls</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag" style="color:var(--blue)">Before acting</span><h3>1 · Approval gate</h3><p>The agent proposes; a person approves before anything runs. A rejection goes back to the agent with the reason. Every decision is logged.</p><p><b>Best for:</b> payments, contracts, messages to customers.<br><b>Watch:</b> approval fatigue, where review turns into rubber-stamping.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Before acting</span><h3>2 · Confidence routing</h3><p>Only low-confidence outputs go to a person; the rest go straight through. Outcomes are logged and used to recalibrate the threshold.</p><p><b>Best for:</b> high-volume triage of claims, tickets and invoices.<br><b>Watch:</b> confidence scores that were never checked against real outcomes. A model's own confidence is often poorly calibrated.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">After acting</span><h3>3 · Sampled review</h3><p>Everything runs automatically. Reviewers check a random slice, say 5%, every week, score it, and feed the failures into the eval set and prompts.</p><p><b>Best for:</b> mature, low-risk flows that are already stable.<br><b>Watch:</b> samples too small to catch rare, costly errors. Sample more from high-value cases.</p></div>
+    <div class="card"><span class="tag" style="color:var(--amber)">When stuck</span><h3>4 · Exception queue</h3><p>Rules catch what the agent can't handle, such as missing data or a policy flag, and park it for a person. Everything else goes straight through.</p><p><b>Best for:</b> rules-heavy operations: identity checks (KYC), invoices, onboarding.<br><b>Watch:</b> queue backlogs that quietly breach the service level.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">When stuck</span><h3>5 · Escalation path</h3><p>Clear triggers (high value, an angry customer, an unknown intent) hand the case up a ladder: operations, then a specialist, then the risk owner. Each step gets the full context.</p><p><b>Best for:</b> customer service, complaints, claims disputes.<br><b>Watch:</b> handoffs that make the customer repeat everything.</p></div>
+    <div class="card"><span class="tag" style="color:var(--blue)">Before acting</span><h3>6 · Dual control</h3><p>Two different people must sign off before a high-risk action runs: one prepares or reviews (maker), the other approves (checker). If either declines, the action is rejected.</p><p><b>Best for:</b> payments above a limit, regulated decisions.<br><b>Watch:</b> it's slow. Keep it for the top risk tier only.</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">After acting</span><h3>7 · Audit replay</h3><p>Every agent step (prompt, data, tool calls, output) goes into a tamper-proof, timestamped trace. A reviewer can replay any decision; a flawed one leads to a fix in the policy or prompt.</p><p><b>Best for:</b> regulated decisions and reviews after an incident.<br><b>Watch:</b> gaps in what's logged, especially tool calls and retrieved data.</p></div>
+    <div class="card"><span class="tag" style="color:var(--pink)">Always on</span><h3>8 · Kill switch</h3><p>A monitor watches cost, error rate and drift. When a limit is breached, a circuit breaker pauses the agent and hands the work back to people; it resumes only after review.</p><p><b>Best for:</b> every production agent, without exception.<br><b>Watch:</b> a switch nobody has tested. Rehearse it.</p></div>
+  </div>
+  <h2>Match the control to the risk tier</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Risk tier</th><th>Examples</th><th>Controls</th></tr>
+    <tr><td><b>Low</b></td><td>Drafting, summaries, internal search, tagging</td><td>Sampled review, audit log, kill switch</td></tr>
+    <tr><td><b>Medium</b></td><td>Ticket triage, invoice coding, routine customer replies</td><td>Confidence routing, exception queue, escalation path, plus the low-tier controls</td></tr>
+    <tr><td><b>High</b></td><td>Refunds, outbound messages at scale, changes to customer records</td><td>Approval gate, audit replay, plus the medium-tier controls</td></tr>
+    <tr><td><b>Critical</b></td><td>Large payments, credit or claims decisions, production infrastructure</td><td>Dual control and every control above; consider not automating the final step at all</td></tr>
+  </table></div>
+  <h2>Making oversight real</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Give reviewers what they need</h3><p>Show the proposed action, the evidence behind it, what the agent was unsure about and what happens if it's wrong. A bare "Approve?" button invites rubber-stamping.</p></div>
+    <div class="card"><h3>Measure the reviewers too</h3><p>Track approval rate, time per review and how often reviewers overturn the agent. Approval near 100% with seconds per review means the gate has stopped working.</p></div>
+    <div class="card"><h3>Earn autonomy with evidence</h3><p>Move a task down a tier only after a set number of clean runs, for example from approval gate to sampled review after 500 approvals with no corrections. Move it back up after an incident.</p></div>
+    <div class="card"><h3>Human review alone won't scale</h3><p>At thousands of actions a day, use automated checks and evaluator agents for most of the work, and keep people for the decisions that matter. See <a href="#agent-governance">Agents watching agents</a> and its review-load calculator.</p></div>
+  </div>
+  <div class="callout">Regulation points the same way. For high-risk systems, the EU AI Act (Article 14) requires effective human oversight, including the ability to override the system's output and to stop it. See <a href="#ai-compliance">Responsible AI, regulation &amp; compliance</a> and <a href="#guardrails">AI guardrails</a>.</div>
+  <p class="muted" style="font-size:13px">Adapted from "8 human-in-the-loop controls for agentic AI" (aidigital.co.uk). The risk tiers and the notes on calibration, sampling and earning autonomy are this site's.</p>

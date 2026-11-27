@@ -1,4 +1,16 @@
 {
+ "ai-system-design": {
+  "date": "2026-11-27",
+  "items": [
+   "Building blocks per layer and their LLM-specific changes"
+  ]
+ },
+ "hitl-controls": {
+  "date": "2026-11-27",
+  "items": [
+   "Oversight controls and EU AI Act human-oversight duties"
+  ]
+ },
  "reasoning-models": {
   "date": "2026-11-23",
   "items": [

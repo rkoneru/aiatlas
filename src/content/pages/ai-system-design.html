@@ -1,0 +1,38 @@
+
+  <span class="kicker">Architecture · System design</span>
+  <h1>AI system design: six layers</h1>
+  <p class="lead">A production AI system is ordinary system design with a model inside it. Six layers, each resting on the one below: <b>scale and speed</b>, <b>data and retrieval</b>, <b>reliability</b>, <b>AI and agents</b>, <b>security and governance</b>, and <b>observability and evaluation</b>. Learn them in order. Walk the six layers and what each one buys you.</p>
+  <div data-flow="sysdesign" data-theme="soft"></div>
+  <h2>The six layers</h2>
+  <div class="grid g2">
+    <div class="card"><span class="tag" style="color:var(--blue)">Layer 1</span><h3>Scale &amp; speed</h3><p><b>Outcome:</b> stays fast as users grow.</p><p><b>Load balancing</b> spreads requests across servers. <b>Caching</b> keeps answers close to the user; with LLMs add prompt caching and caching of repeated answers. <b>Auto-scaling</b> adds capacity with demand. <b>Rate limiting</b> protects the system; for LLMs, limit tokens per minute as well as requests.</p></div>
+    <div class="card"><span class="tag" style="color:var(--orange)">Layer 2</span><h3>Data &amp; retrieval</h3><p><b>Outcome:</b> stores and finds data fast.</p><p><b>SQL or NoSQL</b> depends on how the data is shaped and queried. <b>Sharding</b> splits large data across machines. <b>Vector databases</b> find text by meaning. <b>Hybrid search</b> combines keyword and vector search, and usually beats either alone. See <a href="#vector-search">Vector search</a>.</p></div>
+    <div class="card"><span class="tag" style="color:var(--teal)">Layer 3</span><h3>Reliable systems</h3><p><b>Outcome:</b> survives failures and spikes.</p><p><b>Replication</b> keeps copies of data. <b>Queues</b> absorb bursts and run long jobs, including agent tasks, in the background. <b>Retry with backoff</b> handles brief failures; make tool calls that write data idempotent so a retry doesn't do the work twice. <b>Failover</b> switches to a standby, including a second model provider.</p></div>
+    <div class="card"><span class="tag" style="color:var(--amber)">Layer 4</span><h3>AI &amp; agents</h3><p><b>Outcome:</b> AI that looks things up, acts, and works.</p><p><b>RAG</b> grounds answers in your documents. <b>MCP and tools</b> let the model act on other systems. <b>Agent memory</b> carries facts and progress across turns and sessions. <b>Model routing</b> sends each request to the cheapest model that can handle it. See <a href="#rag">RAG</a>, <a href="#mcp">MCP</a> and <a href="#agents">AI agents</a>.</p></div>
+    <div class="card"><span class="tag" style="color:var(--purple)">Layer 5</span><h3>Security &amp; governance</h3><p><b>Outcome:</b> data stays safe and the AI can be audited.</p><p><b>OAuth and JWT</b> say who a user, or an agent acting for one, is and what it may do. <b>Zero trust</b> checks every call, including agent-to-tool calls. <b>Guardrails</b> filter what goes into and comes out of the model. <b>Audit logs</b> record every decision and action. See <a href="#guardrails">AI guardrails</a> and <a href="#hitl-controls">Human-in-the-loop controls</a>.</p></div>
+    <div class="card"><span class="tag" style="color:var(--green)">Layer 6</span><h3>Observe &amp; evaluate</h3><p><b>Outcome:</b> quality, cost and speed are measured.</p><p><b>Tracing</b> follows one request through retrieval, model calls and tools. <b>SLOs</b> set targets such as time to first token and error rate. <b>LLM evals</b> score answer quality on a fixed test set. <b>Token cost</b> is tracked per feature and per user. See <a href="#llmops">ADLC &amp; LLMOps</a> and <a href="#evalhub">Eval Hub</a>.</p></div>
+  </div>
+  <h2>What changes when there's a model inside</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Building block</th><th>Classic system</th><th>With LLMs and agents</th></tr>
+    <tr><td><b>Caching</b></td><td>Same request, same response</td><td>Prompt caching for long, repeated context; caching similar questions needs a quality check</td></tr>
+    <tr><td><b>Rate limiting</b></td><td>Requests per second</td><td>Tokens per minute, per user and per model, plus a spend cap</td></tr>
+    <tr><td><b>Queues</b></td><td>Jobs take seconds</td><td>Agent tasks can take minutes or hours; persist their state so they can resume</td></tr>
+    <tr><td><b>Retries</b></td><td>Safe for reads</td><td>A retried tool call can send an email twice: use idempotency keys on writes</td></tr>
+    <tr><td><b>Failover</b></td><td>A standby server</td><td>A fallback model, with prompts and evals tested against it beforehand</td></tr>
+    <tr><td><b>Access control</b></td><td>Users and services</td><td>Agents get their own identity and the narrowest permissions for each task</td></tr>
+    <tr><td><b>Testing</b></td><td>Same input, same output</td><td>Outputs vary: score them on a test set and watch the scores over time</td></tr>
+    <tr><td><b>Cost</b></td><td>Mostly fixed infrastructure</td><td>Grows with every token: budget per request and per feature</td></tr>
+  </table></div>
+  <h2>Go deeper</h2>
+  <div class="card tablewrap"><table>
+    <tr><th>Layer</th><th>Pages</th></tr>
+    <tr><td>Scale &amp; speed</td><td><a href="#optimization">LLM optimization &amp; serving</a> · <a href="#cost">LLM cost estimator</a></td></tr>
+    <tr><td>Data &amp; retrieval</td><td><a href="#vector-search">Vector search</a> · <a href="#rag-variants">RAG variants</a> · <a href="#data-readiness">Data readiness</a></td></tr>
+    <tr><td>Reliable systems</td><td><a href="#agent-runtime">Agents in production</a> · <a href="#workflows">Workflows &amp; patterns</a></td></tr>
+    <tr><td>AI &amp; agents</td><td><a href="#rag">RAG</a> · <a href="#mcp">MCP</a> · <a href="#agents">AI agents</a> · <a href="#model-selection">Model selection</a></td></tr>
+    <tr><td>Security &amp; governance</td><td><a href="#ai-security">AI security</a> · <a href="#guardrails">AI guardrails</a> · <a href="#hitl-controls">Human-in-the-loop controls</a></td></tr>
+    <tr><td>Observe &amp; evaluate</td><td><a href="#llmops">ADLC &amp; LLMOps</a> · <a href="#evalhub">Eval Hub</a> · <a href="#agent-evals">Agent evaluation</a></td></tr>
+  </table></div>
+  <div class="callout">This is a learning order, not a build order. A first version needs a little of every layer: a rate limit, a fallback, an audit log, a small eval set. It doesn't need sharding or multi-region failover. Add depth to a layer when its outcome starts to fail. See <a href="#reference-arch">Reference architecture</a>.</div>
+  <p class="muted" style="font-size:13px">Adapted from a community infographic, "The AI System Design Universe". The notes on what changes with LLMs are this site's.</p>

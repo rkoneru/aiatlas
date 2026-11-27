@@ -1,1143 +1,1143 @@
 {
- "statements": 404,
+ "statements": 407,
  "fullFileErrors": {},
  "failingStatements": [
   {
    "stmt": 61,
-   "line": 5032,
+   "line": 5163,
    "head": "function ontoV(){const i=+document.getElementById('ov').value,v=OV[i];document.getElementB",
    "msgs": [
     "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "ontology"
    ]
   },
   {
-   "stmt": 195,
-   "line": 6208,
+   "stmt": 198,
+   "line": 6374,
    "head": "function renderStates(cur){const box=document.getElementById('a2astates');const ci=stateOr",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "a2a"
    ]
   },
   {
-   "stmt": 198,
-   "line": 6214,
+   "stmt": 201,
+   "line": 6380,
    "head": "function pickRole(i){const r=ROLES[i];[...rt.children].forEach((b,j)=>b.classList.toggle('",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
-   "okOn": [
-    "mcp"
-   ]
-  },
-  {
-   "stmt": 199,
-   "line": 6217,
-   "head": "ROLES.forEach((r,i)=>{const b=document.createElement('button');b.className='tab';b.textCon",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "mcp"
    ]
   },
   {
    "stmt": 202,
-   "line": 6222,
+   "line": 6383,
+   "head": "ROLES.forEach((r,i)=>{const b=document.createElement('button');b.className='tab';b.textCon",
+   "msgs": [
+    "Cannot read properties of null (reading 'appendChild')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "mcp"
+   ]
+  },
+  {
+   "stmt": 205,
+   "line": 6388,
    "head": "function pickPat(i){[...pt.children].forEach((b,j)=>b.classList.toggle('on',i===j));FLOWS.",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
-   "okOn": [
-    "patterns"
-   ]
-  },
-  {
-   "stmt": 203,
-   "line": 6223,
-   "head": "PATS.forEach((p,i)=>{const b=document.createElement('button');b.className='tab';b.textCont",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "patterns"
    ]
   },
   {
    "stmt": 206,
-   "line": 6226,
-   "head": "document.getElementById('pattable').innerHTML='<tr><th></th>'+PATS.map(p=>`<th style=\"colo",
+   "line": 6389,
+   "head": "PATS.forEach((p,i)=>{const b=document.createElement('button');b.className='tab';b.textCont",
    "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
+    "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "patterns"
    ]
   },
   {
-   "stmt": 208,
-   "line": 6240,
+   "stmt": 209,
+   "line": 6392,
+   "head": "document.getElementById('pattable').innerHTML='<tr><th></th>'+PATS.map(p=>`<th style=\"colo",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "patterns"
+   ]
+  },
+  {
+   "stmt": 211,
+   "line": 6406,
    "head": "function rag(){const k=+rk.value,useR=rro.checked,thr=rt2.value/100;rkv.textContent=k;rtv.",
    "msgs": [
     "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag"
    ]
   },
   {
-   "stmt": 210,
-   "line": 6250,
+   "stmt": 213,
+   "line": 6416,
    "head": "[rk,rro,rt2].forEach(x=>x.oninput=rag);",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag"
    ]
   },
   {
-   "stmt": 215,
-   "line": 6256,
+   "stmt": 218,
+   "line": 6422,
    "head": "function auto(){const L=+al.value;document.getElementById('alv').textContent=L+' · '+LV[L]",
    "msgs": [
     "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
-   "okOn": [
-    "agents"
-   ]
-  },
-  {
-   "stmt": 216,
-   "line": 6260,
-   "head": "al.oninput=auto;",
-   "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "agents"
    ]
   },
   {
    "stmt": 219,
-   "line": 6264,
+   "line": 6426,
+   "head": "al.oninput=auto;",
+   "msgs": [
+    "Cannot set properties of null (setting 'oninput')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "agents"
+   ]
+  },
+  {
+   "stmt": 222,
+   "line": 6430,
    "head": "function mcalc(){document.getElementById('mmv').textContent=mm.value;document.getElementBy",
    "msgs": [
     "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
-   "okOn": [
-    "mcp"
-   ]
-  },
-  {
-   "stmt": 220,
-   "line": 6265,
-   "head": "mm.oninput=mn.oninput=mcalc;",
-   "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "mcp"
    ]
   },
   {
    "stmt": 223,
-   "line": 6269,
-   "head": "function loop(){const bar=+lq.value,mx=+li.value,q0=+l0.value;lqv.textContent=bar;liv.text",
-   "msgs": [
-    "Cannot read properties of null (reading 'value')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "patterns"
-   ]
-  },
-  {
-   "stmt": 225,
-   "line": 6276,
-   "head": "[lq,li,l0].forEach(x=>x.oninput=loop);",
+   "line": 6431,
+   "head": "mm.oninput=mn.oninput=mcalc;",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "patterns"
+    "mcp"
    ]
   },
   {
    "stmt": 226,
-   "line": 6276,
-   "head": "document.getElementById('lrun').onclick=loop;",
+   "line": 6435,
+   "head": "function loop(){const bar=+lq.value,mx=+li.value,q0=+l0.value;lqv.textContent=bar;liv.text",
    "msgs": [
-    "Cannot set properties of null (setting 'onclick')"
+    "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "patterns"
    ]
   },
   {
    "stmt": 228,
-   "line": 6279,
+   "line": 6442,
+   "head": "[lq,li,l0].forEach(x=>x.oninput=loop);",
+   "msgs": [
+    "Cannot set properties of null (setting 'oninput')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "patterns"
+   ]
+  },
+  {
+   "stmt": 229,
+   "line": 6442,
+   "head": "document.getElementById('lrun').onclick=loop;",
+   "msgs": [
+    "Cannot set properties of null (setting 'onclick')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "patterns"
+   ]
+  },
+  {
+   "stmt": 231,
+   "line": 6445,
    "head": "function choose(){const a=q1.checked,b=q2.checked,c=q3.checked;let rec,why; if(c){rec='G",
    "msgs": [
     "Cannot read properties of null (reading 'checked')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "patterns"
    ]
   },
   {
-   "stmt": 230,
-   "line": 6285,
+   "stmt": 233,
+   "line": 6451,
    "head": "[q1,q2,q3].forEach(x=>x.onchange=choose);",
    "msgs": [
     "Cannot set properties of null (setting 'onchange')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "patterns"
    ]
   },
   {
-   "stmt": 237,
-   "line": 6302,
+   "stmt": 240,
+   "line": 6468,
    "head": "function renderOpt(){[...optf.children].forEach(b=>b.classList.toggle('on',b.dataset.k===c",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "optimization"
    ]
   },
   {
-   "stmt": 238,
-   "line": 6307,
+   "stmt": 241,
+   "line": 6473,
    "head": "[['all','All']].concat(Object.entries(CAT).map(([k,v])=>[k,v[0]])).forEach(([k,l])=>{const",
    "msgs": [
     "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
-   "okOn": [
-    "optimization"
-   ]
-  },
-  {
-   "stmt": 239,
-   "line": 6308,
-   "head": "optgrid.addEventListener('click',e=>{const a=e.target.closest('[data-calc]');if(a){e.preve",
-   "msgs": [
-    "Cannot read properties of null (reading 'addEventListener')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "optimization"
-   ]
-  },
-  {
-   "stmt": 240,
-   "line": 6310,
-   "head": "optgrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const c=e.target.closest('.opt'",
-   "msgs": [
-    "Cannot read properties of null (reading 'addEventListener')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "optimization"
    ]
   },
   {
    "stmt": 242,
-   "line": 6312,
+   "line": 6474,
+   "head": "optgrid.addEventListener('click',e=>{const a=e.target.closest('[data-calc]');if(a){e.preve",
+   "msgs": [
+    "Cannot read properties of null (reading 'addEventListener')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "optimization"
+   ]
+  },
+  {
+   "stmt": 243,
+   "line": 6476,
+   "head": "optgrid.addEventListener('keydown',e=>{if(e.key==='Enter'){const c=e.target.closest('.opt'",
+   "msgs": [
+    "Cannot read properties of null (reading 'addEventListener')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "optimization"
+   ]
+  },
+  {
+   "stmt": 245,
+   "line": 6478,
    "head": "document.getElementById('bonus').innerHTML=BONUS.map(([t,d])=>`<div class=\"card\"><h3>${t}<",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "optimization"
    ]
   },
   {
-   "stmt": 246,
-   "line": 6340,
+   "stmt": 249,
+   "line": 6506,
    "head": "function pickCalc(i){[...ct.children].forEach((b,j)=>b.classList.toggle('on',i===j));calcE",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
-   "okOn": [
-    "optimization"
-   ]
-  },
-  {
-   "stmt": 247,
-   "line": 6341,
-   "head": "CALCS.forEach((c,i)=>{const b=document.createElement('button');b.className='tab';b.textCon",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "optimization"
    ]
   },
   {
    "stmt": 250,
-   "line": 6346,
-   "head": "function pickRV(i){const r=RAGV[i];[...rvt.children].forEach((b,j)=>b.classList.toggle('on",
-   "msgs": [
-    "Cannot read properties of null (reading 'children')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "rag-variants"
-   ]
-  },
-  {
-   "stmt": 251,
-   "line": 6348,
-   "head": "RAGV.forEach((r,i)=>{const b=document.createElement('button');b.className='tab';b.textCont",
+   "line": 6507,
+   "head": "CALCS.forEach((c,i)=>{const b=document.createElement('button');b.className='tab';b.textCon",
    "msgs": [
     "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "rag-variants"
+    "optimization"
    ]
   },
   {
    "stmt": 253,
-   "line": 6350,
-   "head": "document.getElementById('ragvtable').innerHTML='<tr><th>#</th><th>Architecture</th><th>Cor",
+   "line": 6512,
+   "head": "function pickRV(i){const r=RAGV[i];[...rvt.children].forEach((b,j)=>b.classList.toggle('on",
    "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
+    "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag-variants"
    ]
   },
   {
    "stmt": 254,
-   "line": 6351,
-   "head": "document.getElementById('ragvtable').addEventListener('click',e=>{const a=e.target.closest",
+   "line": 6514,
+   "head": "RAGV.forEach((r,i)=>{const b=document.createElement('button');b.className='tab';b.textCont",
    "msgs": [
-    "Cannot read properties of null (reading 'addEventListener')"
+    "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
+   "okOn": [
+    "rag-variants"
+   ]
+  },
+  {
+   "stmt": 256,
+   "line": 6516,
+   "head": "document.getElementById('ragvtable').innerHTML='<tr><th>#</th><th>Architecture</th><th>Cor",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
    "okOn": [
     "rag-variants"
    ]
   },
   {
    "stmt": 257,
-   "line": 6361,
+   "line": 6517,
+   "head": "document.getElementById('ragvtable').addEventListener('click',e=>{const a=e.target.closest",
+   "msgs": [
+    "Cannot read properties of null (reading 'addEventListener')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "rag-variants"
+   ]
+  },
+  {
+   "stmt": 260,
+   "line": 6527,
    "head": "function fsPick(i){const [n,args,res,risk,gov]=FS[i];[...fsb.children].forEach((b,j)=>b.cl",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "mcp-protocol"
    ]
   },
   {
-   "stmt": 258,
-   "line": 6366,
+   "stmt": 261,
+   "line": 6532,
    "head": "FS.forEach((f,i)=>{const b=document.createElement('button');b.className='tab toolbtn';b.te",
    "msgs": [
     "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "mcp-protocol"
    ]
   },
   {
-   "stmt": 263,
-   "line": 6378,
+   "stmt": 266,
+   "line": 6544,
    "head": "function hookRun(i){const h=HS[i];[...hb.children].forEach((b,j)=>b.classList.toggle('on',",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
-   "okOn": [
-    "agent-kit"
-   ]
-  },
-  {
-   "stmt": 264,
-   "line": 6383,
-   "head": "HS.forEach((h,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "agent-kit"
    ]
   },
   {
    "stmt": 267,
-   "line": 6387,
-   "head": "function pickWF(i){const w=WF[i];[...wft.children].forEach((b,j)=>b.classList.toggle('on',",
-   "msgs": [
-    "Cannot read properties of null (reading 'children')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "workflows"
-   ]
-  },
-  {
-   "stmt": 268,
-   "line": 6389,
-   "head": "WF.forEach((w,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
+   "line": 6549,
+   "head": "HS.forEach((h,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
    "msgs": [
     "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "workflows"
+    "agent-kit"
    ]
   },
   {
    "stmt": 270,
-   "line": 6391,
+   "line": 6553,
+   "head": "function pickWF(i){const w=WF[i];[...wft.children].forEach((b,j)=>b.classList.toggle('on',",
+   "msgs": [
+    "Cannot read properties of null (reading 'children')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "workflows"
+   ]
+  },
+  {
+   "stmt": 271,
+   "line": 6555,
+   "head": "WF.forEach((w,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
+   "msgs": [
+    "Cannot read properties of null (reading 'appendChild')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "workflows"
+   ]
+  },
+  {
+   "stmt": 273,
+   "line": 6557,
    "head": "document.getElementById('refcards').innerHTML=REFL.map(([t,d,c])=>`<div class=\"card\" style",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "reference-arch"
    ]
   },
   {
-   "stmt": 271,
-   "line": 6393,
+   "stmt": 274,
+   "line": 6559,
    "head": "document.getElementById('ov').oninput=ontoV;",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "ontology"
    ]
   },
   {
-   "stmt": 274,
-   "line": 6396,
+   "stmt": 277,
+   "line": 6562,
    "head": "function jev(){const t=jt.value/100;document.getElementById('jtv').textContent=t.toFixed(2",
    "msgs": [
     "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "jev"
    ]
   },
   {
-   "stmt": 275,
-   "line": 6398,
+   "stmt": 278,
+   "line": 6564,
    "head": "jt.oninput=jev;",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
-   "okOn": [
-    "jev"
-   ]
-  },
-  {
-   "stmt": 277,
-   "line": 6399,
-   "head": "document.getElementById('jchoice').innerHTML=[['Engineering',.91],['Billing',.06],['Sales'",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "jev"
    ]
   },
   {
    "stmt": 280,
-   "line": 6403,
-   "head": "function pickTS(i){const t=TS[i];[...tst.children].forEach((b,j)=>b.classList.toggle('on',",
+   "line": 6565,
+   "head": "document.getElementById('jchoice').innerHTML=[['Engineering',.91],['Billing',.06],['Sales'",
    "msgs": [
-    "Cannot read properties of null (reading 'children')"
+    "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "tool-call"
-   ]
-  },
-  {
-   "stmt": 281,
-   "line": 6405,
-   "head": "TS.forEach((t,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "tool-call"
+    "jev"
    ]
   },
   {
    "stmt": 283,
-   "line": 6406,
-   "head": "function tlat(){const v=[1,2,3].map(i=>+document.getElementById('tl'+i).value),h=+document",
+   "line": 6569,
+   "head": "function pickTS(i){const t=TS[i];[...tst.children].forEach((b,j)=>b.classList.toggle('on',",
    "msgs": [
-    "Cannot read properties of null (reading 'value')"
+    "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "tool-call"
    ]
   },
   {
    "stmt": 284,
-   "line": 6411,
-   "head": "[1,2,3].forEach(i=>document.getElementById('tl'+i).oninput=tlat);",
+   "line": 6571,
+   "head": "TS.forEach((t,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
    "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
+    "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "tool-call"
    ]
   },
   {
-   "stmt": 285,
-   "line": 6411,
-   "head": "document.getElementById('tlh').oninput=tlat;",
+   "stmt": 286,
+   "line": 6572,
+   "head": "function tlat(){const v=[1,2,3].map(i=>+document.getElementById('tl'+i).value),h=+document",
    "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
+    "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "tool-call"
    ]
   },
   {
    "stmt": 287,
-   "line": 6413,
-   "head": "document.getElementById('vlayers').innerHTML=VL.map(([n,t,q,c,items])=>`<div class=\"card\" ",
+   "line": 6577,
+   "head": "[1,2,3].forEach(i=>document.getElementById('tl'+i).oninput=tlat);",
    "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
+    "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "voice"
+    "tool-call"
    ]
   },
   {
-   "stmt": 289,
-   "line": 6415,
-   "head": "vlc.innerHTML=VLAT.map(([l,mn,mx,v],i)=>`<label>${l} <input type=\"range\" id=\"vl${i}\" min=\"",
+   "stmt": 288,
+   "line": 6577,
+   "head": "document.getElementById('tlh').oninput=tlat;",
    "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
+    "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "voice"
+    "tool-call"
    ]
   },
   {
    "stmt": 290,
-   "line": 6416,
-   "head": "function vlat(){const vals=VLAT.map((_,i)=>+document.getElementById('vl'+i).value);vals.fo",
+   "line": 6579,
+   "head": "document.getElementById('vlayers').innerHTML=VL.map(([n,t,q,c,items])=>`<div class=\"card\" ",
    "msgs": [
-    "Cannot read properties of null (reading 'value')"
+    "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "voice"
    ]
   },
   {
-   "stmt": 291,
-   "line": 6420,
-   "head": "VLAT.forEach((_,i)=>document.getElementById('vl'+i).oninput=vlat);",
+   "stmt": 292,
+   "line": 6581,
+   "head": "vlc.innerHTML=VLAT.map(([l,mn,mx,v],i)=>`<label>${l} <input type=\"range\" id=\"vl${i}\" min=\"",
    "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
+    "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
+   "okOn": [
+    "voice"
+   ]
+  },
+  {
+   "stmt": 293,
+   "line": 6582,
+   "head": "function vlat(){const vals=VLAT.map((_,i)=>+document.getElementById('vl'+i).value);vals.fo",
+   "msgs": [
+    "Cannot read properties of null (reading 'value')"
+   ],
+   "pages": 104,
    "okOn": [
     "voice"
    ]
   },
   {
    "stmt": 294,
-   "line": 6423,
+   "line": 6586,
+   "head": "VLAT.forEach((_,i)=>document.getElementById('vl'+i).oninput=vlat);",
+   "msgs": [
+    "Cannot set properties of null (setting 'oninput')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "voice"
+   ]
+  },
+  {
+   "stmt": 297,
+   "line": 6589,
    "head": "function cqRender(p,b){let h='<h3>1 · What aspect of AI interests you most?</h3><div class",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "roadmaps"
    ]
   },
   {
-   "stmt": 296,
-   "line": 6430,
+   "stmt": 299,
+   "line": 6596,
    "head": "(function(){const f=document.getElementById('pbform'),o=document.getElementById('pbout');l",
    "msgs": [
     "Cannot set properties of null (setting 'onclick')"
    ],
-   "pages": 102,
-   "okOn": [
-    "prompt-eng"
-   ]
-  },
-  {
-   "stmt": 297,
-   "line": 6441,
-   "head": "(function(){const i=document.getElementById('pcin'),o=document.getElementById('pcout'); c",
-   "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "prompt-eng"
-   ]
-  },
-  {
-   "stmt": 298,
-   "line": 6447,
-   "head": "document.getElementById('ptech').innerHTML='<tr><th>#</th><th>Technique</th><th>Purpose</t",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "prompt-eng"
-   ]
-  },
-  {
-   "stmt": 299,
-   "line": 6448,
-   "head": "document.getElementById('prules').innerHTML=PRULES.map(([g,r],i)=>`<div class=\"card\"><h3>$",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "prompt-eng"
    ]
   },
   {
    "stmt": 300,
-   "line": 6450,
-   "head": "(function(){const s=document.getElementById('pdsym'),o=document.getElementById('pdout'); ",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "prompt-debug"
-   ]
-  },
-  {
-   "stmt": 302,
-   "line": 6465,
-   "head": "(function(){const K='atlas-buildag-v1';let D={};try{D=JSON.parse(localStorage.getItem(K)||",
-   "msgs": [
-    "Cannot set properties of null (setting 'onclick')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "build-agent"
-   ]
-  },
-  {
-   "stmt": 303,
-   "line": 6470,
-   "head": "(function(){const A={path:1,measure:1,reversible:1,audit:1,highstakes:0},box=document.getE",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "agent-spectrum"
-   ]
-  },
-  {
-   "stmt": 304,
-   "line": 6476,
-   "head": "(function(){const a=document.getElementById('gva'),h=document.getElementById('gvh'),s=docu",
+   "line": 6607,
+   "head": "(function(){const i=document.getElementById('pcin'),o=document.getElementById('pcout'); c",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
-   "okOn": [
-    "agent-governance"
-   ]
-  },
-  {
-   "stmt": 305,
-   "line": 6483,
-   "head": "(function(){const K='atlas-harness-v1';let D={};try{D=JSON.parse(localStorage.getItem(K)||",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "patterns"
-   ]
-  },
-  {
-   "stmt": 306,
-   "line": 6488,
-   "head": "(function(){const tb=document.getElementById('pftabs'),f=document.getElementById('pfform')",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "prompt-eng"
    ]
   },
   {
+   "stmt": 301,
+   "line": 6613,
+   "head": "document.getElementById('ptech').innerHTML='<tr><th>#</th><th>Technique</th><th>Purpose</t",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "prompt-eng"
+   ]
+  },
+  {
+   "stmt": 302,
+   "line": 6614,
+   "head": "document.getElementById('prules').innerHTML=PRULES.map(([g,r],i)=>`<div class=\"card\"><h3>$",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "prompt-eng"
+   ]
+  },
+  {
+   "stmt": 303,
+   "line": 6616,
+   "head": "(function(){const s=document.getElementById('pdsym'),o=document.getElementById('pdout'); ",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "prompt-debug"
+   ]
+  },
+  {
+   "stmt": 305,
+   "line": 6631,
+   "head": "(function(){const K='atlas-buildag-v1';let D={};try{D=JSON.parse(localStorage.getItem(K)||",
+   "msgs": [
+    "Cannot set properties of null (setting 'onclick')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "build-agent"
+   ]
+  },
+  {
+   "stmt": 306,
+   "line": 6636,
+   "head": "(function(){const A={path:1,measure:1,reversible:1,audit:1,highstakes:0},box=document.getE",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "agent-spectrum"
+   ]
+  },
+  {
    "stmt": 307,
-   "line": 6496,
+   "line": 6642,
+   "head": "(function(){const a=document.getElementById('gva'),h=document.getElementById('gvh'),s=docu",
+   "msgs": [
+    "Cannot set properties of null (setting 'oninput')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "agent-governance"
+   ]
+  },
+  {
+   "stmt": 308,
+   "line": 6649,
+   "head": "(function(){const K='atlas-harness-v1';let D={};try{D=JSON.parse(localStorage.getItem(K)||",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "patterns"
+   ]
+  },
+  {
+   "stmt": 309,
+   "line": 6654,
+   "head": "(function(){const tb=document.getElementById('pftabs'),f=document.getElementById('pfform')",
+   "msgs": [
+    "Cannot read properties of null (reading 'appendChild')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "prompt-eng"
+   ]
+  },
+  {
+   "stmt": 310,
+   "line": 6662,
    "head": "(function(){const A={oneoff:0,context:1,repeat:1,process:0},box=document.getElementById('p",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "prompt-skills"
    ]
   },
   {
-   "stmt": 308,
-   "line": 6502,
+   "stmt": 311,
+   "line": 6668,
    "head": "(function(){let cat=-1;const f=document.getElementById('acf'),l=document.getElementById('a",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "agent-catalog"
    ]
   },
   {
-   "stmt": 309,
-   "line": 6513,
+   "stmt": 312,
+   "line": 6679,
    "head": "(function(){document.getElementById('pmconcepts').innerHTML=PMC.map(([t,d])=>`<div style=\"",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "pm-map"
    ]
   },
   {
-   "stmt": 310,
-   "line": 6529,
+   "stmt": 313,
+   "line": 6695,
    "head": "(function(){const inp=document.getElementById('tkin'),out=document.getElementById('tkout')",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "how-llms-work"
    ]
   },
   {
-   "stmt": 311,
-   "line": 6536,
+   "stmt": 314,
+   "line": 6702,
    "head": "(function(){const T=['How','do','I','prepare','for','a','PM','interview','?'],n=T.length,g",
    "msgs": [
     "Cannot set properties of null (setting 'onchange')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "how-llms-work"
    ]
   },
   {
-   "stmt": 312,
-   "line": 6546,
+   "stmt": 315,
+   "line": 6712,
    "head": "(function(){const t=document.getElementById('smt'),k=document.getElementById('smk'),bars=d",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "how-llms-work"
    ]
   },
   {
-   "stmt": 313,
-   "line": 6554,
+   "stmt": 316,
+   "line": 6720,
    "head": "(function(){const th=document.getElementById('gthreats'),o=document.getElementById('gthrea",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "guardrails"
    ]
   },
   {
-   "stmt": 314,
-   "line": 6560,
+   "stmt": 317,
+   "line": 6726,
    "head": "(function(){const tb=document.getElementById('aitabs'); function pick(i){[...tb.querySele",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "automation-ideas"
    ]
   },
   {
-   "stmt": 315,
-   "line": 6570,
+   "stmt": 318,
+   "line": 6736,
    "head": "(function(){const K='atlas-roadmap-v1';let D={};try{D=JSON.parse(localStorage.getItem(K)||",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "roadmaps"
    ]
   },
   {
-   "stmt": 317,
-   "line": 6582,
+   "stmt": 320,
+   "line": 6748,
    "head": "function pickLW(i){const w=LW[i];[...lwt.children].forEach((b,j)=>b.classList.toggle('on',",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
-   "okOn": [
-    "workflows"
-   ]
-  },
-  {
-   "stmt": 318,
-   "line": 6584,
-   "head": "LW.forEach((w,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "workflows"
-   ]
-  },
-  {
-   "stmt": 320,
-   "line": 6585,
-   "head": "(function(){const box=document.getElementById('lwq');const on=new Set([0]); function r(){",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "workflows"
    ]
   },
   {
    "stmt": 321,
-   "line": 6595,
-   "head": "function roleCard(i){const [t,d,p]=R12[i];const c=document.getElementById('rolecard'); c",
+   "line": 6750,
+   "head": "LW.forEach((w,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
    "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
+    "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "ai-roles"
+    "workflows"
    ]
   },
   {
    "stmt": 323,
-   "line": 6599,
-   "head": "(function(){const s=document.getElementById('rolesit'),o=document.getElementById('rolesito",
+   "line": 6751,
+   "head": "(function(){const box=document.getElementById('lwq');const on=new Set([0]); function r(){",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "ai-roles"
+    "workflows"
    ]
   },
   {
    "stmt": 324,
-   "line": 6605,
-   "head": "(function(){const g=document.getElementById('sdgoal'),a=document.getElementById('sdasks'),",
+   "line": 6761,
+   "head": "function roleCard(i){const [t,d,p]=R12[i];const c=document.getElementById('rolecard'); c",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "ai-roles"
    ]
   },
   {
-   "stmt": 325,
-   "line": 6613,
+   "stmt": 326,
+   "line": 6765,
+   "head": "(function(){const s=document.getElementById('rolesit'),o=document.getElementById('rolesito",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "ai-roles"
+   ]
+  },
+  {
+   "stmt": 327,
+   "line": 6771,
+   "head": "(function(){const g=document.getElementById('sdgoal'),a=document.getElementById('sdasks'),",
+   "msgs": [
+    "Cannot set properties of null (setting 'innerHTML')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "ai-roles"
+   ]
+  },
+  {
+   "stmt": 328,
+   "line": 6779,
    "head": "(function(){const f=document.getElementById('sopform'),o=document.getElementById('sopout')",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "sop-workflow"
    ]
   },
   {
-   "stmt": 326,
-   "line": 6625,
+   "stmt": 329,
+   "line": 6791,
    "head": "(function(){const b=document.getElementById('prodboard'),B=[['Now','orange'],['Next','blue",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "productivity"
    ]
   },
   {
-   "stmt": 327,
-   "line": 6631,
+   "stmt": 330,
+   "line": 6797,
    "head": "(function(){const rings=LAND.slice(0,5),cx=210,base=410,R=[200,162,124,88,54]; const F=['",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "ai-landscape"
    ]
   },
   {
-   "stmt": 329,
-   "line": 6644,
+   "stmt": 332,
+   "line": 6810,
    "head": "function pickLT(i){const t=LT[i];[...ltt.children].forEach((b,j)=>b.classList.toggle('on',",
    "msgs": [
     "Cannot read properties of null (reading 'children')"
    ],
-   "pages": 102,
-   "okOn": [
-    "llm-types"
-   ]
-  },
-  {
-   "stmt": 330,
-   "line": 6646,
-   "head": "LT.forEach((t,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
-   "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "llm-types"
-   ]
-  },
-  {
-   "stmt": 332,
-   "line": 6647,
-   "head": "document.getElementById('lttable').innerHTML='<tr><th>Type</th><th>Key idea</th><th>Streng",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "llm-types"
    ]
   },
   {
    "stmt": 333,
-   "line": 6648,
-   "head": "document.getElementById('lttable').addEventListener('click',e=>{const a=e.target.closest('",
+   "line": 6812,
+   "head": "LT.forEach((t,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
    "msgs": [
-    "Cannot read properties of null (reading 'addEventListener')"
+    "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "llm-types"
    ]
   },
   {
    "stmt": 335,
-   "line": 6652,
-   "head": "function pickRC(i){[...rct.children].forEach((b,j)=>b.classList.toggle('on',i===j));FLOWS.",
+   "line": 6813,
+   "head": "document.getElementById('lttable').innerHTML='<tr><th>Type</th><th>Key idea</th><th>Streng",
    "msgs": [
-    "Cannot read properties of null (reading 'children')"
+    "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "rag-variants"
+    "llm-types"
    ]
   },
   {
    "stmt": 336,
-   "line": 6653,
-   "head": "RC.forEach((r,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
+   "line": 6814,
+   "head": "document.getElementById('lttable').addEventListener('click',e=>{const a=e.target.closest('",
    "msgs": [
-    "Cannot read properties of null (reading 'appendChild')"
+    "Cannot read properties of null (reading 'addEventListener')"
    ],
-   "pages": 102,
+   "pages": 104,
+   "okOn": [
+    "llm-types"
+   ]
+  },
+  {
+   "stmt": 338,
+   "line": 6818,
+   "head": "function pickRC(i){[...rct.children].forEach((b,j)=>b.classList.toggle('on',i===j));FLOWS.",
+   "msgs": [
+    "Cannot read properties of null (reading 'children')"
+   ],
+   "pages": 104,
    "okOn": [
     "rag-variants"
    ]
   },
   {
-   "stmt": 338,
-   "line": 6656,
-   "head": "(function(){const S=300,O=150,K=115;let V={q:[.85,.45],d:[.55,.75]};const box=document.get",
-   "msgs": [
-    "Cannot set properties of null (setting 'innerHTML')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "rag"
-   ]
-  },
-  {
    "stmt": 339,
-   "line": 6675,
-   "head": "function chunk(){const N=+ckn.value,sz=+cks.value,ov=Math.min(+cko.value,sz-50);cknv.textC",
+   "line": 6819,
+   "head": "RC.forEach((r,i)=>{const b=document.createElement('button');b.className='tab';b.textConten",
    "msgs": [
-    "Cannot read properties of null (reading 'value')"
+    "Cannot read properties of null (reading 'appendChild')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
-    "rag"
+    "rag-variants"
    ]
   },
   {
    "stmt": 341,
-   "line": 6680,
-   "head": "[ckn,cks,cko].forEach(x=>x.oninput=chunk);",
+   "line": 6822,
+   "head": "(function(){const S=300,O=150,K=115;let V={q:[.85,.45],d:[.55,.75]};const box=document.get",
    "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
+    "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag"
    ]
   },
   {
-   "stmt": 343,
-   "line": 6683,
-   "head": "function topk(){const k=+document.getElementById('tkk').value,rr=document.getElementById('",
+   "stmt": 342,
+   "line": 6841,
+   "head": "function chunk(){const N=+ckn.value,sz=+cks.value,ov=Math.min(+cko.value,sz-50);cknv.textC",
    "msgs": [
     "Cannot read properties of null (reading 'value')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag"
    ]
   },
   {
    "stmt": 344,
-   "line": 6688,
+   "line": 6846,
+   "head": "[ckn,cks,cko].forEach(x=>x.oninput=chunk);",
+   "msgs": [
+    "Cannot set properties of null (setting 'oninput')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "rag"
+   ]
+  },
+  {
+   "stmt": 346,
+   "line": 6849,
+   "head": "function topk(){const k=+document.getElementById('tkk').value,rr=document.getElementById('",
+   "msgs": [
+    "Cannot read properties of null (reading 'value')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "rag"
+   ]
+  },
+  {
+   "stmt": 347,
+   "line": 6854,
    "head": "document.getElementById('tkk').oninput=topk;",
    "msgs": [
     "Cannot set properties of null (setting 'oninput')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag"
    ]
   },
   {
-   "stmt": 345,
-   "line": 6688,
+   "stmt": 348,
+   "line": 6854,
    "head": "document.getElementById('tkr').onchange=topk;",
    "msgs": [
     "Cannot set properties of null (setting 'onchange')"
    ],
-   "pages": 102,
-   "okOn": [
-    "rag"
-   ]
-  },
-  {
-   "stmt": 349,
-   "line": 6692,
-   "head": "function evals(){const k=+document.getElementById('evk').value;document.getElementById('ev",
-   "msgs": [
-    "Cannot read properties of null (reading 'value')"
-   ],
-   "pages": 102,
-   "okOn": [
-    "rag"
-   ]
-  },
-  {
-   "stmt": 350,
-   "line": 6697,
-   "head": "document.getElementById('evk').oninput=evals;",
-   "msgs": [
-    "Cannot set properties of null (setting 'oninput')"
-   ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "rag"
    ]
   },
   {
    "stmt": 352,
-   "line": 6700,
+   "line": 6858,
+   "head": "function evals(){const k=+document.getElementById('evk').value;document.getElementById('ev",
+   "msgs": [
+    "Cannot read properties of null (reading 'value')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "rag"
+   ]
+  },
+  {
+   "stmt": 353,
+   "line": 6863,
+   "head": "document.getElementById('evk').oninput=evals;",
+   "msgs": [
+    "Cannot set properties of null (setting 'oninput')"
+   ],
+   "pages": 104,
+   "okOn": [
+    "rag"
+   ]
+  },
+  {
+   "stmt": 355,
+   "line": 6866,
    "head": "(function(){const tree=document.getElementById('repotree'),info=document.getElementById('r",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "agent-kit"
    ]
   },
   {
-   "stmt": 369,
-   "line": 6833,
+   "stmt": 372,
+   "line": 6999,
    "head": "(function(){ const T={ trigger:['User request','gray','I/O','Where a task, question or ev",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "studio"
    ]
   },
   {
-   "stmt": 370,
-   "line": 7134,
+   "stmt": 373,
+   "line": 7300,
    "head": "(function(){const D=[['Ownership & accountability','Clear decision rights, roles and accou",
    "msgs": [
     "Cannot set properties of null (setting 'innerHTML')"
    ],
-   "pages": 102,
+   "pages": 104,
    "okOn": [
     "maturity"
    ]
@@ -1159,6 +1159,7 @@
   "tool-call": 90,
   "workflows": 90,
   "reference-arch": 94,
+  "ai-system-design": 95,
   "ontology": 93,
   "jev": 92,
   "voice": 91,
@@ -1174,6 +1175,7 @@
   "roadmaps": 93,
   "build-agent": 94,
   "agent-governance": 94,
+  "hitl-controls": 95,
   "prompt-skills": 94,
   "agent-catalog": 94,
   "pm-map": 94,

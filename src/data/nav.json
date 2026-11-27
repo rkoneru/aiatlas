@@ -340,6 +340,12 @@
      "color": "purple"
     },
     {
+     "id": "ai-system-design",
+     "label": "AI system design: six layers",
+     "title": "AI system design: six layers",
+     "color": "purple"
+    },
+    {
      "id": "optimization",
      "label": "LLM optimization &amp; serving",
      "title": "LLM optimization & serving",
@@ -385,6 +391,12 @@
      "label": "Agents watching agents",
      "title": "Agents watching agents",
      "color": "purple"
+    },
+    {
+     "id": "hitl-controls",
+     "label": "Human-in-the-loop controls",
+     "title": "Human-in-the-loop controls",
+     "color": "pink"
     },
     {
      "id": "ai-compliance",

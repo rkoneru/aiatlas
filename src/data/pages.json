@@ -150,6 +150,16 @@
   "kicker": "5b · Reference"
  },
  {
+  "id": "ai-system-design",
+  "title": "AI system design: six layers",
+  "navLabel": "AI system design: six layers",
+  "group": "Architecture",
+  "inNav": true,
+  "accent": "purple",
+  "lead": "A production AI system is ordinary system design with a model inside it. Six layers, each resting on the one below: scale and speed, data and retrieval, reliability, AI and agents, security and governance, and observability and evaluation. Learn them in order. Walk the six layers and what each one buys you.",
+  "kicker": "Architecture · System design"
+ },
+ {
   "id": "ontology",
   "title": "The self-evolving ontology",
   "navLabel": "Self-evolving ontology",
@@ -298,6 +308,16 @@
   "accent": "purple",
   "lead": "Human review at the end of the chain doesn't scale; it becomes a bottleneck with a compliance label on it. The model that scales: agents check agents, every action is logged, and humans govern the system and handle the high-stakes exceptions instead of inspecting every transaction.",
   "kicker": "5e · Governance"
+ },
+ {
+  "id": "hitl-controls",
+  "title": "Human-in-the-loop controls for agents",
+  "navLabel": "Human-in-the-loop controls",
+  "group": "Trust & compliance",
+  "inNav": true,
+  "accent": "pink",
+  "lead": "Autonomy is earned, not granted. Eight ways to keep people in control as agents take on more work, from approving each action to a switch that stops everything. Match the control to the risk, not to the technology. Walk one agent action through the controls.",
+  "kicker": "Trust & compliance · Human oversight"
  },
  {
   "id": "prompt-skills",
